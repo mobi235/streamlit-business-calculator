@@ -4,6 +4,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 
+# plotly==5.11.0
 # import matplotlib.pyplot as plt
 from sidebar import sidebar_financial, payment_info  # , set_image
 
@@ -17,9 +18,9 @@ from layout import (
 
 import sys
 
-import subprocess
+# import subprocess
 
-subprocess.run([f"{sys.executable}", "streamlit_app.py"])
+# subprocess.run([f"{sys.executable}", "streamlit_app.py"])
 
 # sys.path.append("/Users/moe/Documents/streamlit/")
 # import requests, os
