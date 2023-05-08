@@ -12,7 +12,11 @@ from layout import set_image, get_assumptions, coalesce, style_dataframe, waterf
 
 import sys
 
-sys.path.append("/Users/moe/Documents/streamlit/")
+import subprocess
+
+subprocess.run([f"{sys.executable}", "streamlit_app.py"])
+
+# sys.path.append("/Users/moe/Documents/streamlit/")
 # import requests, os
 
 # from copy import deepcopy
