@@ -148,3 +148,6 @@ widgetsnbextension==4.0.3
 wrapt==1.14.1
 xgboost==1.7.1
 zipp==3.11.0
+./sidebar.py
+./layout.py
+./logo_billie.png
