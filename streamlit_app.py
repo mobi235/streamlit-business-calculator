@@ -8,7 +8,12 @@ import numpy as np
 from sidebar import sidebar_financial, payment_info  # , set_image
 
 
-from layout import set_image, get_assumptions, coalesce, style_dataframe, waterfall_fig
+from layout import (
+    set_image,
+    get_assumptions,
+    coalesce,
+    style_dataframe,
+)  # , waterfall_fig
 
 import sys
 

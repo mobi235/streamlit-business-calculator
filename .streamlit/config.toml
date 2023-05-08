@@ -4,7 +4,7 @@ primaryColor = "#6600f5"
 backgroundColor = "#f0f0f0"
 secondaryBackgroundColor = "#d8d8d8"
 textColor = "#1e1e1e"
-font = "sans-serif"
+font = "sans serif"
 
 
 config.dataFrameSerialization = "arrow"

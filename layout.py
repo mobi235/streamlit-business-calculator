@@ -3,7 +3,8 @@ import streamlit as st
 from PIL import Image
 import pandas as pd
 import math
-import plotly.graph_objects as go
+
+# import plotly.graph_objects as go
 
 
 def coalesce(value, replacement):
@@ -117,105 +118,105 @@ def get_assumptions():
     return assumption_df
 
 
-def waterfall_fig(
-    is_high_level=False,
-    revenue=0,
-    revenue_chg_basket_size=0,
-    revenue_chg_acceptance_rate=0,
-    revenue_chg_conversion_rate=0,
-    revenue_w_billie=0,
-):
+# def waterfall_fig(
+#     is_high_level=False,
+#     revenue=0,
+#     revenue_chg_basket_size=0,
+#     revenue_chg_acceptance_rate=0,
+#     revenue_chg_conversion_rate=0,
+#     revenue_w_billie=0,
+# ):
 
-    if not is_high_level:
-        fig = go.Figure(
-            go.Waterfall(
-                name="20",
-                orientation="v",
-                x=[
-                    "Current B2B Online Revenue",
-                    "Uplift potential - Higher basket size",
-                    "Uplift potential - Higher Acceptance rates",
-                    "Uplift potential - Higher conversion rates",
-                    "Subtotal",
-                ],
-                textposition="outside",
-                measure=[
-                    "relative",
-                    "relative",
-                    "relative",
-                    "relative",
-                    "total",
-                ],
-                # text = ["NET_FEE_RATE", "NET_DEFAULT_RATE", "MONTHLY_MERCHANT_REFI_COST", "INSURANCE_COST", "SCORING_COST_MARGIN", "TRANSACTION_BANKING_COST"],
-                text=[
-                    revenue,
-                    revenue_chg_basket_size,
-                    revenue_chg_acceptance_rate,  # .round(4)*100,
-                    revenue_chg_conversion_rate,
-                    revenue_w_billie,
-                ],
-                y=[
-                    revenue,
-                    revenue_chg_basket_size,
-                    revenue_chg_acceptance_rate,  # .round(4)*100,
-                    revenue_chg_conversion_rate,
-                    revenue_w_billie,
-                ],
-                base=0.0,
-                decreasing={
-                    "marker": {"color": "Maroon"}
-                },  # , "line":{"color":"red", "width":2}
-                increasing={"marker": {"color": "Teal"}},
-                totals={"marker": {"color": "deep sky blue"}}
-                # connector = {"line":{"color":"rgb(63, 63, 63)"}},
-                # connector = {"visible": False,
-                #            "line":{"color":"rgb(63, 63, 63)"}
-                #            },
-            )
-        )
+#     if not is_high_level:
+#         fig = go.Figure(
+#             go.Waterfall(
+#                 name="20",
+#                 orientation="v",
+#                 x=[
+#                     "Current B2B Online Revenue",
+#                     "Uplift potential - Higher basket size",
+#                     "Uplift potential - Higher Acceptance rates",
+#                     "Uplift potential - Higher conversion rates",
+#                     "Subtotal",
+#                 ],
+#                 textposition="outside",
+#                 measure=[
+#                     "relative",
+#                     "relative",
+#                     "relative",
+#                     "relative",
+#                     "total",
+#                 ],
+#                 # text = ["NET_FEE_RATE", "NET_DEFAULT_RATE", "MONTHLY_MERCHANT_REFI_COST", "INSURANCE_COST", "SCORING_COST_MARGIN", "TRANSACTION_BANKING_COST"],
+#                 text=[
+#                     revenue,
+#                     revenue_chg_basket_size,
+#                     revenue_chg_acceptance_rate,  # .round(4)*100,
+#                     revenue_chg_conversion_rate,
+#                     revenue_w_billie,
+#                 ],
+#                 y=[
+#                     revenue,
+#                     revenue_chg_basket_size,
+#                     revenue_chg_acceptance_rate,  # .round(4)*100,
+#                     revenue_chg_conversion_rate,
+#                     revenue_w_billie,
+#                 ],
+#                 base=0.0,
+#                 decreasing={
+#                     "marker": {"color": "Maroon"}
+#                 },  # , "line":{"color":"red", "width":2}
+#                 increasing={"marker": {"color": "Teal"}},
+#                 totals={"marker": {"color": "deep sky blue"}}
+#                 # connector = {"line":{"color":"rgb(63, 63, 63)"}},
+#                 # connector = {"visible": False,
+#                 #            "line":{"color":"rgb(63, 63, 63)"}
+#                 #            },
+#             )
+#         )
 
-        fig.update_layout(title="Billie Uplift Potential", showlegend=False)
-        return fig
-    else:
-        fig = go.Figure(
-            go.Waterfall(
-                name="20",
-                orientation="v",
-                x=[
-                    "Current B2B Online Revenue",
-                    "Uplift potential - Higher basket size",
-                    "Subtotal",
-                ],
-                textposition="outside",
-                measure=[
-                    "relative",
-                    "relative",
-                    "total",
-                ],
-                # text = ["NET_FEE_RATE", "NET_DEFAULT_RATE", "MONTHLY_MERCHANT_REFI_COST", "INSURANCE_COST", "SCORING_COST_MARGIN", "TRANSACTION_BANKING_COST"],
-                text=[
-                    revenue,
-                    revenue_chg_basket_size,
-                    revenue_w_billie,
-                ],
-                y=[
-                    revenue,
-                    revenue_chg_basket_size,
-                    revenue_w_billie,
-                ],
-                base=0.0,
-                decreasing={
-                    "marker": {"color": "Maroon"}
-                },  # , "line":{"color":"red", "width":2}
-                increasing={"marker": {"color": "Teal"}},
-                totals={"marker": {"color": "deep sky blue"}}
-                # connector = {"line":{"color":"rgb(63, 63, 63)"}},
-                # connector = {"visible": False,
-                #            "line":{"color":"rgb(63, 63, 63)"}
-                #            },
-            )
-        )
+#         fig.update_layout(title="Billie Uplift Potential", showlegend=False)
+#         return fig
+#     else:
+#         fig = go.Figure(
+#             go.Waterfall(
+#                 name="20",
+#                 orientation="v",
+#                 x=[
+#                     "Current B2B Online Revenue",
+#                     "Uplift potential - Higher basket size",
+#                     "Subtotal",
+#                 ],
+#                 textposition="outside",
+#                 measure=[
+#                     "relative",
+#                     "relative",
+#                     "total",
+#                 ],
+#                 # text = ["NET_FEE_RATE", "NET_DEFAULT_RATE", "MONTHLY_MERCHANT_REFI_COST", "INSURANCE_COST", "SCORING_COST_MARGIN", "TRANSACTION_BANKING_COST"],
+#                 text=[
+#                     revenue,
+#                     revenue_chg_basket_size,
+#                     revenue_w_billie,
+#                 ],
+#                 y=[
+#                     revenue,
+#                     revenue_chg_basket_size,
+#                     revenue_w_billie,
+#                 ],
+#                 base=0.0,
+#                 decreasing={
+#                     "marker": {"color": "Maroon"}
+#                 },  # , "line":{"color":"red", "width":2}
+#                 increasing={"marker": {"color": "Teal"}},
+#                 totals={"marker": {"color": "deep sky blue"}}
+#                 # connector = {"line":{"color":"rgb(63, 63, 63)"}},
+#                 # connector = {"visible": False,
+#                 #            "line":{"color":"rgb(63, 63, 63)"}
+#                 #            },
+#             )
+#         )
 
-        fig.update_layout(title="Billie Uplift Potential", showlegend=False)
-        return fig
-    # fig.layout.yaxis.tickformat = ",.2%"
+#         fig.update_layout(title="Billie Uplift Potential", showlegend=False)
+#         return fig
+#     # fig.layout.yaxis.tickformat = ",.2%"
