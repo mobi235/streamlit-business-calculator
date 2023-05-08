@@ -637,12 +637,12 @@ tab2.dataframe(payment_output_df)
 # tab2.write(credit_card)
 
 
-tab3.plotly_chart(
-    waterfall_fig(
-        revenue=revenue,
-        revenue_chg_basket_size=revenue_chg_basket_size,
-        revenue_chg_conversion_rate=revenue_chg_conversion_rate,
-        revenue_chg_acceptance_rate=revenue_chg_acceptance_rate,
-        revenue_w_billie=revenue_w_billie,
-    )
-)
+# tab3.plotly_chart(
+#     waterfall_fig(
+#         revenue=revenue,
+#         revenue_chg_basket_size=revenue_chg_basket_size,
+#         revenue_chg_conversion_rate=revenue_chg_conversion_rate,
+#         revenue_chg_acceptance_rate=revenue_chg_acceptance_rate,
+#         revenue_w_billie=revenue_w_billie,
+#     )
+# )
