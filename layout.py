@@ -220,3 +220,4 @@ def waterfall_fig(
         fig.update_layout(title="Billie Uplift Potential", showlegend=False)
         return fig
     # fig.layout.yaxis.tickformat = ",.2%"
+
