@@ -56,9 +56,9 @@ def style_dataframe(df):
 
 def set_image():
 
-    image = Image.open("logo_billie.png")
+    image = Image.open("billie_new_logo.png")
     width, height = image.size
-    new_size = (int(width / 10), int(height / 10))  # Resize to half the original size
+    new_size = (int(width / 5), int(height / 5))  # Resize to half the original size
     resized_image = image.resize(new_size)
 
     # Display the image with a custom height using HTML/CSS

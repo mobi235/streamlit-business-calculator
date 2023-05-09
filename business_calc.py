@@ -655,5 +655,7 @@ tab3.plotly_chart(
         revenue_chg_conversion_rate=revenue_chg_conversion_rate,
         revenue_chg_acceptance_rate=revenue_chg_acceptance_rate,
         revenue_w_billie=revenue_w_billie,
-    )
+    ),
+    theme="streamlit",
+    use_container_width=True,
 )
