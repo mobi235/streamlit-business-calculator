@@ -2,7 +2,41 @@ import streamlit as st
 import pandas as pd
 
 
-def sidebar_financial():
+def billie_pricing(high_level=False):
+    st.sidebar.markdown("### Billie pricing")
+    # -- Set time by GPS or event
+    # avg_basket = st.sidebar.slider("Average Acceptance Rate: (in %)", 0.0, 1.0, 0.05)
+    fixed_fee = st.sidebar.number_input("Fixed Fee: (in %)", value=1.69, step=0.01)
+    fixed_fee_formatted = "{:,.1%}".format(fixed_fee / 100)
+
+    # display the inputs
+    transaction_fee = st.sidebar.number_input(
+        "Transaction Fee: (in €)", value=0.5, step=0.1
+    )
+    transaction_fee_formatted = "{:,.2f}".format(transaction_fee)
+
+    # blended_fee = (transaction_fee / avg_basket) * 100 + fixed_fee
+    # blended_fee_formatted = "{:,.2%}".format(blended_fee / 100)
+
+    pricing_df = pd.DataFrame(
+        [
+            {
+                "Metric": "Fixed Fee:",
+                "value": fixed_fee_formatted,
+                "is_high_level": high_level,
+            },
+            {
+                "Metric": "Transaction Fee:",
+                "value": transaction_fee_formatted,
+                "is_high_level": high_level,
+            },
+            # {"Metric": "Blended Fee", "value": blended_fee_formatted},
+        ]
+    )
+    return pricing_df
+
+
+def sidebar_financial(high_level=False):
 
     st.sidebar.markdown("## Select Input Variables - Merchant")
     st.sidebar.markdown("### Key Financials")
@@ -26,54 +60,63 @@ def sidebar_financial():
     # display the float value entered by the user
     # st.write("You entered:", b2b_rev)
 
-    st.sidebar.markdown("### BNPL Details (if applicable)")
-    # -- Set time by GPS or event
-    avg_acceptance = st.sidebar.slider(
-        "Average Acceptance Rate: (in %)",
-        value=60.0,
-        min_value=0.0,
-        max_value=100.0,
-        step=1.0,
-    )
-    avg_acceptance_formatted = "{:,.1%}".format(avg_acceptance / 100)
+    # st.sidebar.markdown("### BNPL Details (if applicable)")
+    # # -- Set time by GPS or event
+    # avg_acceptance = st.sidebar.slider(
+    #     "Average Acceptance Rate: (in %)",
+    #     value=60.0,
+    #     min_value=0.0,
+    #     max_value=100.0,
+    #     step=1.0,
+    # )
+    # avg_acceptance_formatted = "{:,.1%}".format(avg_acceptance / 100)
 
     financial_df = pd.DataFrame(
         [
-            {"Metric": "B2B revenues p.a. Online:", "value": b2b_rev_formatted},
-            {"Metric": "Gross profit margin:", "value": gross_profit_formatted},
-            {"Metric": "Average Basket Size:", "value": avg_basket_formatted},
-            {"Metric": "Average Acceptance Rate:", "value": avg_acceptance_formatted},
+            {
+                "Metric": "B2B revenues p.a. Online:",
+                "value": b2b_rev_formatted,
+                "is_high_level": False,
+            },
+            {
+                "Metric": "Gross profit margin:",
+                "value": gross_profit_formatted,
+                "is_high_level": high_level,
+            },
+            {
+                "Metric": "Average Basket Size:",
+                "value": avg_basket_formatted,
+                "is_high_level": False,
+            },
+            # {"Metric": "Average Acceptance Rate:", "value": avg_acceptance_formatted},
         ]
     )
     financial_df = financial_df.reset_index(drop=True)
     ######  Billie pricing ########
-    st.sidebar.markdown("### Billie pricing")
-    # -- Set time by GPS or event
-    # avg_basket = st.sidebar.slider("Average Acceptance Rate: (in %)", 0.0, 1.0, 0.05)
-    fixed_fee = st.sidebar.number_input("Fixed Fee: (in %)", value=1.69, step=0.01)
-    fixed_fee_formatted = "{:,.1%}".format(fixed_fee / 100)
+    # st.sidebar.markdown("### Billie pricing")
+    # # -- Set time by GPS or event
+    # # avg_basket = st.sidebar.slider("Average Acceptance Rate: (in %)", 0.0, 1.0, 0.05)
+    # fixed_fee = st.sidebar.number_input("Fixed Fee: (in %)", value=1.69, step=0.01)
+    # fixed_fee_formatted = "{:,.1%}".format(fixed_fee / 100)
 
-    # display the inputs
-    transaction_fee = st.sidebar.number_input(
-        "Transaction Fee: (in €)", value=0.5, step=0.1
-    )
-    transaction_fee_formatted = "{:,.2f}".format(transaction_fee)
+    # # display the inputs
+    # transaction_fee = st.sidebar.number_input(
+    #     "Transaction Fee: (in €)", value=0.5, step=0.1
+    # )
+    # transaction_fee_formatted = "{:,.2f}".format(transaction_fee)
 
-    blended_fee = (transaction_fee / avg_basket) * 100 + fixed_fee
-    blended_fee_formatted = "{:,.2%}".format(blended_fee / 100)
+    # blended_fee = (transaction_fee / avg_basket) * 100 + fixed_fee
+    # blended_fee_formatted = "{:,.2%}".format(blended_fee / 100)
 
-    pricing_df = pd.DataFrame(
-        [
-            {"Metric": "Fixed Fee:", "value": fixed_fee_formatted},
-            {"Metric": "Transaction Fee:", "value": transaction_fee_formatted},
-            {"Metric": "Blended Fee", "value": blended_fee_formatted},
-        ]
-    )
+    # pricing_df = pd.DataFrame(
+    #     [
+    #         {"Metric": "Fixed Fee:", "value": fixed_fee_formatted},
+    #         {"Metric": "Transaction Fee:", "value": transaction_fee_formatted},
+    #         {"Metric": "Blended Fee", "value": blended_fee_formatted},
+    #     ]
+    # )
 
-    return (
-        financial_df,
-        pricing_df,
-    )  # st.dataframe(financial_df, use_container_width=True)
+    return financial_df  # st.dataframe(financial_df, use_container_width=True)
 
 
 def on_number_input_changed(new_value):

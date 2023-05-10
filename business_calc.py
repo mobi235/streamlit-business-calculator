@@ -9,7 +9,7 @@ from layout import coalesce, get_assumptions, set_image, waterfall_fig
 
 # plotly==5.11.0
 # import matplotlib.pyplot as plt
-from sidebar import payment_info, sidebar_financial  # , set_image
+from sidebar import payment_info, sidebar_financial, billie_pricing  # , set_image
 
 # import subprocess
 
@@ -33,62 +33,40 @@ with open("style.css") as css:
 
 set_image()
 
+granularity = st.radio(
+    "Choose impact granularity:",
+    (
+        "Gross Profit",
+        "Revenue",
+    ),
+)
+
+high_level_view = True if granularity == "Revenue" else False
+
+
 # Title the app
 st.title("Business Case Calculator")
 
 st.markdown(
     """
- * Use the menu at left to select data and set plot parameters
- * Your plots will appear below
+ * Use the menu at left to input Merchant's information
+ * Switch to Output Tab to check impact of Billie on Merchant's Revenue/Gross Profit
+ * Switch to Visuals Tab for visualisation
 """
 )
 
 tab1, tab2, tab3 = st.tabs(["Input", "Output", "Visuals"])
 
-financial, pricing = sidebar_financial()
+financial = sidebar_financial(high_level=high_level_view)
 
 payment = payment_info()
 
+
 assumption = get_assumptions()
 
-##---------------------------
-tab1.dataframe(financial)
-# tab1.markdown(
-#     style_dataframe(financial).to_html(
-#         table_uuid="table_1",
-#     ),
-#     unsafe_allow_html=True,
-# )
-# tab1.write("")
-##---------------------------
-
-# tab1.table(style_dataframe(payment))  # , use_container_width=True
-# tab1.markdown(
-#     style_dataframe(payment).to_html(table_uuid="table_1"), unsafe_allow_html=True
-# )
-# tab1.write(" ")
-tab1.dataframe(payment)
 
 ##---------------------------
 
-# tab1.table(style_dataframe(pricing))  # , use_container_width=True
-# tab1.markdown(
-#     style_dataframe(pricing).to_html(
-#         index=False, index_names=False, table_uuid="table_1"
-#     ),
-#     unsafe_allow_html=True,
-# )
-# tab1.write(" ")
-tab1.dataframe(pricing)
-
-##---------------------------
-
-# tab1.table(style_dataframe(assumption))  # , use_container_width=True
-# tab1.markdown(
-#     style_dataframe(assumption).to_html(table_uuid="table_1"), unsafe_allow_html=True
-# )
-# tab1.write(" ")
-tab1.dataframe(assumption)
 
 ## payment details
 inhouse = payment[payment["Current B2B online payment solutions"] == "Inhouse BNPL"][
@@ -151,6 +129,23 @@ has_bnpl = (
     inhouse_bnpl_bool or external_bnpl_bool
 )  # used to show acceptance rate uplift in df only when the merchant has a bnpl solution
 
+
+if has_bnpl:
+    st.sidebar.markdown("### BNPL Details (if applicable)")
+    # -- Set time by GPS or event
+    avg_acceptance = st.sidebar.slider(
+        "Average Acceptance Rate: (in %)",
+        value=60.0,
+        min_value=0.0,
+        max_value=100.0,
+        step=1.0,
+    )
+    avg_acceptance_formatted = "{:,.1%}".format(avg_acceptance / 100)
+    avg_acceptance_rate = float(avg_acceptance_formatted.strip("%")) / 100
+
+pricing = billie_pricing(high_level=high_level_view)
+
+
 ## financial details
 revenue = financial[financial["Metric"] == "B2B revenues p.a. Online:"]["value"].iloc[0]
 revenue = float(str(revenue).replace(",", ""))
@@ -160,18 +155,24 @@ avg_basket_size = financial[financial["Metric"] == "Average Basket Size:"][
     "value"
 ].iloc[0]
 avg_basket_size = float(avg_basket_size)
-avg_acceptance_rate = financial[financial["Metric"] == "Average Acceptance Rate:"][
-    "value"
-].iloc[0]
-avg_acceptance_rate = float(avg_acceptance_rate.strip("%")) / 100
+# avg_acceptance_rate = financial[financial["Metric"] == "Average Acceptance Rate:"][
+#     "value"
+# ].iloc[0]
+# avg_acceptance_rate = float(avg_acceptance_rate.strip("%")) / 100 # TODO revert to old logic here
+
 
 ## pricing details & Conversion
 fixed_fee = pricing[pricing["Metric"] == "Fixed Fee:"]["value"].iloc[0]
 fixed_fee = float(fixed_fee.strip("%")) / 100
 transaction_fee = pricing[pricing["Metric"] == "Transaction Fee:"]["value"].iloc[0]
 transaction_fee = float(transaction_fee)
-blended_fee = pricing[pricing["Metric"] == "Blended Fee"]["value"].iloc[0]
-blended_fee = float(blended_fee.strip("%")) / 100
+
+
+blended_fee = (transaction_fee / avg_basket_size) + fixed_fee
+# blended_fee_formatted = "{:,.3%}".format(blended_fee_calc / 100)
+
+# blended_fee = pricing[pricing["Metric"] == "Blended Fee"]["value"].iloc[0]
+# blended_fee = float(blended_fee_formatted.strip("%")) * 100
 
 ## assumption details
 adoption_rate = assumption[
@@ -263,6 +264,27 @@ revenue_abs_chg = (
 revenue_w_billie = revenue + revenue_abs_chg
 gross_profit_amnt_wo_billie = revenue * gross_profit
 ## gross_profit_amnt_w_billie ## TODO
+
+### PRINT OUT INPUT:
+
+new_raw = {
+    "Metric": "Blended Fee",
+    "value": blended_fee,
+    "is_high_level": high_level_view,
+}
+pricing = pricing.append(new_raw, ignore_index=True)
+tab1.dataframe(
+    financial[financial["is_high_level"] != True].drop(columns=["is_high_level"])
+)
+
+tab1.dataframe(payment)
+
+
+if len(pricing[pricing["is_high_level"] != True]) > 0:
+    tab1.dataframe(pricing.drop(columns=["is_high_level"]))
+
+tab1.dataframe(assumption)
+
 
 impact_output_df = pd.DataFrame(
     [
@@ -478,6 +500,7 @@ payment_output_df = pd.DataFrame(
             "Cost Amount w Billie": billie_cost_amnt,
             "Gross Profit w/o Billie": 0,  # todo
             "Gross Profit w Billie": billie_gross_profit_w_billie,  # todo
+            # "is_high_level": high_level_view,
         },
         {
             "Payment solution": "Inhouse BNPL",
@@ -573,8 +596,6 @@ payment_output_df = pd.DataFrame(
     ]
 )
 
-test_button = True
-
 
 gross_profit_abs_chg = total_gross_profit_w_billie - gross_profit_amnt_wo_billie
 gross_profit_rel_chg = gross_profit_abs_chg / gross_profit_amnt_wo_billie
@@ -596,6 +617,7 @@ revenue_output_df = pd.DataFrame(
             "With Billie": revenue_w_billie,
             "Abs. chg": revenue_abs_chg,
             "Rel. chg (%)": revenue_rel_chg,
+            "is_high_level": False,
         },
         {
             "Uplift Potential w. Billie": "Gross profits p.a.",
@@ -603,6 +625,7 @@ revenue_output_df = pd.DataFrame(
             "With Billie": total_gross_profit_w_billie,
             "Abs. chg": gross_profit_abs_chg,
             "Rel. chg (%)": gross_profit_rel_chg,
+            "is_high_level": high_level_view,
         },
     ]
 )
@@ -715,12 +738,28 @@ st.markdown(css, unsafe_allow_html=True)
 impact_filtered_df = impact_output_df[impact_output_df["viewable"] == True].drop(
     columns=["viewable"]
 )
+
+
 ####PAYMENT OUTPUT
-tab2.table(revenue_output_df)
+tab2.table(
+    revenue_output_df[revenue_output_df["is_high_level"] != True].drop(
+        columns=["is_high_level"]
+    )
+)
+
 tab2.markdown('<div class="custom-table">', unsafe_allow_html=True)
 tab2.table(impact_filtered_df)  #
 tab2.markdown("</div>", unsafe_allow_html=True)
-tab2.table(payment_output_df)
+
+
+if high_level_view:
+    tab2.table(
+        payment_output_df.drop(
+            columns=["Gross Profit w/o Billie", "Gross Profit w Billie"]
+        )
+    )
+else:
+    tab2.table(payment_output_df)
 
 # tab2.write(inhouse)
 # tab2.write(credit_card)
