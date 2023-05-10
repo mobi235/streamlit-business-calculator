@@ -26,7 +26,7 @@ from sidebar import payment_info, sidebar_financial  # , set_image
 # -- Set page config
 apptitle = "GW Quickview"  # 6600f5
 
-st.set_page_config(page_title=apptitle, page_icon=":eyeglasses:")
+# st.set_page_config(page_title=apptitle, page_icon=":eyeglasses:")
 
 with open("style.css") as css:
     st.markdown(f"<style>{css.read()}</style>", unsafe_allow_html=True)
@@ -139,6 +139,17 @@ other_cost = payment[payment["Current B2B online payment solutions"] == "Other"]
     "Assumed costs"
 ].iloc[0]
 other_cost = float(other_cost.strip("%")) / 100
+
+inhouse_bnpl_bool = payment[
+    payment["Current B2B online payment solutions"] == "Inhouse BNPL"
+]["Yes/ No"].iloc[0]
+external_bnpl_bool = payment[
+    payment["Current B2B online payment solutions"] == "External BNPL"
+]["Yes/ No"].iloc[0]
+
+has_bnpl = (
+    inhouse_bnpl_bool or external_bnpl_bool
+)  # used to show acceptance rate uplift in df only when the merchant has a bnpl solution
 
 ## financial details
 revenue = financial[financial["Metric"] == "B2B revenues p.a. Online:"]["value"].iloc[0]
@@ -262,6 +273,7 @@ impact_output_df = pd.DataFrame(
             "Abs. chg": delta_basket_size,
             "Rel. chg (%)": uplift_basket_size,
             "Change in Revneue": revenue_chg_basket_size,  # todo
+            "viewable": True,
         },
         {
             "Impact of Billie": "Acceptance rate increase (existing BNPL)",
@@ -270,6 +282,7 @@ impact_output_df = pd.DataFrame(
             "Abs. chg": acceptance_rate_delta,
             "Rel. chg (%)": acceptance_rate_rel_chg,
             "Change in Revneue": revenue_chg_acceptance_rate,
+            "viewable": has_bnpl,
         },
         {
             "Impact of Billie": "CR Increase (No existing BNPL)",
@@ -278,6 +291,7 @@ impact_output_df = pd.DataFrame(
             "Abs. chg": conversion_rate_absolute_chg,
             "Rel. chg (%)": conversion_rate_relative_chg,
             "Change in Revneue": revenue_chg_conversion_rate,
+            "viewable": not has_bnpl,
         },
     ]
 )
@@ -559,6 +573,9 @@ payment_output_df = pd.DataFrame(
     ]
 )
 
+test_button = True
+
+
 gross_profit_abs_chg = total_gross_profit_w_billie - gross_profit_amnt_wo_billie
 gross_profit_rel_chg = gross_profit_abs_chg / gross_profit_amnt_wo_billie
 revenue_rel_chg = revenue_abs_chg / revenue
@@ -632,10 +649,78 @@ met3.metric(
     delta_color="off",
 )
 
+
+css = """
+    <style>
+    table {
+        font-family: "Times New Roman", Times, serif;
+        border: 1px solid #FFFFFF;
+        width: 350px;
+        height: 200px;
+        text-align: center;
+        border-collapse: collapse;
+
+        }
+
+            td, th {
+                border: 1px solid #FFFFFF;
+                padding: 3px 2px;
+            }
+
+            tbody td {
+                font-size: 13px;
+            }
+
+            td:nth-child(even) {
+                background: #EBEBEB;
+            }
+
+            thead {
+                background: #6600d8;
+                border-bottom: 1px solid #ffffff;
+                color:#FFFFFF;
+                font-size:16px;
+            }
+
+            thead th {
+                font-size: 16px;
+                font-weight: bold;
+                color: #FFFFFF;
+                text-align: center;
+                border-left: 1px solid #FFFFFF;
+            }
+
+            thead th:first-child {
+                border-left: none;
+                color: #FFFFFF;
+            }
+
+            tfoot {
+                font-size: 12px;
+                font-weight: bold;
+                color: #1E1E1E;
+                background: #7F7F7F;
+            }
+
+            tfoot td {
+                font-size: 12px;
+            }
+    </style>
+"""
+
+# Set the default page config with the CSS style
+st.markdown(css, unsafe_allow_html=True)
+
+
+impact_filtered_df = impact_output_df[impact_output_df["viewable"] == True].drop(
+    columns=["viewable"]
+)
 ####PAYMENT OUTPUT
-tab2.dataframe(revenue_output_df)
-tab2.dataframe(impact_output_df)
-tab2.dataframe(payment_output_df)
+tab2.table(revenue_output_df)
+tab2.markdown('<div class="custom-table">', unsafe_allow_html=True)
+tab2.table(impact_filtered_df)  #
+tab2.markdown("</div>", unsafe_allow_html=True)
+tab2.table(payment_output_df)
 
 # tab2.write(inhouse)
 # tab2.write(credit_card)
@@ -647,6 +732,7 @@ tab3.plotly_chart(
         revenue_chg_conversion_rate=revenue_chg_conversion_rate,
         revenue_chg_acceptance_rate=revenue_chg_acceptance_rate,
         revenue_w_billie=revenue_w_billie,
+        has_bnpl=has_bnpl,
     ),
     theme="streamlit",
     use_container_width=True,

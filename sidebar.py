@@ -76,6 +76,15 @@ def sidebar_financial():
     )  # st.dataframe(financial_df, use_container_width=True)
 
 
+def on_number_input_changed(new_value):
+    if new_value > 0:
+        checkbox_value = True
+        checkbox.checkbox(checkbox_value)
+    else:
+        checkbox_value = False
+        checkbox.checkbox(checkbox_value)
+
+
 def payment_info():
 
     ########  Payment detail input ########
@@ -83,8 +92,11 @@ def payment_info():
     # -- Set time by GPS or event
     # avg_basket = st.sidebar.slider("Average Acceptance Rate: (in %)", 0.0, 1.0, 0.05)
     col1, col2, col3 = st.sidebar.columns(3)
-    bool_inhouse = col1.checkbox("Inhouse BNPL")
+
     percent_inhouse = col2.number_input("1-Share of Vol. (%):", value=0.0, step=1.0)
+    bool_inhouse = col1.checkbox(
+        "Inhouse BNPL", value=True if percent_inhouse > 0 else False
+    )
     percent_inhouse_formatted = "{:,.1%}".format(percent_inhouse / 100)
     cost_inhouse = col3.number_input("1-Assumed Costs:", value=0.0, step=1.0)
     cost_inhouse_formatted = "{:,.1%}".format(cost_inhouse / 100)
@@ -92,41 +104,52 @@ def payment_info():
     # st.write("Boolean input:", bool_input)
     # st.write("Percentage input:", percent_input, "%")
     ext, ext_share, ext_cost = st.sidebar.columns(3)
-    bool_ext = ext.checkbox("External BNPL")
+
     percent_ext = ext_share.number_input("2-Share of Vol. (%):", value=0.0, step=1.0)
+    bool_ext = ext.checkbox("External BNPL", value=True if percent_ext > 0 else False)
     percent_ext_formatted = "{:,.1%}".format(percent_ext / 100)
     cost_ext = ext_cost.number_input("2-Assumed Costs:", value=0.0, step=1.0)
     cost_ext_formatted = "{:,.1%}".format(cost_ext / 100)
 
     cred, cred_share, cred_cost = st.sidebar.columns(3)
-    bool_credit = cred.checkbox("Credit Card")
+
     percent_credit = cred_share.number_input(
         "3-Share of Vol. (%):", value=0.0, step=1.0
+    )
+    bool_credit = cred.checkbox(
+        "Credit Card", value=True if percent_credit > 0 else False
     )
     percent_credit_formatted = "{:,.1%}".format(percent_credit / 100)
     cost_credit = cred_cost.number_input("3-Assumed Costs:", value=0.0, step=1.0)
     cost_credit_formatted = "{:,.1%}".format(cost_credit / 100)
 
     deb, deb_share, deb_cost = st.sidebar.columns(3)
-    bool_debit = deb.checkbox("Direct Debit")
+
     percent_debit = deb_share.number_input("4-Share of Vol. (%):", value=50.0, step=1.0)
+    bool_debit = deb.checkbox(
+        "Direct Debit", value=True if percent_debit > 0 else False
+    )
     percent_debit_formatted = "{:,.1%}".format(percent_debit / 100)
     cost_debit = deb_cost.number_input("4-Assumed Costs:", value=0.2, step=1.0)
     cost_debit_formatted = "{:,.1%}".format(cost_debit / 100)
 
     pal, pal_share, pal_cost = st.sidebar.columns(3)
-    bool_paypal = pal.checkbox("PayPal")
+
     percent_paypal = pal_share.number_input(
         "5-Share of Vol. (%):", value=30.0, step=1.0
     )
+    bool_paypal = pal.checkbox("PayPal", value=True if percent_paypal > 0 else False)
     percent_paypal_formatted = "{:,.1%}".format(percent_paypal / 100)
     cost_paypal = pal_cost.number_input("5-Assumed Costs:", value=1.5, step=1.0)
     cost_paypal_formatted = "{:,.1%}".format(cost_paypal / 100)
 
     oher, other_share, other_cost = st.sidebar.columns(3)
-    bool_other = oher.checkbox("Other (please specify)")
+
     percent_other = other_share.number_input(
         "6-Share of Vol. (%):", value=20.0, step=1.0
+    )
+    bool_other = oher.checkbox(
+        "Other (please specify)", value=True if percent_other > 0 else False
     )
     percent_other_formatted = "{:,.1%}".format(percent_other / 100)
     cost_other = other_cost.number_input("6-Assumed Costs:", value=0.0, step=1.0)

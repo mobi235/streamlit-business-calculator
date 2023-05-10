@@ -125,6 +125,7 @@ def waterfall_fig(
     revenue_chg_acceptance_rate=0,
     revenue_chg_conversion_rate=0,
     revenue_w_billie=0,
+    has_bnpl=True,
 ):
 
     if not is_high_level:
@@ -136,22 +137,46 @@ def waterfall_fig(
                     "Current B2B Online Revenue",
                     "Uplift potential - Higher basket size",
                     "Uplift potential - Higher Acceptance rates",
+                    # "Uplift potential - Higher conversion rates",
+                    "Subtotal",
+                ]
+                if has_bnpl
+                else [
+                    "Current B2B Online Revenue",
+                    "Uplift potential - Higher basket size",
+                    # "Uplift potential - Higher Acceptance rates",
                     "Uplift potential - Higher conversion rates",
                     "Subtotal",
                 ],
-                textposition="outside",
+                textposition="inside",
                 measure=[
                     "relative",
                     "relative",
                     "relative",
-                    "relative",
+                    # "relative",
                     "total",
-                ],
+                ]
+                if has_bnpl
+                else [
+                    "relative",
+                    "relative",
+                    "relative",
+                    # "relative",
+                    "total",
+                ],  # TODO no need for if statement if that's the logic that Sales Team wants
                 # text = ["NET_FEE_RATE", "NET_DEFAULT_RATE", "MONTHLY_MERCHANT_REFI_COST", "INSURANCE_COST", "SCORING_COST_MARGIN", "TRANSACTION_BANKING_COST"],
                 text=[
                     revenue,
                     revenue_chg_basket_size,
                     revenue_chg_acceptance_rate,  # .round(4)*100,
+                    # revenue_chg_conversion_rate,
+                    revenue_w_billie,
+                ]
+                if has_bnpl
+                else [
+                    revenue,
+                    revenue_chg_basket_size,
+                    # revenue_chg_acceptance_rate,  # .round(4)*100,
                     revenue_chg_conversion_rate,
                     revenue_w_billie,
                 ],
@@ -159,6 +184,14 @@ def waterfall_fig(
                     revenue,
                     revenue_chg_basket_size,
                     revenue_chg_acceptance_rate,  # .round(4)*100,
+                    # revenue_chg_conversion_rate,
+                    revenue_w_billie,
+                ]
+                if has_bnpl
+                else [
+                    revenue,
+                    revenue_chg_basket_size,
+                    # revenue_chg_acceptance_rate,  # .round(4)*100,
                     revenue_chg_conversion_rate,
                     revenue_w_billie,
                 ],
@@ -175,7 +208,11 @@ def waterfall_fig(
             )
         )
 
-        fig.update_layout(title="Billie Uplift Potential", showlegend=False)
+        fig.update_layout(
+            title="Billie Uplift Potential",
+            showlegend=False,
+            margin=dict(l=30, r=30, t=30, b=30),
+        )
         return fig
     else:
         fig = go.Figure(
@@ -220,4 +257,3 @@ def waterfall_fig(
         fig.update_layout(title="Billie Uplift Potential", showlegend=False)
         return fig
     # fig.layout.yaxis.tickformat = ",.2%"
-
