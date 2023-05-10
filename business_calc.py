@@ -199,9 +199,16 @@ total_non_bnpl = credit_card + debit_card + paypal + other
 acceptance_rate_wo_bilie = 0 if total_bnpl == 0 else avg_acceptance_rate
 acceptance_rate_w_billie = acceptance_rate
 acceptance_rate_delta = acceptance_rate_w_billie - acceptance_rate_wo_bilie
+
 acceptance_rate_abs_chg = (
     np.nan if total_bnpl == 0 else acceptance_rate_w_billie - acceptance_rate_wo_bilie
 )
+acceptance_rate_rel_chg = (
+    np.nan
+    if (total_bnpl == 0 and acceptance_rate_wo_bilie == 0)
+    else acceptance_rate_abs_chg / acceptance_rate_wo_bilie
+)
+
 conversion_rate_wo_billie = np.nan if total_bnpl > 0 else 1 - cart_abandonment_rate
 conversion_rate_w_billie = (
     np.nan
@@ -261,7 +268,7 @@ impact_output_df = pd.DataFrame(
             "Without Billie": acceptance_rate_wo_bilie,
             "With Billie": acceptance_rate_w_billie,
             "Abs. chg": acceptance_rate_delta,
-            "Rel. chg (%)": acceptance_rate_delta,
+            "Rel. chg (%)": acceptance_rate_rel_chg,
             "Change in Revneue": revenue_chg_acceptance_rate,
         },
         {
@@ -644,3 +651,9 @@ tab3.plotly_chart(
     theme="streamlit",
     use_container_width=True,
 )
+
+
+# tab2.write(revenue_w_billie)
+# tab2.write(debit_card_amount_w_billie)
+# tab2.write(debit_card_share_w_billie)
+# tab2.write()
