@@ -143,6 +143,7 @@ if has_bnpl:
     avg_acceptance_formatted = "{:,.1%}".format(avg_acceptance / 100)
     avg_acceptance_rate = float(avg_acceptance_formatted.strip("%")) / 100
 
+
 pricing = billie_pricing(high_level=high_level_view)
 
 
@@ -154,7 +155,7 @@ gross_profit = float(gross_profit.strip("%")) / 100
 avg_basket_size = financial[financial["Metric"] == "Average Basket Size:"][
     "value"
 ].iloc[0]
-avg_basket_size = float(avg_basket_size)
+avg_basket_size = float(str(avg_basket_size).replace(",", ""))
 # avg_acceptance_rate = financial[financial["Metric"] == "Average Acceptance Rate:"][
 #     "value"
 # ].iloc[0]

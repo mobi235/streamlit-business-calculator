@@ -3,17 +3,23 @@ import pandas as pd
 
 
 def billie_pricing(high_level=False):
-    st.sidebar.markdown("### Billie pricing")
-    # -- Set time by GPS or event
-    # avg_basket = st.sidebar.slider("Average Acceptance Rate: (in %)", 0.0, 1.0, 0.05)
-    fixed_fee = st.sidebar.number_input("Fixed Fee: (in %)", value=1.69, step=0.01)
-    fixed_fee_formatted = "{:,.1%}".format(fixed_fee / 100)
+    if not high_level:
+        st.sidebar.markdown("### Billie pricing")
+        # -- Set time by GPS or event
+        # avg_basket = st.sidebar.slider("Average Acceptance Rate: (in %)", 0.0, 1.0, 0.05)
+        fixed_fee = st.sidebar.number_input("Fixed Fee: (in %)", value=1.69, step=0.01)
+        fixed_fee_formatted = "{:,.1%}".format(fixed_fee / 100)
 
-    # display the inputs
-    transaction_fee = st.sidebar.number_input(
-        "Transaction Fee: (in €)", value=0.5, step=0.1
-    )
-    transaction_fee_formatted = "{:,.2f}".format(transaction_fee)
+        # display the inputs
+        transaction_fee = st.sidebar.number_input(
+            "Transaction Fee: (in €)", value=0.5, step=0.1
+        )
+        transaction_fee_formatted = "{:,.2f}".format(transaction_fee)
+    else:
+        fixed_fee = 0.0169
+        fixed_fee_formatted = "{:,.1%}".format(fixed_fee / 100)
+        transaction_fee = 0.5
+        transaction_fee_formatted = "{:,.2f}".format(transaction_fee)
 
     # blended_fee = (transaction_fee / avg_basket) * 100 + fixed_fee
     # blended_fee_formatted = "{:,.2%}".format(blended_fee / 100)
@@ -46,9 +52,11 @@ def sidebar_financial(high_level=False):
     )
     b2b_rev_formatted = "{:,.2f}".format(b2b_rev)
 
-    gross_profit = st.sidebar.number_input(
-        "Gross profit margin: (in %)", value=20.0, step=5.0
-    )
+    if not high_level:
+        gross_profit = st.sidebar.number_input(
+            "Gross profit margin: (in %)", value=20.0, step=5.0
+        )
+    gross_profit = 20.0
     gross_profit_formatted = "{:,.1%}".format(gross_profit / 100)
     st.sidebar.markdown("### Order details - B2B Online")
     # -- Set time by GPS or event
@@ -57,19 +65,6 @@ def sidebar_financial(high_level=False):
         "Average Basket Size: (in €)", value=500, step=100
     )
     avg_basket_formatted = "{:,.2f}".format(avg_basket)
-    # display the float value entered by the user
-    # st.write("You entered:", b2b_rev)
-
-    # st.sidebar.markdown("### BNPL Details (if applicable)")
-    # # -- Set time by GPS or event
-    # avg_acceptance = st.sidebar.slider(
-    #     "Average Acceptance Rate: (in %)",
-    #     value=60.0,
-    #     min_value=0.0,
-    #     max_value=100.0,
-    #     step=1.0,
-    # )
-    # avg_acceptance_formatted = "{:,.1%}".format(avg_acceptance / 100)
 
     financial_df = pd.DataFrame(
         [
@@ -92,40 +87,8 @@ def sidebar_financial(high_level=False):
         ]
     )
     financial_df = financial_df.reset_index(drop=True)
-    ######  Billie pricing ########
-    # st.sidebar.markdown("### Billie pricing")
-    # # -- Set time by GPS or event
-    # # avg_basket = st.sidebar.slider("Average Acceptance Rate: (in %)", 0.0, 1.0, 0.05)
-    # fixed_fee = st.sidebar.number_input("Fixed Fee: (in %)", value=1.69, step=0.01)
-    # fixed_fee_formatted = "{:,.1%}".format(fixed_fee / 100)
-
-    # # display the inputs
-    # transaction_fee = st.sidebar.number_input(
-    #     "Transaction Fee: (in €)", value=0.5, step=0.1
-    # )
-    # transaction_fee_formatted = "{:,.2f}".format(transaction_fee)
-
-    # blended_fee = (transaction_fee / avg_basket) * 100 + fixed_fee
-    # blended_fee_formatted = "{:,.2%}".format(blended_fee / 100)
-
-    # pricing_df = pd.DataFrame(
-    #     [
-    #         {"Metric": "Fixed Fee:", "value": fixed_fee_formatted},
-    #         {"Metric": "Transaction Fee:", "value": transaction_fee_formatted},
-    #         {"Metric": "Blended Fee", "value": blended_fee_formatted},
-    #     ]
-    # )
 
     return financial_df  # st.dataframe(financial_df, use_container_width=True)
-
-
-def on_number_input_changed(new_value):
-    if new_value > 0:
-        checkbox_value = True
-        checkbox.checkbox(checkbox_value)
-    else:
-        checkbox_value = False
-        checkbox.checkbox(checkbox_value)
 
 
 def payment_info():
