@@ -33,15 +33,15 @@ with open("style.css") as css:
 
 set_image()
 
-granularity = st.radio(
+granularity = st.selectbox(
     "Choose impact granularity:",
     (
-        "Gross Profit",
-        "Revenue",
+        "Gross Profit Mode",
+        "Revenue Mode",
     ),
 )
 
-high_level_view = True if granularity == "Revenue" else False
+high_level_view = True if granularity == "Revenue Mode" else False
 
 
 # Title the app
@@ -646,32 +646,45 @@ met1.metric(
     value="{:,}".format(total_amount_wo_billie),
     delta_color="off",
 )
+# revenue_chg_basket_size
+# revenue_chg_acceptance_rate
+# revenue_chg_conversion_rate
+
 # cost
 met2.metric(
-    label="Total Cost. w Billie",
-    value="{:,}".format(round(total_cost_amnt_w_billie, 0)),
-    delta="{:,.1%}".format(cost_rel_chg),
-    delta_color="inverse",
-)
-
-met2.metric(
-    label="Total Cost. w/o Billie",
-    value="{:,}".format(total_cost_amnt_wo_billie),
+    label="Basket Size Increase",
+    value="{:,}".format(round(avg_basket_size_w_billie, 0)),
+    delta="{:,.1%}".format(uplift_basket_size),
     delta_color="off",
 )
+if has_bnpl:
+    met2.metric(
+        label="Rev Chg. Acceptance",
+        value="{:,}".format(revenue_chg_acceptance_rate),
+        delta="{:,.1%}".format(acceptance_rate_rel_chg),
+        delta_color="off",
+    )
+else:
+    met2.metric(
+        label="Rev Chg. Conversion",
+        value="{:,}".format(revenue_chg_conversion_rate),
+        delta="{:,.1%}".format(conversion_rate_relative_chg),
+        delta_color="off",
+    )
 # gross profit
-met3.metric(
-    label="Total GP w Billie",
-    value="{:,}".format(round(total_gross_profit_w_billie, 0)),  # "2,904,000",
-    delta="{:,.1%}".format(gross_profit_rel_chg),  #
-    # delta_color="inverse",
-)
+if not high_level_view:
+    met3.metric(
+        label="Total GP w Billie",
+        value="{:,}".format(round(total_gross_profit_w_billie, 0)),  # "2,904,000",
+        delta="{:,.1%}".format(gross_profit_rel_chg),  #
+        # delta_color="inverse",
+    )
 
-met3.metric(
-    label="Total GP w/o Billie",
-    value="{:,}".format(total_gross_profit_wo_billie),
-    delta_color="off",
-)
+    met3.metric(
+        label="Total GP w/o Billie",
+        value="{:,}".format(total_gross_profit_wo_billie),
+        delta_color="off",
+    )
 
 
 css = """
