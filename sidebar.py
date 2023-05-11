@@ -102,7 +102,9 @@ def payment_info():
     # avg_basket = st.sidebar.slider("Average Acceptance Rate: (in %)", 0.0, 1.0, 0.05)
     col1, col2, col3 = st.sidebar.columns(3)
 
-    percent_inhouse = col2.number_input("1-Share of Vol. (%):", value=0.0, step=1.0)
+    percent_inhouse = col2.number_input(
+        "1-Share of Vol. (%):", value=0.0, min_value=0.0, max_value=100.0, step=1.0
+    )
     bool_inhouse = col1.checkbox(
         "Inhouse BNPL", value=True if percent_inhouse > 0 else False
     )
@@ -114,7 +116,9 @@ def payment_info():
     # st.write("Percentage input:", percent_input, "%")
     ext, ext_share, ext_cost = st.sidebar.columns(3)
 
-    percent_ext = ext_share.number_input("2-Share of Vol. (%):", value=0.0, step=1.0)
+    percent_ext = ext_share.number_input(
+        "2-Share of Vol. (%):", value=0.0, min_value=0.0, max_value=100.0, step=1.0
+    )
     bool_ext = ext.checkbox("External BNPL", value=True if percent_ext > 0 else False)
     percent_ext_formatted = "{:,.1%}".format(percent_ext / 100)
     cost_ext = ext_cost.number_input("2-Assumed Costs:", value=0.0, step=1.0)
@@ -123,7 +127,7 @@ def payment_info():
     cred, cred_share, cred_cost = st.sidebar.columns(3)
 
     percent_credit = cred_share.number_input(
-        "3-Share of Vol. (%):", value=0.0, step=1.0
+        "3-Share of Vol. (%):", value=0.0, min_value=0.0, max_value=100.0, step=1.0
     )
     bool_credit = cred.checkbox(
         "Credit Card", value=True if percent_credit > 0 else False
@@ -134,7 +138,9 @@ def payment_info():
 
     deb, deb_share, deb_cost = st.sidebar.columns(3)
 
-    percent_debit = deb_share.number_input("4-Share of Vol. (%):", value=50.0, step=1.0)
+    percent_debit = deb_share.number_input(
+        "4-Share of Vol. (%):", value=50.0, min_value=0.0, max_value=100.0, step=1.0
+    )
     bool_debit = deb.checkbox(
         "Direct Debit", value=True if percent_debit > 0 else False
     )
@@ -149,13 +155,15 @@ def payment_info():
     )
     bool_paypal = pal.checkbox("PayPal", value=True if percent_paypal > 0 else False)
     percent_paypal_formatted = "{:,.1%}".format(percent_paypal / 100)
-    cost_paypal = pal_cost.number_input("5-Assumed Costs:", value=1.5, step=1.0)
+    cost_paypal = pal_cost.number_input(
+        "5-Assumed Costs:", value=1.5, min_value=0.0, max_value=100.0, step=1.0
+    )
     cost_paypal_formatted = "{:,.1%}".format(cost_paypal / 100)
 
     oher, other_share, other_cost = st.sidebar.columns(3)
 
     percent_other = other_share.number_input(
-        "6-Share of Vol. (%):", value=20.0, step=1.0
+        "6-Share of Vol. (%):", value=20.0, min_value=0.0, max_value=100.0, step=1.0
     )
     bool_other = oher.checkbox(
         "Other (please specify)", value=True if percent_other > 0 else False

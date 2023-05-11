@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 import streamlit as st
 
-from layout import coalesce, get_assumptions, set_image, waterfall_fig
+from layout import coalesce, get_assumptions, set_image, waterfall_fig, css
 
 # plotly==5.11.0
 # import matplotlib.pyplot as plt
@@ -28,8 +28,8 @@ apptitle = "GW Quickview"  # 6600f5
 
 # st.set_page_config(page_title=apptitle, page_icon=":eyeglasses:")
 
-with open("style.css") as css:
-    st.markdown(f"<style>{css.read()}</style>", unsafe_allow_html=True)
+# with open("style.css") as css:
+#     st.markdown(f"<style>{css.read()}</style>", unsafe_allow_html=True)
 
 set_image()
 
@@ -57,10 +57,12 @@ st.markdown(
 
 tab1, tab2, tab3 = st.tabs(["Input", "Output", "Visuals"])
 
+tab1.markdown(css, unsafe_allow_html=True)
+tab2.markdown(css, unsafe_allow_html=True)
+
 financial = sidebar_financial(high_level=high_level_view)
 
 payment = payment_info()
-
 
 assumption = get_assumptions()
 
@@ -274,17 +276,17 @@ new_raw = {
     "is_high_level": high_level_view,
 }
 pricing = pricing.append(new_raw, ignore_index=True)
-tab1.dataframe(
+tab1.table(
     financial[financial["is_high_level"] != True].drop(columns=["is_high_level"])
 )
 
-tab1.dataframe(payment)
+tab1.table(payment)
 
 
 if len(pricing[pricing["is_high_level"] != True]) > 0:
-    tab1.dataframe(pricing.drop(columns=["is_high_level"]))
+    tab1.table(pricing.drop(columns=["is_high_level"]))
 
-tab1.dataframe(assumption)
+tab1.table(assumption)
 
 
 impact_output_df = pd.DataFrame(
@@ -687,66 +689,7 @@ if not high_level_view:
     )
 
 
-css = """
-    <style>
-    table {
-        font-family: "Times New Roman", Times, serif;
-        border: 1px solid #FFFFFF;
-        width: 350px;
-        height: 200px;
-        text-align: center;
-        border-collapse: collapse;
-
-        }
-
-            td, th {
-                border: 1px solid #FFFFFF;
-                padding: 3px 2px;
-            }
-
-            tbody td {
-                font-size: 13px;
-            }
-
-            td:nth-child(even) {
-                background: #EBEBEB;
-            }
-
-            thead {
-                background: #6600d8;
-                border-bottom: 1px solid #ffffff;
-                color:#FFFFFF;
-                font-size:16px;
-            }
-
-            thead th {
-                font-size: 16px;
-                font-weight: bold;
-                color: #FFFFFF;
-                text-align: center;
-                border-left: 1px solid #FFFFFF;
-            }
-
-            thead th:first-child {
-                border-left: none;
-                color: #FFFFFF;
-            }
-
-            tfoot {
-                font-size: 12px;
-                font-weight: bold;
-                color: #1E1E1E;
-                background: #7F7F7F;
-            }
-
-            tfoot td {
-                font-size: 12px;
-            }
-    </style>
-"""
-
 # Set the default page config with the CSS style
-st.markdown(css, unsafe_allow_html=True)
 
 
 impact_filtered_df = impact_output_df[impact_output_df["viewable"] == True].drop(
@@ -761,9 +704,9 @@ tab2.table(
     )
 )
 
-tab2.markdown('<div class="custom-table">', unsafe_allow_html=True)
+# tab2.markdown('<div class="custom-table">', unsafe_allow_html=True)
 tab2.table(impact_filtered_df)  #
-tab2.markdown("</div>", unsafe_allow_html=True)
+# tab2.markdown("</div>", unsafe_allow_html=True)
 
 
 if high_level_view:

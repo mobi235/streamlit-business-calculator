@@ -257,3 +257,51 @@ def waterfall_fig(
         fig.update_layout(title="Billie Uplift Potential", showlegend=False)
         return fig
     # fig.layout.yaxis.tickformat = ",.2%"
+
+
+css = """
+    <style>
+            table {
+        font-family: Arial, Helvetica, sans-serif;
+        border: 1px solid #1E1E1E;
+        background-color: #D8D8D8;
+        width: 200%;
+        height: 100%;
+        text-align: center;
+        border-collapse: collapse;
+        }
+        table td, table th {
+        border: 1px solid #D8D8D8;
+        padding: 0px 2px;
+        }
+        table tbody td {
+        font-size: 13px;
+        color: #1E1E1E;
+        }
+        table thead {
+        background: #7F7F7F;
+        border-bottom: 2px solid #FFFFFF;
+        }
+        table thead th {
+        font-size: 15px;
+        font-weight: bold;
+        color: #FFFFFF;
+        text-align: center;
+        border-left: 2px solid #D8D8D8;
+        }
+        table thead th:first-child {
+        border-left: none;
+        }
+
+        table tfoot {
+        font-size: 14px;
+        font-weight: bold;
+        color: #1E1E1E;
+        background: #FEF1CC;
+        border-top: 2px solid #444444;
+        }
+        table tfoot td {
+        font-size: 14px;
+        }
+    </style>
+"""
