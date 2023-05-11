@@ -2,6 +2,41 @@ import streamlit as st
 import pandas as pd
 
 
+def check_completeness():
+    # function used for callbacks in number_input, that checks the validity of inputs,
+    # and make sure that the values of all payments sum up to 100%
+
+    tot_sum = 0
+    for v in st.session_state.values():
+        tot_sum = tot_sum + v
+
+    if tot_sum > 100:
+        st.session_state.other -= tot_sum - 100
+        if st.session_state.other < 0:
+            st.warning("All payment methods must add up to 100%.")
+            st.session_state.other = 0
+            # st.stop()
+            # st.success('Thank you for inputting a name.')
+    elif tot_sum < 100:
+        st.session_state.other += 100 - tot_sum
+        if st.session_state.other > 100:
+            st.warning("All payment methods must add up to 100%")
+            st.session_state.other = 100
+    else:
+        pass
+
+
+def check_other():
+    tot_sum = 0
+    for v in st.session_state.values():
+        tot_sum = tot_sum + v
+
+    if tot_sum > 100:
+        st.warning("All payment methods must add up to 100%.")
+    elif tot_sum < 100:
+        st.warning("All payment methods must add up to 100%.")
+
+
 def billie_pricing(high_level=False):
     if not high_level:
         st.sidebar.markdown("### Billie pricing")
@@ -103,7 +138,13 @@ def payment_info(high_level=False):
     col1, col2, col3 = st.sidebar.columns(3)
 
     percent_inhouse = col2.number_input(
-        "1-Share of Vol. (%):", value=0.0, min_value=0.0, max_value=100.0, step=1.0
+        "1-Share of Vol. (%):",
+        value=0.0,
+        min_value=0.0,
+        max_value=100.0,
+        step=1.0,
+        on_change=check_completeness,
+        key="inhouse",
     )
     bool_inhouse = col1.checkbox(
         "Inhouse BNPL", value=True if percent_inhouse > 0 else False
@@ -120,7 +161,13 @@ def payment_info(high_level=False):
     ext, ext_share, ext_cost = st.sidebar.columns(3)
 
     percent_ext = ext_share.number_input(
-        "2-Share of Vol. (%):", value=0.0, min_value=0.0, max_value=100.0, step=1.0
+        "2-Share of Vol. (%):",
+        value=0.0,
+        min_value=0.0,
+        max_value=100.0,
+        step=1.0,
+        on_change=check_completeness,
+        key="external",
     )
     bool_ext = ext.checkbox("External BNPL", value=True if percent_ext > 0 else False)
     percent_ext_formatted = "{:,.1%}".format(percent_ext / 100)
@@ -134,7 +181,13 @@ def payment_info(high_level=False):
     cred, cred_share, cred_cost = st.sidebar.columns(3)
 
     percent_credit = cred_share.number_input(
-        "3-Share of Vol. (%):", value=0.0, min_value=0.0, max_value=100.0, step=1.0
+        "3-Share of Vol. (%):",
+        value=0.0,
+        min_value=0.0,
+        max_value=100.0,
+        step=1.0,
+        on_change=check_completeness,
+        key="credit",
     )
     bool_credit = cred.checkbox(
         "Credit Card", value=True if percent_credit > 0 else False
@@ -150,7 +203,13 @@ def payment_info(high_level=False):
     deb, deb_share, deb_cost = st.sidebar.columns(3)
 
     percent_debit = deb_share.number_input(
-        "4-Share of Vol. (%):", value=50.0, min_value=0.0, max_value=100.0, step=1.0
+        "4-Share of Vol. (%):",
+        value=50.0,
+        min_value=0.0,
+        max_value=100.0,
+        step=1.0,
+        on_change=check_completeness,
+        key="debit",
     )
     bool_debit = deb.checkbox(
         "Direct Debit", value=True if percent_debit > 0 else False
@@ -166,7 +225,13 @@ def payment_info(high_level=False):
     pal, pal_share, pal_cost = st.sidebar.columns(3)
 
     percent_paypal = pal_share.number_input(
-        "5-Share of Vol. (%):", value=30.0, step=1.0
+        "5-Share of Vol. (%):",
+        value=30.0,
+        step=1.0,
+        min_value=0.0,
+        max_value=100.0,
+        on_change=check_completeness,
+        key="paypal",
     )
     bool_paypal = pal.checkbox("PayPal", value=True if percent_paypal > 0 else False)
     percent_paypal_formatted = "{:,.1%}".format(percent_paypal / 100)
@@ -182,7 +247,13 @@ def payment_info(high_level=False):
     oher, other_share, other_cost = st.sidebar.columns(3)
 
     percent_other = other_share.number_input(
-        "6-Share of Vol. (%):", value=20.0, min_value=0.0, max_value=100.0, step=1.0
+        "6-Share of Vol. (%):",
+        value=20.0,
+        min_value=0.0,
+        max_value=100.0,
+        step=1.0,
+        on_change=check_other,
+        key="other",
     )
     bool_other = oher.checkbox(
         "Other (please specify)", value=True if percent_other > 0 else False
