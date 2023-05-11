@@ -270,6 +270,12 @@ css = """
         text-align: center;
         border-collapse: collapse;
         }
+        thead tr th:first-child {
+            display:none
+            }
+            tbody th {
+                display:none
+                }
         table td, table th {
         border: 1px solid #D8D8D8;
         padding: 0px 2px;
@@ -279,7 +285,7 @@ css = """
         color: #1E1E1E;
         }
         table thead {
-        background: #7F7F7F;
+        background: #6600fd;
         border-bottom: 2px solid #FFFFFF;
         }
         table thead th {
