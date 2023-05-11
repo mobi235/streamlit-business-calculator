@@ -73,7 +73,7 @@ tab2.markdown(css, unsafe_allow_html=True)
 
 financial = sidebar_financial(high_level=high_level_view)
 
-payment = payment_info()
+payment = payment_info(high_level=high_level_view)
 
 assumption = get_assumptions()
 
@@ -745,7 +745,14 @@ tab2.table(impact_filtered_df)  #
 if high_level_view:
     tab2.table(
         payment_output_df.drop(
-            columns=["Gross Profit w/o Billie", "Gross Profit w Billie"]
+            columns=[
+                "Cost Share w/o Billie",
+                "Cost Share w Billie",
+                "Cost Amount w/o Billie",
+                "Cost Amount w Billie",
+                "Gross Profit w/o Billie",
+                "Gross Profit w Billie",
+            ]
         )
     )
 else:
