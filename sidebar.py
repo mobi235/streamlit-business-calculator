@@ -1,14 +1,19 @@
 import streamlit as st
 import pandas as pd
 
+EXCLUDED_KEYS = {
+    "inhouse_bool",
+    "external_bool",
+}
+
 
 def check_completeness():
     # function used for callbacks in number_input, that checks the validity of inputs,
     # and make sure that the values of all payments sum up to 100%
-
     tot_sum = 0
-    for v in st.session_state.values():
-        tot_sum = tot_sum + v
+    for k, v in st.session_state.items():
+        if k not in EXCLUDED_KEYS:
+            tot_sum = tot_sum + v
 
     if tot_sum > 100:
         st.session_state.other -= tot_sum - 100
@@ -27,14 +32,54 @@ def check_completeness():
 
 
 def check_other():
+    # function used for callbacks in number_input, that checks the validity of inputs,
+    # and make sure that the values of all payments sum up to 100%
+    # used in combination with check_completeness for others
     tot_sum = 0
-    for v in st.session_state.values():
-        tot_sum = tot_sum + v
+    for k, v in st.session_state.items():
+        if k not in EXCLUDED_KEYS:
+            tot_sum = tot_sum + v
 
     if tot_sum > 100:
         st.warning("All payment methods must add up to 100%.")
     elif tot_sum < 100:
         st.warning("All payment methods must add up to 100%.")
+
+
+def inhouse_callback():
+    # makes sure that whennever the inhouse BNPL is checked, the value should be at least 1
+    if st.session_state.inhouse == 0.0:
+        st.session_state.inhouse += 1.0
+        tot_sum = 0
+        for k, v in st.session_state.items():
+            if k not in EXCLUDED_KEYS:
+                tot_sum = tot_sum + v
+        if tot_sum > 100:
+            st.session_state.other -= tot_sum - 100
+        if st.session_state.other < 0:
+            st.warning("All payment methods must add up to 100%.")
+            st.session_state.other = 0
+    elif st.session_state.inhouse > 0.0:
+        st.session_state.inhouse -= 1.0
+        st.session_state.other += 1
+
+
+def external_callback():
+    # makes sure that whennever the external BNPL is checked, the value should be at least 1
+    if st.session_state.external == 0.0:
+        st.session_state.external += 1.0
+        tot_sum = 0
+        for k, v in st.session_state.items():
+            if k not in EXCLUDED_KEYS:
+                tot_sum = tot_sum + v
+        if tot_sum > 100:
+            st.session_state.other -= tot_sum - 100
+        if st.session_state.other < 0:
+            st.warning("All payment methods must add up to 100%.")
+            st.session_state.other = 0
+    elif st.session_state.external > 0.0:
+        st.session_state.external -= 1.0
+        st.session_state.other += 1
 
 
 def billie_pricing(high_level=False):
@@ -147,7 +192,10 @@ def payment_info(high_level=False):
         key="inhouse",
     )
     bool_inhouse = col1.checkbox(
-        "Inhouse BNPL", value=True if percent_inhouse > 0 else False
+        "Inhouse BNPL",
+        value=True if percent_inhouse > 0 else False,
+        on_change=inhouse_callback,
+        key="inhouse_bool",
     )
     percent_inhouse_formatted = "{:,.1%}".format(percent_inhouse / 100)
     if not high_level:
@@ -169,7 +217,12 @@ def payment_info(high_level=False):
         on_change=check_completeness,
         key="external",
     )
-    bool_ext = ext.checkbox("External BNPL", value=True if percent_ext > 0 else False)
+    bool_ext = ext.checkbox(
+        "External BNPL",
+        value=True if percent_ext > 0 else False,
+        on_change=external_callback,
+        key="external_bool",
+    )
     percent_ext_formatted = "{:,.1%}".format(percent_ext / 100)
     if not high_level:
         cost_ext = ext_cost.number_input("2-Assumed Costs:", value=0.0, step=1.0)
