@@ -59,9 +59,13 @@ def inhouse_callback():
         if st.session_state.other < 0:
             st.warning("All payment methods must add up to 100%.")
             st.session_state.other = 0
-    elif st.session_state.inhouse > 0.0:
+    elif st.session_state.inhouse == 1.0:
         st.session_state.inhouse -= 1.0
         st.session_state.other += 1
+    elif st.session_state.inhouse > 1.0:
+
+        st.session_state.other += st.session_state.inhouse
+        st.session_state.inhouse = 0
 
 
 def external_callback():
@@ -77,9 +81,13 @@ def external_callback():
         if st.session_state.other < 0:
             st.warning("All payment methods must add up to 100%.")
             st.session_state.other = 0
-    elif st.session_state.external > 0.0:
+    elif st.session_state.inhouse == 1.0:
         st.session_state.external -= 1.0
         st.session_state.other += 1
+    elif st.session_state.external > 1.0:
+
+        st.session_state.other += st.session_state.external
+        st.session_state.external = 0
 
 
 def billie_pricing(high_level=False):
