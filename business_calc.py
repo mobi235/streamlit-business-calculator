@@ -66,7 +66,7 @@ st.markdown(
 """
 )
 
-tab1, tab2, tab3 = st.tabs(["Input", "Output", "Visuals"])
+tab1, tab2, tab3 = st.tabs(["Merchant's Input", "Bille's Impact", "Visuals"])
 
 tab1.markdown(css, unsafe_allow_html=True)
 tab2.markdown(css, unsafe_allow_html=True)
