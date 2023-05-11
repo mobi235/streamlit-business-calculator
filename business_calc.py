@@ -161,12 +161,12 @@ pricing = billie_pricing(high_level=high_level_view)
 
 
 ## financial details
-revenue = financial[financial["Metric"] == "B2B revenues p.a. Online:"]["value"].iloc[0]
+revenue = financial[financial["Metric"] == "B2B revenues p.a. Online:"]["Value"].iloc[0]
 revenue = float(str(revenue).replace(",", ""))
-gross_profit = financial[financial["Metric"] == "Gross profit margin:"]["value"].iloc[0]
+gross_profit = financial[financial["Metric"] == "Gross profit margin:"]["Value"].iloc[0]
 gross_profit = float(gross_profit.strip("%")) / 100
 avg_basket_size = financial[financial["Metric"] == "Average Basket Size:"][
-    "value"
+    "Value"
 ].iloc[0]
 avg_basket_size = float(str(avg_basket_size).replace(",", ""))
 # avg_acceptance_rate = financial[financial["Metric"] == "Average Acceptance Rate:"][
@@ -176,9 +176,9 @@ avg_basket_size = float(str(avg_basket_size).replace(",", ""))
 
 
 ## pricing details & Conversion
-fixed_fee = pricing[pricing["Metric"] == "Fixed Fee:"]["value"].iloc[0]
+fixed_fee = pricing[pricing["Metric"] == "Fixed Fee:"]["Value"].iloc[0]
 fixed_fee = float(fixed_fee.strip("%")) / 100
-transaction_fee = pricing[pricing["Metric"] == "Transaction Fee:"]["value"].iloc[0]
+transaction_fee = pricing[pricing["Metric"] == "Transaction Fee:"]["Value"].iloc[0]
 transaction_fee = float(transaction_fee)
 
 
@@ -191,27 +191,27 @@ blended_fee = (transaction_fee / avg_basket_size) + fixed_fee
 ## assumption details
 adoption_rate = assumption[
     assumption["Assumptions"] == "% Billie of total B2B online payment solutions"
-]["value"].iloc[0]
+]["Value"].iloc[0]
 adoption_rate = float(adoption_rate.strip("%")) / 100
 acceptance_rate = assumption[assumption["Assumptions"] == "Billie acceptance rates:"][
-    "value"
+    "Value"
 ].iloc[0]
 acceptance_rate = float(acceptance_rate.strip("%")) / 100
 buyer_not_accepted_bnpl = assumption[
     assumption["Assumptions"] == "Buyers not accepted for BNPL:"
-]["value"].iloc[0]
+]["Value"].iloc[0]
 buyer_not_accepted_bnpl = float(buyer_not_accepted_bnpl.strip("%")) / 100
 cart_abandonment_rate = assumption[
     assumption["Assumptions"] == "Cart abandonment rate:"
-]["value"].iloc[0]
+]["Value"].iloc[0]
 cart_abandonment_rate = float(cart_abandonment_rate.strip("%")) / 100
 uplift_basket_size = assumption[
     assumption["Assumptions"] == "Increase in average basket size:"
-]["value"].iloc[0]
+]["Value"].iloc[0]
 uplift_basket_size = float(uplift_basket_size.strip("%")) / 100
 uplift_conversion_rate = assumption[
     assumption["Assumptions"] == "Increase in conversion rate:"
-]["value"].iloc[0]
+]["Value"].iloc[0]
 uplift_conversion_rate = float(uplift_conversion_rate.strip("%")) / 100
 
 ### impoact of Billie on KPIs
@@ -283,7 +283,7 @@ gross_profit_amnt_wo_billie = revenue * gross_profit
 
 new_raw = {
     "Metric": "Blended Fee",
-    "value": blended_fee,
+    "Value": "{:,.2%}".format(blended_fee),
     "is_high_level": high_level_view,
 }
 pricing = pricing.append(new_raw, ignore_index=True)
@@ -304,33 +304,34 @@ impact_output_df = pd.DataFrame(
     [
         {
             "Impact of Billie": "Higher average basket size",
-            "Without Billie": avg_basket_size,
-            "With Billie": avg_basket_size_w_billie,
-            "Abs. chg": delta_basket_size,
-            "Rel. chg (%)": uplift_basket_size,
-            "Change in Revneue": revenue_chg_basket_size,  # todo
+            "Without Billie": "{:,.0f}".format(avg_basket_size),
+            "With Billie": "{:,.0f}".format(avg_basket_size_w_billie),
+            "Abs. chg": "{:,.0f}".format(delta_basket_size),
+            "Rel. chg (%)": "{:,.2%}".format(uplift_basket_size),
+            "Change in Revneue": "{:,.0f}".format(revenue_chg_basket_size),  # todo
             "viewable": True,
         },
         {
             "Impact of Billie": "Acceptance rate increase (existing BNPL)",
-            "Without Billie": acceptance_rate_wo_bilie,
-            "With Billie": acceptance_rate_w_billie,
-            "Abs. chg": acceptance_rate_delta,
-            "Rel. chg (%)": acceptance_rate_rel_chg,
-            "Change in Revneue": revenue_chg_acceptance_rate,
+            "Without Billie": "{:,.2%}".format(acceptance_rate_wo_bilie),
+            "With Billie": "{:,.2%}".format(acceptance_rate_w_billie),
+            "Abs. chg": "{:,.2%}".format(acceptance_rate_delta),
+            "Rel. chg (%)": "{:,.2%}".format(acceptance_rate_rel_chg),
+            "Change in Revneue": "{:,.0f}".format(revenue_chg_acceptance_rate),
             "viewable": has_bnpl,
         },
         {
             "Impact of Billie": "CR Increase (No existing BNPL)",
-            "Without Billie": conversion_rate_wo_billie,
-            "With Billie": conversion_rate_w_billie,
-            "Abs. chg": conversion_rate_absolute_chg,
-            "Rel. chg (%)": conversion_rate_relative_chg,
-            "Change in Revneue": revenue_chg_conversion_rate,
+            "Without Billie": "{:,.2%}".format(conversion_rate_wo_billie),
+            "With Billie": "{:,.2%}".format(conversion_rate_w_billie),
+            "Abs. chg": "{:,.2%}".format(conversion_rate_absolute_chg),
+            "Rel. chg (%)": "{:,.2%}".format(conversion_rate_relative_chg),
+            "Change in Revneue": "{:,.0f}".format(revenue_chg_conversion_rate),
             "viewable": not has_bnpl,
         },
     ]
 )
+
 
 inhouse_amount_wo_billie = inhouse * revenue
 external_amount_wo_billie = external * revenue
@@ -500,112 +501,131 @@ total_gross_profit_w_billie = (
     + other_gross_profit_w_billie
 )
 
+
+# "{:,.2%}".format(
+# "{:,.0f}".format(
 payment_output_df = pd.DataFrame(
     [
         {
             "Payment solution": "Billie",
-            "Vol. Share w/o Billie": 0,
-            "Vol. Share w Billie": billie_share,
-            "Vol. Amount w/o Billie": 0,
-            "Vol. Amount w Billie": billie_amount,
-            "Cost Share w/o Billie": 0,
-            "Cost Share w Billie": cost_billie,
-            "Cost Amount w/o Billie": 0,
-            "Cost Amount w Billie": billie_cost_amnt,
-            "Gross Profit w/o Billie": 0,  # todo
-            "Gross Profit w Billie": billie_gross_profit_w_billie,  # todo
+            "Vol. Share w/o Billie": "{:,.0%}".format(0.0),
+            "Vol. Share w Billie": "{:,.0%}".format(billie_share),
+            "Vol. Amount w/o Billie": "{:,.0f}".format(0),
+            "Vol. Amount w Billie": "{:,.0f}".format(billie_amount),
+            "Cost Share w/o Billie": "{:,.2%}".format(0),
+            "Cost Share w Billie": "{:,.2%}".format(cost_billie),
+            "Cost Amount w/o Billie": "{:,.0f}".format(0),
+            "Cost Amount w Billie": "{:,.0f}".format(billie_cost_amnt),
+            "Gross Profit w/o Billie": "{:,.0f}".format(0),  # todo
+            "Gross Profit w Billie": "{:,.0f}".format(
+                billie_gross_profit_w_billie
+            ),  # todo
             # "is_high_level": high_level_view,
         },
         {
             "Payment solution": "Inhouse BNPL",
-            "Vol. Share w/o Billie": inhouse,
-            "Vol. Share w Billie": inhouse_share_w_billie,
-            "Vol. Amount w/o Billie": inhouse_amount_wo_billie,
-            "Vol. Amount w Billie": inhouse_amount_w_billie,
-            "Cost Share w/o Billie": inhouse_cost,
-            "Cost Share w Billie": inhouse_cost,
-            "Cost Amount w/o Billie": inhouse_cost_amnt_wo_billie,
-            "Cost Amount w Billie": inhouse_cost_amnt_w_billie,
-            "Gross Profit w/o Billie": inhouse_gross_profit_wo_billie,
-            "Gross Profit w Billie": inhouse_gross_profit_w_billie,  # todo
+            "Vol. Share w/o Billie": "{:,.0%}".format(inhouse),
+            "Vol. Share w Billie": "{:,.0%}".format(inhouse_share_w_billie),
+            "Vol. Amount w/o Billie": "{:,.0f}".format(inhouse_amount_wo_billie),
+            "Vol. Amount w Billie": "{:,.0f}".format(inhouse_amount_w_billie),
+            "Cost Share w/o Billie": "{:,.2%}".format(inhouse_cost),
+            "Cost Share w Billie": "{:,.2%}".format(inhouse_cost),
+            "Cost Amount w/o Billie": "{:,.0f}".format(inhouse_cost_amnt_wo_billie),
+            "Cost Amount w Billie": "{:,.0f}".format(inhouse_cost_amnt_w_billie),
+            "Gross Profit w/o Billie": "{:,.0f}".format(inhouse_gross_profit_wo_billie),
+            "Gross Profit w Billie": "{:,.0f}".format(
+                inhouse_gross_profit_w_billie
+            ),  # todo
         },
         {
             "Payment solution": "External BNPL",
-            "Vol. Share w/o Billie": external,
-            "Vol. Share w Billie": external_share_w_billie,
-            "Vol. Amount w/o Billie": external_amount_wo_billie,
-            "Vol. Amount w Billie": external_amount_w_billie,
-            "Cost Share w/o Billie": external_cost,
-            "Cost Share w Billie": external_cost,
-            "Cost Amount w/o Billie": external_cost_amnt_wo_billie,
-            "Cost Amount w Billie": external_cost_amnt_w_billie,
-            "Gross Profit w/o Billie": external_gross_profit_wo_billie,
-            "Gross Profit w Billie": external_gross_profit_w_billie,  # todo
+            "Vol. Share w/o Billie": "{:,.0%}".format(external),
+            "Vol. Share w Billie": "{:,.0%}".format(external_share_w_billie),
+            "Vol. Amount w/o Billie": "{:,.0f}".format(external_amount_wo_billie),
+            "Vol. Amount w Billie": "{:,.0f}".format(external_amount_w_billie),
+            "Cost Share w/o Billie": "{:,.2%}".format(external_cost),
+            "Cost Share w Billie": "{:,.2%}".format(external_cost),
+            "Cost Amount w/o Billie": "{:,.0f}".format(external_cost_amnt_wo_billie),
+            "Cost Amount w Billie": "{:,.0f}".format(external_cost_amnt_w_billie),
+            "Gross Profit w/o Billie": "{:,.0f}".format(
+                external_gross_profit_wo_billie
+            ),
+            "Gross Profit w Billie": "{:,.0f}".format(
+                external_gross_profit_w_billie
+            ),  # todo
         },
         {
             "Payment solution": "Credit Card",
-            "Vol. Share w/o Billie": credit_card,
-            "Vol. Share w Billie": credit_card_share_w_bilie,
-            "Vol. Amount w/o Billie": credit_card_amount_wo_bilie,
-            "Vol. Amount w Billie": credit_card_amount_w_bilie,
-            "Cost Share w/o Billie": credit_cost,
-            "Cost Share w Billie": credit_cost,
-            "Cost Amount w/o Billie": credit_cost_amnt_wo_billie,
-            "Cost Amount w Billie": credit_cost_amnt_w_billie,
-            "Gross Profit w/o Billie": credit_gross_profit_wo_billie,
-            "Gross Profit w Billie": credit_gross_profit_w_billie,  # todo # todo
+            "Vol. Share w/o Billie": "{:,.0%}".format(credit_card),
+            "Vol. Share w Billie": "{:,.0%}".format(credit_card_share_w_bilie),
+            "Vol. Amount w/o Billie": "{:,.0f}".format(credit_card_amount_wo_bilie),
+            "Vol. Amount w Billie": "{:,.0f}".format(credit_card_amount_w_bilie),
+            "Cost Share w/o Billie": "{:,.2%}".format(credit_cost),
+            "Cost Share w Billie": "{:,.2%}".format(credit_cost),
+            "Cost Amount w/o Billie": "{:,.0f}".format(credit_cost_amnt_wo_billie),
+            "Cost Amount w Billie": "{:,.0f}".format(credit_cost_amnt_w_billie),
+            "Gross Profit w/o Billie": "{:,.0f}".format(credit_gross_profit_wo_billie),
+            "Gross Profit w Billie": "{:,.0f}".format(
+                credit_gross_profit_w_billie
+            ),  # todo # todo
         },
         {
             "Payment solution": "Debit Card",
-            "Vol. Share w/o Billie": debit_card,
-            "Vol. Share w Billie": debit_card_share_w_billie,
-            "Vol. Amount w/o Billie": debit_card_amount_wo_billie,
-            "Vol. Amount w Billie": debit_card_amount_w_billie,
-            "Cost Share w/o Billie": debit_cost,
-            "Cost Share w Billie": debit_cost,
-            "Cost Amount w/o Billie": debit_cost_amnt_wo_billie,
-            "Cost Amount w Billie": debit_cost_amnt_w_billie,
-            "Gross Profit w/o Billie": debit_gross_profit_wo_billie,
-            "Gross Profit w Billie": debit_gross_profit_w_billie,  # todo
+            "Vol. Share w/o Billie": "{:,.0%}".format(debit_card),
+            "Vol. Share w Billie": "{:,.0%}".format(debit_card_share_w_billie),
+            "Vol. Amount w/o Billie": "{:,.0f}".format(debit_card_amount_wo_billie),
+            "Vol. Amount w Billie": "{:,.0f}".format(debit_card_amount_w_billie),
+            "Cost Share w/o Billie": "{:,.2%}".format(debit_cost),
+            "Cost Share w Billie": "{:,.2%}".format(debit_cost),
+            "Cost Amount w/o Billie": "{:,.0f}".format(debit_cost_amnt_wo_billie),
+            "Cost Amount w Billie": "{:,.0f}".format(debit_cost_amnt_w_billie),
+            "Gross Profit w/o Billie": "{:,.0f}".format(debit_gross_profit_wo_billie),
+            "Gross Profit w Billie": "{:,.0f}".format(
+                debit_gross_profit_w_billie
+            ),  # todo
         },
         {
             "Payment solution": "Paypal",
-            "Vol. Share w/o Billie": paypal,
-            "Vol. Share w Billie": paypal_share_w_billie,
-            "Vol. Amount w/o Billie": paypal_amount_wo_billie,
-            "Vol. Amount w Billie": paypal_amount_w_billie,
-            "Cost Share w/o Billie": paypal_cost,
-            "Cost Share w Billie": paypal_cost,
-            "Cost Amount w/o Billie": paypal_cost_amnt_wo_billie,
-            "Cost Amount w Billie": paypal_cost_amnt_w_billie,
-            "Gross Profit w/o Billie": paypal_gross_profit_wo_billie,
-            "Gross Profit w Billie": paypal_gross_profit_w_billie,  # todo
+            "Vol. Share w/o Billie": "{:,.0%}".format(paypal),
+            "Vol. Share w Billie": "{:,.0%}".format(paypal_share_w_billie),
+            "Vol. Amount w/o Billie": "{:,.0f}".format(paypal_amount_wo_billie),
+            "Vol. Amount w Billie": "{:,.0f}".format(paypal_amount_w_billie),
+            "Cost Share w/o Billie": "{:,.2%}".format(paypal_cost),
+            "Cost Share w Billie": "{:,.2%}".format(paypal_cost),
+            "Cost Amount w/o Billie": "{:,.0f}".format(paypal_cost_amnt_wo_billie),
+            "Cost Amount w Billie": "{:,.0f}".format(paypal_cost_amnt_w_billie),
+            "Gross Profit w/o Billie": "{:,.0f}".format(paypal_gross_profit_wo_billie),
+            "Gross Profit w Billie": "{:,.0f}".format(
+                paypal_gross_profit_w_billie
+            ),  # todo
         },
         {
             "Payment solution": "Other",
-            "Vol. Share w/o Billie": other,
-            "Vol. Share w Billie": other_share_w_billie,
-            "Vol. Amount w/o Billie": other_amount_wo_billie,
-            "Vol. Amount w Billie": other_amount_w_billie,
-            "Cost Share w/o Billie": other_cost,
-            "Cost Share w Billie": other_cost,
-            "Cost Amount w/o Billie": other_cost_amnt_wo_billie,
-            "Cost Amount w Billie": other_cost_amnt_w_billie,
-            "Gross Profit w/o Billie": other_gross_profit_wo_billie,
-            "Gross Profit w Billie": other_gross_profit_w_billie,  # todo
+            "Vol. Share w/o Billie": "{:,.0%}".format(other),
+            "Vol. Share w Billie": "{:,.0%}".format(other_share_w_billie),
+            "Vol. Amount w/o Billie": "{:,.0f}".format(other_amount_wo_billie),
+            "Vol. Amount w Billie": "{:,.0f}".format(other_amount_w_billie),
+            "Cost Share w/o Billie": "{:,.2%}".format(other_cost),
+            "Cost Share w Billie": "{:,.2%}".format(other_cost),
+            "Cost Amount w/o Billie": "{:,.0f}".format(other_cost_amnt_wo_billie),
+            "Cost Amount w Billie": "{:,.0f}".format(other_cost_amnt_w_billie),
+            "Gross Profit w/o Billie": "{:,.0f}".format(other_gross_profit_wo_billie),
+            "Gross Profit w Billie": "{:,.0f}".format(
+                other_gross_profit_w_billie
+            ),  # todo
         },
         {
             "Payment solution": "Total",
-            "Vol. Share w/o Billie": 0,
+            "Vol. Share w/o Billie": "{:,.0%}".format(0),
             "Vol. Share w Billie": 0,
-            "Vol. Amount w/o Billie": 0,
-            "Vol. Amount w Billie": 0,
-            "Cost Share w/o Billie": 0,
-            "Cost Share w Billie": 0,
-            "Cost Amount w/o Billie": 0,
-            "Cost Amount w Billie": 0,
-            "Gross Profit w/o Billie": 0,
-            "Gross Profit w Billie": 0,
+            "Vol. Amount w/o Billie": "{:,.0f}".format(0),
+            "Vol. Amount w Billie": "{:,.0f}".format(0),
+            "Cost Share w/o Billie": "{:,.2%}".format(0),
+            "Cost Share w Billie": "{:,.2%}".format(0),
+            "Cost Amount w/o Billie": "{:,.0f}".format(0),
+            "Cost Amount w Billie": "{:,.0f}".format(0),
+            "Gross Profit w/o Billie": "{:,.0f}".format(0),
+            "Gross Profit w Billie": "{:,.0f}".format(0),
         },
     ]
 )
@@ -623,22 +643,24 @@ cost_rel_chg = (
     total_cost_amnt_w_billie - total_cost_amnt_wo_billie
 ) / total_cost_amnt_w_billie
 
+# "{:,.2%}".format(
+# "{:,.0f}".format(
 revenue_output_df = pd.DataFrame(
     [
         {
             "Uplift Potential w. Billie": "Revenues p.a.",
-            "Without Billie": revenue,
-            "With Billie": revenue_w_billie,
-            "Abs. chg": revenue_abs_chg,
-            "Rel. chg (%)": revenue_rel_chg,
+            "Without Billie": "{:,.0f}".format(revenue),
+            "With Billie": "{:,.0f}".format(revenue_w_billie),
+            "Abs. chg": "{:,.0f}".format(revenue_abs_chg),
+            "Rel. chg (%)": "{:,.1%}".format(revenue_rel_chg),
             "is_high_level": False,
         },
         {
             "Uplift Potential w. Billie": "Gross profits p.a.",
-            "Without Billie": gross_profit_amnt_wo_billie,
-            "With Billie": total_gross_profit_w_billie,
-            "Abs. chg": gross_profit_abs_chg,
-            "Rel. chg (%)": gross_profit_rel_chg,
+            "Without Billie": "{:,.0f}".format(gross_profit_amnt_wo_billie),
+            "With Billie": "{:,.0f}".format(total_gross_profit_w_billie),
+            "Abs. chg": "{:,.0f}".format(gross_profit_abs_chg),
+            "Rel. chg (%)": "{:,.1%}".format(gross_profit_rel_chg),
             "is_high_level": high_level_view,
         },
     ]
@@ -649,14 +671,14 @@ met1, met2, met3 = tab2.columns(3)
 # vol
 met1.metric(
     label="Total Vol. w Billie",
-    value="{:,}".format(round(total_amount_w_billie, 0)),
+    value="{:,.0f}".format(round(total_amount_w_billie, 0)),
     delta="{:,.1%}".format(amount_rel_chg),  # f"20%",
     # delta_color="inverse",
 )
 
 met1.metric(
     label="Total Vol. w/o Billie",
-    value="{:,}".format(total_amount_wo_billie),
+    value="{:,.0f}".format(total_amount_wo_billie),
     delta_color="off",
 )
 # revenue_chg_basket_size
@@ -666,21 +688,21 @@ met1.metric(
 # cost
 met2.metric(
     label="Basket Size Increase",
-    value="{:,}".format(round(avg_basket_size_w_billie, 0)),
+    value="{:,.0f}".format(round(avg_basket_size_w_billie, 0)),
     delta="{:,.1%}".format(uplift_basket_size),
     delta_color="off",
 )
 if has_bnpl:
     met2.metric(
         label="Rev Chg. Acceptance",
-        value="{:,}".format(revenue_chg_acceptance_rate),
+        value="{:,.0f}".format(revenue_chg_acceptance_rate),
         delta="{:,.1%}".format(acceptance_rate_rel_chg),
         delta_color="off",
     )
 else:
     met2.metric(
         label="Rev Chg. Conversion",
-        value="{:,}".format(revenue_chg_conversion_rate),
+        value="{:,.0f}".format(revenue_chg_conversion_rate),
         delta="{:,.1%}".format(conversion_rate_relative_chg),
         delta_color="off",
     )
@@ -688,14 +710,14 @@ else:
 if not high_level_view:
     met3.metric(
         label="Total GP w Billie",
-        value="{:,}".format(round(total_gross_profit_w_billie, 0)),  # "2,904,000",
+        value="{:,.0f}".format(round(total_gross_profit_w_billie, 0)),  # "2,904,000",
         delta="{:,.1%}".format(gross_profit_rel_chg),  #
         # delta_color="inverse",
     )
 
     met3.metric(
         label="Total GP w/o Billie",
-        value="{:,}".format(total_gross_profit_wo_billie),
+        value="{:,.0f}".format(total_gross_profit_wo_billie),
         delta_color="off",
     )
 

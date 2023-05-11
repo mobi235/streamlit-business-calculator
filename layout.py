@@ -90,27 +90,27 @@ def get_assumptions():
         [
             {
                 "Assumptions": "% Billie of total B2B online payment solutions",
-                "value": adoption_rate_formatted,
+                "Value": adoption_rate_formatted,
             },
             {
                 "Assumptions": "Billie acceptance rates:",
-                "value": billie_acceptance_rate_formatted,
+                "Value": billie_acceptance_rate_formatted,
             },
             {
                 "Assumptions": "Buyers not accepted for BNPL:",
-                "value": buyers_not_accepted_for_bnpl_rate_formatted,
+                "Value": buyers_not_accepted_for_bnpl_rate_formatted,
             },
             {
                 "Assumptions": "Cart abandonment rate:",
-                "value": cart_abandon_rate_formatted,
+                "Value": cart_abandon_rate_formatted,
             },
             {
                 "Assumptions": "Increase in average basket size:",
-                "value": increase_basket_size_formatted,
+                "Value": increase_basket_size_formatted,
             },
             {
                 "Assumptions": "Increase in conversion rate:",
-                "value": increased_conversion_rate_formatted,
+                "Value": increased_conversion_rate_formatted,
             },
         ]
     )

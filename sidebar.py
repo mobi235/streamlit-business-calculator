@@ -28,12 +28,12 @@ def billie_pricing(high_level=False):
         [
             {
                 "Metric": "Fixed Fee:",
-                "value": fixed_fee_formatted,
+                "Value": fixed_fee_formatted,
                 "is_high_level": high_level,
             },
             {
                 "Metric": "Transaction Fee:",
-                "value": transaction_fee_formatted,
+                "Value": transaction_fee_formatted,
                 "is_high_level": high_level,
             },
             # {"Metric": "Blended Fee", "value": blended_fee_formatted},
@@ -73,17 +73,17 @@ def sidebar_financial(high_level=False):
         [
             {
                 "Metric": "B2B revenues p.a. Online:",
-                "value": b2b_rev_formatted,
+                "Value": b2b_rev_formatted,
                 "is_high_level": False,
             },
             {
                 "Metric": "Gross profit margin:",
-                "value": gross_profit_formatted,
+                "Value": gross_profit_formatted,
                 "is_high_level": high_level,
             },
             {
                 "Metric": "Average Basket Size:",
-                "value": avg_basket_formatted,
+                "Value": avg_basket_formatted,
                 "is_high_level": False,
             },
             # {"Metric": "Average Acceptance Rate:", "value": avg_acceptance_formatted},
