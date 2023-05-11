@@ -41,6 +41,17 @@ granularity = st.selectbox(
     ),
 )
 
+st.sidebar.markdown(
+    """
+       <style>
+       [data-testid="stSidebar"][aria-expanded="true"]{
+           min-width: 450px;
+           max-width: 550px;
+       }
+       """,
+    unsafe_allow_html=True,
+)
+
 high_level_view = True if granularity == "Revenue Mode" else False
 
 
