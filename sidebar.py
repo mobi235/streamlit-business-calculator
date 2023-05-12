@@ -147,7 +147,8 @@ def sidebar_financial(high_level=False):
         gross_profit = st.sidebar.number_input(
             "Gross profit margin: (in %)", value=20.0, step=5.0
         )
-    gross_profit = 20.0
+    else:
+        gross_profit = 20.0
     gross_profit_formatted = "{:,.1%}".format(gross_profit / 100)
     st.sidebar.markdown("### Order details - B2B Online")
     # -- Set time by GPS or event
