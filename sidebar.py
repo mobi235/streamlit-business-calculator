@@ -81,7 +81,7 @@ def external_callback():
         if st.session_state.other < 0:
             st.warning("All payment methods must add up to 100%.")
             st.session_state.other = 0
-    elif st.session_state.inhouse == 1.0:
+    elif st.session_state.external == 1.0:
         st.session_state.external -= 1.0
         st.session_state.other += 1
     elif st.session_state.external > 1.0:
