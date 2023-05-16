@@ -501,6 +501,55 @@ total_gross_profit_w_billie = (
     + other_gross_profit_w_billie
 )
 
+total_vol_share_wo_billie = (
+    inhouse + external + debit_card + credit_card + paypal + other
+)
+total_vol_amt_wo_billie = (
+    inhouse_amount_wo_billie
+    + external_amount_wo_billie
+    + debit_card_amount_wo_billie
+    + credit_card_amount_wo_bilie
+    + paypal_amount_wo_billie
+    + other_amount_wo_billie
+)
+total_cost_share_wo_billie = (
+    inhouse_cost + external_cost + debit_cost + credit_cost + paypal_cost + other_cost
+)
+total_cost_amt_wo_billie = (
+    inhouse_cost_amnt_wo_billie
+    + external_cost_amnt_wo_billie
+    + debit_cost_amnt_wo_billie
+    + credit_cost_amnt_wo_billie
+    + paypal_amount_wo_billie
+    + other_cost_amnt_wo_billie
+)
+total_vol_amn_w_billie = (
+    billie_amount
+    + inhouse_amount_w_billie
+    + external_amount_w_billie
+    + debit_card_amount_w_billie
+    + credit_card_amount_w_bilie
+    + paypal_amount_w_billie
+    + other_amount_w_billie
+)
+total_cost_share_w_billie = (
+    cost_billie
+    + inhouse_cost
+    + external_cost
+    + debit_cost
+    + credit_cost
+    + paypal_cost
+    + other_cost
+)
+total_cost_amt_w_billie = (
+    billie_cost_amnt
+    + inhouse_cost_amnt_w_billie
+    + external_cost_amnt_w_billie
+    + debit_cost_amnt_w_billie
+    + credit_cost_amnt_w_billie
+    + paypal_cost_amnt_w_billie
+    + other_cost_amnt_w_billie
+)
 
 # "{:,.2%}".format(
 # "{:,.0f}".format(
@@ -616,16 +665,16 @@ payment_output_df = pd.DataFrame(
         },
         {
             "Payment solution": "Total",
-            "Vol. Share w/o Billie": "{:,.0%}".format(0),
-            "Vol. Amount w/o Billie": "{:,.0f}".format(0),
-            "Cost Share w/o Billie": "{:,.2%}".format(0),
-            "Cost Amount w/o Billie": "{:,.0f}".format(0),
-            "Gross Profit w/o Billie": "{:,.0f}".format(0),
+            "Vol. Share w/o Billie": "{:,.0%}".format(total_vol_share_wo_billie),
+            "Vol. Amount w/o Billie": "{:,.0f}".format(total_vol_amt_wo_billie),
+            "Cost Share w/o Billie": "{:,.2%}".format(total_cost_share_wo_billie),
+            "Cost Amount w/o Billie": "{:,.0f}".format(total_cost_amt_wo_billie),
+            "Gross Profit w/o Billie": "{:,.0f}".format(gross_profit_amnt_wo_billie),
             "Vol. Share w Billie": 0,
-            "Vol. Amount w Billie": "{:,.0f}".format(0),
-            "Cost Share w Billie": "{:,.2%}".format(0),
-            "Cost Amount w Billie": "{:,.0f}".format(0),
-            "Gross Profit w Billie": "{:,.0f}".format(0),
+            "Vol. Amount w Billie": "{:,.0f}".format(total_vol_amn_w_billie),
+            "Cost Share w Billie": "{:,.2%}".format(total_cost_share_w_billie),
+            "Cost Amount w Billie": "{:,.0f}".format(total_cost_amt_w_billie),
+            "Gross Profit w Billie": "{:,.0f}".format(total_gross_profit_w_billie),
         },
     ]
 )
