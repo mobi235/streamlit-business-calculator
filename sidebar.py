@@ -139,9 +139,9 @@ def sidebar_financial(high_level=False):
         "B2B revenues p.a. Online: (in €)",
         value=12000000,
         step=500000,
-        format="%03d",  # "%0.2f"
+        format="%0d",  # "%0.2f"
     )
-    b2b_rev_formatted = "{:,.2f}".format(b2b_rev)
+    b2b_rev_formatted = "{:,.0f}".format(b2b_rev)
 
     if not high_level:
         gross_profit = st.sidebar.number_input(
@@ -149,14 +149,14 @@ def sidebar_financial(high_level=False):
         )
     else:
         gross_profit = 20.0
-    gross_profit_formatted = "{:,.1%}".format(gross_profit / 100)
+    gross_profit_formatted = "{:,.0%}".format(gross_profit / 100)
     st.sidebar.markdown("### Order details - B2B Online")
     # -- Set time by GPS or event
 
     avg_basket = st.sidebar.number_input(
         "Average Basket Size: (in €)", value=500, step=100
     )
-    avg_basket_formatted = "{:,.2f}".format(avg_basket)
+    avg_basket_formatted = "{:,.0f}".format(avg_basket)
 
     financial_df = pd.DataFrame(
         [
