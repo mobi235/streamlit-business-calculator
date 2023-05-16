@@ -95,17 +95,19 @@ def billie_pricing(high_level=False):
         st.sidebar.markdown("### Billie pricing")
         # -- Set time by GPS or event
         # avg_basket = st.sidebar.slider("Average Acceptance Rate: (in %)", 0.0, 1.0, 0.05)
-        fixed_fee = st.sidebar.number_input("Fixed Fee: (in %)", value=1.69, step=0.01)
-        fixed_fee_formatted = "{:,.1%}".format(fixed_fee / 100)
+        fixed_fee = st.sidebar.number_input(
+            "Variable Fee: (in %)", value=1.69, step=0.01
+        )
+        fixed_fee_formatted = "{:,.2%}".format(fixed_fee / 100)
 
         # display the inputs
         transaction_fee = st.sidebar.number_input(
-            "Transaction Fee: (in €)", value=0.5, step=0.1
+            "Fixed Fee: (in €)", value=0.5, step=0.1
         )
         transaction_fee_formatted = "{:,.2f}".format(transaction_fee)
     else:
         fixed_fee = 0.0169
-        fixed_fee_formatted = "{:,.1%}".format(fixed_fee / 100)
+        fixed_fee_formatted = "{:,.2%}".format(fixed_fee / 100)
         transaction_fee = 0.5
         transaction_fee_formatted = "{:,.2f}".format(transaction_fee)
 
@@ -115,12 +117,12 @@ def billie_pricing(high_level=False):
     pricing_df = pd.DataFrame(
         [
             {
-                "Metric": "Fixed Fee:",
+                "Metric": "Variable Fee:",
                 "Value": fixed_fee_formatted,
                 "is_high_level": high_level,
             },
             {
-                "Metric": "Transaction Fee:",
+                "Metric": "Fixed Fee:",
                 "Value": transaction_fee_formatted,
                 "is_high_level": high_level,
             },

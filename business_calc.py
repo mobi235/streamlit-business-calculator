@@ -176,9 +176,9 @@ avg_basket_size = float(str(avg_basket_size).replace(",", ""))
 
 
 ## pricing details & Conversion
-fixed_fee = pricing[pricing["Metric"] == "Fixed Fee:"]["Value"].iloc[0]
+fixed_fee = pricing[pricing["Metric"] == "Variable Fee:"]["Value"].iloc[0]
 fixed_fee = float(fixed_fee.strip("%")) / 100
-transaction_fee = pricing[pricing["Metric"] == "Transaction Fee:"]["Value"].iloc[0]
+transaction_fee = pricing[pricing["Metric"] == "Fixed Fee:"]["Value"].iloc[0]
 transaction_fee = float(transaction_fee)
 
 
@@ -282,7 +282,7 @@ gross_profit_amnt_wo_billie = revenue * gross_profit
 ### PRINT OUT INPUT:
 
 new_raw = {
-    "Metric": "Blended Fee",
+    "Metric": "Transaction Fee",
     "Value": "{:,.2%}".format(blended_fee),
     "is_high_level": high_level_view,
 }
