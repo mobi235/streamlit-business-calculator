@@ -637,7 +637,7 @@ revenue_rel_chg = revenue_abs_chg / revenue
 
 amount_rel_chg = (
     total_amount_w_billie - total_amount_wo_billie
-) / total_amount_w_billie
+) / total_amount_wo_billie
 
 cost_rel_chg = (
     total_cost_amnt_w_billie - total_cost_amnt_wo_billie
@@ -673,13 +673,13 @@ met1.metric(
     label="Total Vol. w Billie",
     value="{:,.0f}".format(round(total_amount_w_billie, 0)),
     delta="{:,.1%}".format(amount_rel_chg),  # f"20%",
-    # delta_color="inverse",
+    delta_color="normal",
 )
 
 met1.metric(
     label="Total Vol. w/o Billie",
     value="{:,.0f}".format(total_amount_wo_billie),
-    delta_color="off",
+    delta_color="normal",
 )
 # revenue_chg_basket_size
 # revenue_chg_acceptance_rate
@@ -690,21 +690,21 @@ met2.metric(
     label="Basket Size Increase",
     value="{:,.0f}".format(round(avg_basket_size_w_billie, 0)),
     delta="{:,.1%}".format(uplift_basket_size),
-    delta_color="off",
+    delta_color="normal",
 )
 if has_bnpl:
     met2.metric(
         label="Rev Chg. Acceptance",
         value="{:,.0f}".format(revenue_chg_acceptance_rate),
         delta="{:,.1%}".format(acceptance_rate_rel_chg),
-        delta_color="off",
+        delta_color="normal",
     )
 else:
     met2.metric(
         label="Rev Chg. Conversion",
         value="{:,.0f}".format(revenue_chg_conversion_rate),
         delta="{:,.1%}".format(conversion_rate_relative_chg),
-        delta_color="off",
+        delta_color="normal",
     )
 # gross profit
 if not high_level_view:
@@ -718,7 +718,7 @@ if not high_level_view:
     met3.metric(
         label="Total GP w/o Billie",
         value="{:,.0f}".format(total_gross_profit_wo_billie),
-        delta_color="off",
+        delta_color="normal",
     )
 
 
