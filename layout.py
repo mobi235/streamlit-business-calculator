@@ -213,6 +213,7 @@ def waterfall_fig(
             showlegend=False,
             margin=dict(l=30, r=30, t=30, b=30),
         )
+        fig.update_traces(texttemplate="%{text:,}")
         return fig
     else:
         fig = go.Figure(
@@ -255,6 +256,7 @@ def waterfall_fig(
         )
 
         fig.update_layout(title="Billie Uplift Potential", showlegend=False)
+        fig.update_traces(texttemplate="%{text:,}")
         return fig
     # fig.layout.yaxis.tickformat = ",.2%"
 

@@ -509,14 +509,14 @@ payment_output_df = pd.DataFrame(
         {
             "Payment solution": "Billie",
             "Vol. Share w/o Billie": "{:,.0%}".format(0.0),
-            "Vol. Share w Billie": "{:,.0%}".format(billie_share),
             "Vol. Amount w/o Billie": "{:,.0f}".format(0),
-            "Vol. Amount w Billie": "{:,.0f}".format(billie_amount),
             "Cost Share w/o Billie": "{:,.2%}".format(0),
-            "Cost Share w Billie": "{:,.2%}".format(cost_billie),
             "Cost Amount w/o Billie": "{:,.0f}".format(0),
-            "Cost Amount w Billie": "{:,.0f}".format(billie_cost_amnt),
             "Gross Profit w/o Billie": "{:,.0f}".format(0),  # todo
+            "Vol. Share w Billie": "{:,.0%}".format(billie_share),
+            "Vol. Amount w Billie": "{:,.0f}".format(billie_amount),
+            "Cost Share w Billie": "{:,.2%}".format(cost_billie),
+            "Cost Amount w Billie": "{:,.0f}".format(billie_cost_amnt),
             "Gross Profit w Billie": "{:,.0f}".format(
                 billie_gross_profit_w_billie
             ),  # todo
@@ -525,14 +525,14 @@ payment_output_df = pd.DataFrame(
         {
             "Payment solution": "Inhouse BNPL",
             "Vol. Share w/o Billie": "{:,.0%}".format(inhouse),
-            "Vol. Share w Billie": "{:,.0%}".format(inhouse_share_w_billie),
             "Vol. Amount w/o Billie": "{:,.0f}".format(inhouse_amount_wo_billie),
-            "Vol. Amount w Billie": "{:,.0f}".format(inhouse_amount_w_billie),
             "Cost Share w/o Billie": "{:,.2%}".format(inhouse_cost),
-            "Cost Share w Billie": "{:,.2%}".format(inhouse_cost),
             "Cost Amount w/o Billie": "{:,.0f}".format(inhouse_cost_amnt_wo_billie),
-            "Cost Amount w Billie": "{:,.0f}".format(inhouse_cost_amnt_w_billie),
             "Gross Profit w/o Billie": "{:,.0f}".format(inhouse_gross_profit_wo_billie),
+            "Vol. Share w Billie": "{:,.0%}".format(inhouse_share_w_billie),
+            "Vol. Amount w Billie": "{:,.0f}".format(inhouse_amount_w_billie),
+            "Cost Share w Billie": "{:,.2%}".format(inhouse_cost),
+            "Cost Amount w Billie": "{:,.0f}".format(inhouse_cost_amnt_w_billie),
             "Gross Profit w Billie": "{:,.0f}".format(
                 inhouse_gross_profit_w_billie
             ),  # todo
@@ -540,16 +540,16 @@ payment_output_df = pd.DataFrame(
         {
             "Payment solution": "External BNPL",
             "Vol. Share w/o Billie": "{:,.0%}".format(external),
-            "Vol. Share w Billie": "{:,.0%}".format(external_share_w_billie),
             "Vol. Amount w/o Billie": "{:,.0f}".format(external_amount_wo_billie),
-            "Vol. Amount w Billie": "{:,.0f}".format(external_amount_w_billie),
             "Cost Share w/o Billie": "{:,.2%}".format(external_cost),
-            "Cost Share w Billie": "{:,.2%}".format(external_cost),
             "Cost Amount w/o Billie": "{:,.0f}".format(external_cost_amnt_wo_billie),
-            "Cost Amount w Billie": "{:,.0f}".format(external_cost_amnt_w_billie),
             "Gross Profit w/o Billie": "{:,.0f}".format(
                 external_gross_profit_wo_billie
             ),
+            "Vol. Share w Billie": "{:,.0%}".format(external_share_w_billie),
+            "Vol. Amount w Billie": "{:,.0f}".format(external_amount_w_billie),
+            "Cost Share w Billie": "{:,.2%}".format(external_cost),
+            "Cost Amount w Billie": "{:,.0f}".format(external_cost_amnt_w_billie),
             "Gross Profit w Billie": "{:,.0f}".format(
                 external_gross_profit_w_billie
             ),  # todo
@@ -557,14 +557,14 @@ payment_output_df = pd.DataFrame(
         {
             "Payment solution": "Credit Card",
             "Vol. Share w/o Billie": "{:,.0%}".format(credit_card),
-            "Vol. Share w Billie": "{:,.0%}".format(credit_card_share_w_bilie),
             "Vol. Amount w/o Billie": "{:,.0f}".format(credit_card_amount_wo_bilie),
-            "Vol. Amount w Billie": "{:,.0f}".format(credit_card_amount_w_bilie),
             "Cost Share w/o Billie": "{:,.2%}".format(credit_cost),
-            "Cost Share w Billie": "{:,.2%}".format(credit_cost),
             "Cost Amount w/o Billie": "{:,.0f}".format(credit_cost_amnt_wo_billie),
-            "Cost Amount w Billie": "{:,.0f}".format(credit_cost_amnt_w_billie),
             "Gross Profit w/o Billie": "{:,.0f}".format(credit_gross_profit_wo_billie),
+            "Vol. Share w Billie": "{:,.0%}".format(credit_card_share_w_bilie),
+            "Vol. Amount w Billie": "{:,.0f}".format(credit_card_amount_w_bilie),
+            "Cost Share w Billie": "{:,.2%}".format(credit_cost),
+            "Cost Amount w Billie": "{:,.0f}".format(credit_cost_amnt_w_billie),
             "Gross Profit w Billie": "{:,.0f}".format(
                 credit_gross_profit_w_billie
             ),  # todo # todo
@@ -572,14 +572,14 @@ payment_output_df = pd.DataFrame(
         {
             "Payment solution": "Debit Card",
             "Vol. Share w/o Billie": "{:,.0%}".format(debit_card),
-            "Vol. Share w Billie": "{:,.0%}".format(debit_card_share_w_billie),
             "Vol. Amount w/o Billie": "{:,.0f}".format(debit_card_amount_wo_billie),
-            "Vol. Amount w Billie": "{:,.0f}".format(debit_card_amount_w_billie),
             "Cost Share w/o Billie": "{:,.2%}".format(debit_cost),
-            "Cost Share w Billie": "{:,.2%}".format(debit_cost),
             "Cost Amount w/o Billie": "{:,.0f}".format(debit_cost_amnt_wo_billie),
-            "Cost Amount w Billie": "{:,.0f}".format(debit_cost_amnt_w_billie),
             "Gross Profit w/o Billie": "{:,.0f}".format(debit_gross_profit_wo_billie),
+            "Vol. Share w Billie": "{:,.0%}".format(debit_card_share_w_billie),
+            "Vol. Amount w Billie": "{:,.0f}".format(debit_card_amount_w_billie),
+            "Cost Share w Billie": "{:,.2%}".format(debit_cost),
+            "Cost Amount w Billie": "{:,.0f}".format(debit_cost_amnt_w_billie),
             "Gross Profit w Billie": "{:,.0f}".format(
                 debit_gross_profit_w_billie
             ),  # todo
@@ -587,14 +587,14 @@ payment_output_df = pd.DataFrame(
         {
             "Payment solution": "Paypal",
             "Vol. Share w/o Billie": "{:,.0%}".format(paypal),
-            "Vol. Share w Billie": "{:,.0%}".format(paypal_share_w_billie),
             "Vol. Amount w/o Billie": "{:,.0f}".format(paypal_amount_wo_billie),
-            "Vol. Amount w Billie": "{:,.0f}".format(paypal_amount_w_billie),
             "Cost Share w/o Billie": "{:,.2%}".format(paypal_cost),
-            "Cost Share w Billie": "{:,.2%}".format(paypal_cost),
             "Cost Amount w/o Billie": "{:,.0f}".format(paypal_cost_amnt_wo_billie),
-            "Cost Amount w Billie": "{:,.0f}".format(paypal_cost_amnt_w_billie),
             "Gross Profit w/o Billie": "{:,.0f}".format(paypal_gross_profit_wo_billie),
+            "Vol. Share w Billie": "{:,.0%}".format(paypal_share_w_billie),
+            "Vol. Amount w Billie": "{:,.0f}".format(paypal_amount_w_billie),
+            "Cost Share w Billie": "{:,.2%}".format(paypal_cost),
+            "Cost Amount w Billie": "{:,.0f}".format(paypal_cost_amnt_w_billie),
             "Gross Profit w Billie": "{:,.0f}".format(
                 paypal_gross_profit_w_billie
             ),  # todo
@@ -602,14 +602,14 @@ payment_output_df = pd.DataFrame(
         {
             "Payment solution": "Other",
             "Vol. Share w/o Billie": "{:,.0%}".format(other),
-            "Vol. Share w Billie": "{:,.0%}".format(other_share_w_billie),
             "Vol. Amount w/o Billie": "{:,.0f}".format(other_amount_wo_billie),
-            "Vol. Amount w Billie": "{:,.0f}".format(other_amount_w_billie),
             "Cost Share w/o Billie": "{:,.2%}".format(other_cost),
-            "Cost Share w Billie": "{:,.2%}".format(other_cost),
             "Cost Amount w/o Billie": "{:,.0f}".format(other_cost_amnt_wo_billie),
-            "Cost Amount w Billie": "{:,.0f}".format(other_cost_amnt_w_billie),
             "Gross Profit w/o Billie": "{:,.0f}".format(other_gross_profit_wo_billie),
+            "Vol. Share w Billie": "{:,.0%}".format(other_share_w_billie),
+            "Vol. Amount w Billie": "{:,.0f}".format(other_amount_w_billie),
+            "Cost Share w Billie": "{:,.2%}".format(other_cost),
+            "Cost Amount w Billie": "{:,.0f}".format(other_cost_amnt_w_billie),
             "Gross Profit w Billie": "{:,.0f}".format(
                 other_gross_profit_w_billie
             ),  # todo
@@ -617,14 +617,14 @@ payment_output_df = pd.DataFrame(
         {
             "Payment solution": "Total",
             "Vol. Share w/o Billie": "{:,.0%}".format(0),
-            "Vol. Share w Billie": 0,
             "Vol. Amount w/o Billie": "{:,.0f}".format(0),
-            "Vol. Amount w Billie": "{:,.0f}".format(0),
             "Cost Share w/o Billie": "{:,.2%}".format(0),
-            "Cost Share w Billie": "{:,.2%}".format(0),
             "Cost Amount w/o Billie": "{:,.0f}".format(0),
-            "Cost Amount w Billie": "{:,.0f}".format(0),
             "Gross Profit w/o Billie": "{:,.0f}".format(0),
+            "Vol. Share w Billie": 0,
+            "Vol. Amount w Billie": "{:,.0f}".format(0),
+            "Cost Share w Billie": "{:,.2%}".format(0),
+            "Cost Amount w Billie": "{:,.0f}".format(0),
             "Gross Profit w Billie": "{:,.0f}".format(0),
         },
     ]
