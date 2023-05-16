@@ -150,7 +150,7 @@ def waterfall_fig(
                 ],
                 textposition="inside",
                 measure=[
-                    "relative",
+                    "absolute",
                     "relative",
                     "relative",
                     # "relative",
@@ -158,7 +158,7 @@ def waterfall_fig(
                 ]
                 if has_bnpl
                 else [
-                    "relative",
+                    "absolute",
                     "relative",
                     "relative",
                     # "relative",
