@@ -417,6 +417,16 @@ other_share_w_billie = (
     (1 - billie_share) * other / total_non_bnpl if total_non_bnpl != 0 else 0
 )
 
+total_vol_share_w_billie = (
+    billie_share
+    + inhouse_share_w_billie
+    + external_share_w_billie
+    + credit_card_share_w_bilie
+    + debit_card_share_w_billie
+    + paypal_share_w_billie
+    + other_share_w_billie
+)
+
 billie_amount = billie_share * revenue_w_billie
 inhouse_amount_w_billie = inhouse_share_w_billie * revenue_w_billie
 external_amount_w_billie = external_share_w_billie * revenue_w_billie
@@ -484,13 +494,18 @@ wavg_cost_wo_billie = (
 )
 
 wavg_cost_w_billie = (
-    billie_amount * cost_billie
-    + inhouse_amount_w_billie * inhouse_cost
-    + external_amount_w_billie * external_cost
-    + credit_card_amount_w_bilie * credit_cost
-    + debit_card_amount_w_billie * debit_cost
-    + paypal_amount_w_billie * paypal_cost
-    + other_amount_w_billie * other_cost
+    (
+        billie_amount * cost_billie
+        + inhouse_amount_w_billie * inhouse_cost
+        + external_amount_w_billie * external_cost
+        + credit_card_amount_w_bilie * credit_cost
+        + debit_card_amount_w_billie * debit_cost
+        + paypal_amount_w_billie * paypal_cost
+        + other_amount_w_billie * other_cost
+    )
+    / total_amount_w_billie
+    if total_amount_w_billie != 0
+    else 0
 )
 # total_cost_w_billie = cost_billie +
 
@@ -720,12 +735,12 @@ payment_output_df = pd.DataFrame(
             "Payment solution": "Total",
             "Vol. Share w/o Billie": "{:,.0%}".format(total_vol_share_wo_billie),
             "Vol. Amount w/o Billie": "{:,.0f}".format(total_vol_amt_wo_billie),
-            "Cost Share w/o Billie": "{:,.2%}".format(total_cost_share_wo_billie),
+            "Cost Share w/o Billie": "{:,.2%}".format(wavg_cost_wo_billie),
             "Cost Amount w/o Billie": "{:,.0f}".format(total_cost_amt_wo_billie),
             "Gross Profit w/o Billie": "{:,.0f}".format(gross_profit_amnt_wo_billie),
-            "Vol. Share w Billie": 0,
+            "Vol. Share w Billie": "{:,.0%}".format(total_vol_share_w_billie),
             "Vol. Amount w Billie": "{:,.0f}".format(total_vol_amn_w_billie),
-            "Cost Share w Billie": "{:,.2%}".format(total_cost_share_w_billie),
+            "Cost Share w Billie": "{:,.2%}".format(wavg_cost_w_billie),
             "Cost Amount w Billie": "{:,.0f}".format(total_cost_amt_w_billie),
             "Gross Profit w Billie": "{:,.0f}".format(total_gross_profit_w_billie),
         },
