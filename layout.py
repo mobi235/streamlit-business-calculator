@@ -65,25 +65,32 @@ def set_image():
     st.image(resized_image, caption="", use_column_width=False)
 
 
-def get_assumptions():
-    adoption_rate = 0.5
+def get_assumptions(
+    adoption_rate=0.5,
+    billie_acceptance_rate=0.9,
+    buyers_not_accepted_for_bnpl_rate=0.5,
+    cart_abandon_rate=0.3,
+    increase_basket_size=0.2,
+    increased_conversion_rate=0.15,
+):
+    # adoption_rate = adoption_rate
     adoption_rate_formatted = "{:,.0%}".format(adoption_rate)
 
-    billie_acceptance_rate = 0.9
+    # billie_acceptance_rate = billie_acceptance_rate
     billie_acceptance_rate_formatted = "{:,.0%}".format(billie_acceptance_rate)
 
-    buyers_not_accepted_for_bnpl_rate = 0.5
+    # buyers_not_accepted_for_bnpl_rate = buyers_not_accepted_for_bnpl_rate
     buyers_not_accepted_for_bnpl_rate_formatted = "{:,.0%}".format(
         buyers_not_accepted_for_bnpl_rate
     )
 
-    cart_abandon_rate = 0.3
+    # cart_abandon_rate = cart_abandon_rate
     cart_abandon_rate_formatted = "{:,.0%}".format(cart_abandon_rate)
 
-    increase_basket_size = 0.2
+    increase_basket_size = increase_basket_size
     increase_basket_size_formatted = "{:,.0%}".format(increase_basket_size)
 
-    increased_conversion_rate = 0.15
+    # increased_conversion_rate = 0.15
     increased_conversion_rate_formatted = "{:,.0%}".format(increased_conversion_rate)
 
     assumption_df = pd.DataFrame(

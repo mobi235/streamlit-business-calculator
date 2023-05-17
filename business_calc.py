@@ -41,6 +41,9 @@ granularity = st.selectbox(
     ),
 )
 
+adjust_assumptions = st.checkbox("Adjust Assumptions: ")
+
+
 st.sidebar.markdown(
     """
        <style>
@@ -75,7 +78,7 @@ financial = sidebar_financial(high_level=high_level_view)
 
 payment = payment_info(high_level=high_level_view)
 
-assumption = get_assumptions()
+# assumption = get_assumptions()
 
 
 ##---------------------------
@@ -158,6 +161,52 @@ if has_bnpl:
 
 
 pricing = billie_pricing(high_level=high_level_view)
+
+
+if adjust_assumptions:
+    st.sidebar.markdown("## Adjust Assumption Variable")
+    adoption_rate = st.sidebar.number_input(
+        "Billie share of total B2B online payment solutions",
+        value=50.0,
+        min_value=0.0,
+        max_value=100.0,
+        step=5.0,
+    )
+    adoption_rate = adoption_rate / 100
+    billie_acceptance_rate = st.sidebar.number_input(
+        "Billie acceptance rates:", value=90.0, min_value=0.0, max_value=100.0, step=5.0
+    )
+    billie_acceptance_rate = billie_acceptance_rate / 100
+    buyers_not_accepted_for_bnpl_rate = st.sidebar.number_input(
+        "Share of Buyers not accepted for BNPL:",
+        value=50.0,
+        min_value=0.0,
+        max_value=100.0,
+        step=5.0,
+    )  #  # 0.5
+    buyers_not_accepted_for_bnpl_rate = buyers_not_accepted_for_bnpl_rate / 100
+    cart_abandon_rate = st.sidebar.number_input(
+        "Cart abandonment rate:", value=30.0, min_value=0.0, max_value=100.0, step=5.0
+    )  #  # 0.3
+    cart_abandon_rate = cart_abandon_rate / 100
+    increase_basket_size = st.sidebar.number_input(
+        "Increase in average basket size:", value=20.0, step=5.0
+    )  #  , min_vlaue = 0.0, max_value = 1.0
+    increase_basket_size = increase_basket_size / 100
+    increased_conversion_rate = st.sidebar.number_input(
+        "Increase in conversion rate:", value=15.0, step=5.0
+    )  # 0.15
+    increased_conversion_rate = increased_conversion_rate / 100
+    assumption = get_assumptions(
+        adoption_rate=adoption_rate,
+        billie_acceptance_rate=billie_acceptance_rate,
+        buyers_not_accepted_for_bnpl_rate=buyers_not_accepted_for_bnpl_rate,
+        cart_abandon_rate=cart_abandon_rate,
+        increase_basket_size=increase_basket_size,
+        increased_conversion_rate=increased_conversion_rate,
+    )
+else:
+    assumption = get_assumptions()
 
 
 ## financial details
@@ -297,7 +346,11 @@ tab1.table(payment)
 if len(pricing[pricing["is_high_level"] != True]) > 0:
     tab1.table(pricing.drop(columns=["is_high_level"]))
 
-tab1.table(assumption)
+
+if adjust_assumptions:
+    tab1.table(assumption)
+else:
+    pass
 
 
 impact_output_df = pd.DataFrame(
