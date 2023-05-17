@@ -588,9 +588,11 @@ total_cost_amt_wo_billie = (
     + external_cost_amnt_wo_billie
     + debit_cost_amnt_wo_billie
     + credit_cost_amnt_wo_billie
-    + paypal_amount_wo_billie
+    + paypal_cost_amnt_wo_billie
     + other_cost_amnt_wo_billie
 )
+
+
 total_vol_amn_w_billie = (
     billie_amount
     + inhouse_amount_w_billie
