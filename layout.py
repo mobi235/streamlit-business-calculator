@@ -266,58 +266,15 @@ def waterfall_fig(
         fig.update_traces(texttemplate="%{text:,}")
         return fig
     # fig.layout.yaxis.tickformat = ",.2%"
-
+#  #D8D8D8
 
 css = """
     <style>
-            table {
-                font-family: Fira Sans, sans-serif;
-                border: 1px solid #1E1E1E;
-                background-color: #D8D8D8;
-                width: 100%;
-                height: 100%;
-                text-align: center;
-                border-collapse: collapse;
-                }
-                thead tr th:first-child {
+            thead tr th:first-child {
                     display:none
-                }
-                tbody th {
-                    display:none
-                }
-                table td, table th {
-                border: 1px solid #D8D8D8;
-                padding: 3px 3px;
-                }
-                table tbody td {
-                font-size: 13px;
-                color: #1E1E1E;
-                }
-                table thead {
-                background: #6600fd;
-                color:#FFFFFF;
-                border-bottom: 2px solid #FFFFFF;
-                }
-                table thead th {
-                font-size: 15px;
-                font-weight: bold;
-                color: #FFFFFF;
-                text-align: center;
-                border-left: 2px solid #D8D8D8;
-                }
-                table thead th:first-child {
-                border-left: none;
-                }
-
-                table tfoot {
-                font-size: 14px;
-                font-weight: bold;
-                color: #1E1E1E;
-                background: #FEF1CC;
-                border-top: 2px solid #444444;
-                }
-                table tfoot td {
-                font-size: 14px;
-                }
+            }
+            tbody th {
+                display:none
+            }
     </style>
 """

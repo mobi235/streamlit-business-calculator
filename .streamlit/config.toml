@@ -3,8 +3,3 @@ base="light"
 primaryColor = "#6600f5"
 backgroundColor = "#ffffff"
 secondaryBackgroundColor = "#d8d8d8"
-textColor = "#1e1e1e"
-font = "Fira Sans"
-
-
-config.dataFrameSerialization = "arrow"

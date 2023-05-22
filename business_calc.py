@@ -15,11 +15,32 @@ from sidebar import payment_info, sidebar_financial, billie_pricing  # , set_ima
 
 # subprocess.run([f"{sys.executable}", "streamlit_app.py"])
 
-# sys.path.append("/Users/moe/Documents/streamlit/")
-# import requests, os
+# style
+th_props = [
+  ('font-size', '14px'),
+  ('text-align', 'center'),
+  ('font-weight', 'bold'),
+  ('color', '#FFFFFF'),
+  ('background-color', '#6600f5')
+  ]
+                               
+td_props = [
+  ('font-size', '12px'), 
+  ]
+                                 
+styles = [
+  dict(selector="th", props=th_props),
+  dict(selector="td", props=td_props)
+  ]
 
-# from copy import deepcopy
-# import base64
+def set_style(df, style):
+    return df.style.set_properties(**{'text-align': 'left'}).set_table_styles(styles)
+    
+
+
+#df2=outputdframe.style.set_properties(**{'text-align': 'left'}).set_table_styles(styles)
+#st.table(df2)
+
 
 # color_map = {"col1": "#FFDAB9", "col2": "#FFA07A", "col3": "#FF7F50"}
 
@@ -71,6 +92,7 @@ st.markdown(
 
 tab1, tab2, tab3 = st.tabs(["Merchant's Input", "Bille's Impact", "Visuals"])
 
+st.markdown(css, unsafe_allow_html=True)
 tab1.markdown(css, unsafe_allow_html=True)
 tab2.markdown(css, unsafe_allow_html=True)
 
@@ -336,19 +358,24 @@ new_raw = {
     "is_high_level": high_level_view,
 }
 pricing = pricing.append(new_raw, ignore_index=True)
+
+
+
 tab1.table(
-    financial[financial["is_high_level"] != True].drop(columns=["is_high_level"])
+    set_style(financial[financial["is_high_level"] != True].drop(columns=["is_high_level"]), style =styles)
 )
 
-tab1.table(payment)
+
+
+tab1.table(set_style(payment, style=styles))
 
 
 if len(pricing[pricing["is_high_level"] != True]) > 0:
-    tab1.table(pricing.drop(columns=["is_high_level"]))
+    tab1.table(set_style(pricing.drop(columns=["is_high_level"]), style=styles))
 
 
 if adjust_assumptions:
-    tab1.table(assumption)
+    tab1.table(set_style(assumption, style = styles))
 else:
     pass
 
@@ -851,19 +878,24 @@ impact_filtered_df = impact_output_df[impact_output_df["viewable"] == True].drop
 
 ####PAYMENT OUTPUT
 tab2.table(
-    revenue_output_df[revenue_output_df["is_high_level"] != True].drop(
+    set_style(revenue_output_df[revenue_output_df["is_high_level"] != True].drop(
         columns=["is_high_level"]
-    )
+    ), style=styles)
 )
 
 # tab2.markdown('<div class="custom-table">', unsafe_allow_html=True)
-tab2.table(impact_filtered_df)  #
+tab2.table(
+    set_style(
+        impact_filtered_df,
+        style = styles)
+        )  #
 # tab2.markdown("</div>", unsafe_allow_html=True)
 
 
 if high_level_view:
     tab2.table(
-        payment_output_df.drop(
+        set_style(
+            payment_output_df.drop(
             columns=[
                 "Cost Share w/o Billie",
                 "Cost Share w Billie",
@@ -872,10 +904,15 @@ if high_level_view:
                 "Gross Profit w/o Billie",
                 "Gross Profit w Billie",
             ]
-        )
+        ),
+        style = styles )
     )
 else:
-    tab2.table(payment_output_df)
+    tab2.table(
+        set_style(
+        payment_output_df,
+        style = styles)
+        )
 
 # tab2.write(inhouse)
 # tab2.write(credit_card)
