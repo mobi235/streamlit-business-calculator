@@ -371,7 +371,7 @@ tab1.table(
 )
 
 
-
+payment = payment[["Current B2B online payment solutions", "Share of total B2B online volume", "Assumed costs"]]
 tab1.table(set_style(payment, style=styles))
 
 
