@@ -104,7 +104,7 @@ def billie_pricing(high_level=False):
         transaction_fee = st.sidebar.number_input(
             "Fixed Fee (in €):", value=0.5, step=0.1
         )
-        transaction_fee_formatted = "{:,.2f}".format(transaction_fee)
+        transaction_fee_formatted = "€{:,.2f}".format(transaction_fee)
     else:
         fixed_fee = 0.0169
         fixed_fee_formatted = "{:,.2%}".format(fixed_fee / 100)
@@ -138,12 +138,12 @@ def sidebar_financial(high_level=False):
     st.sidebar.markdown("### Key Financials")
 
     b2b_rev = st.sidebar.number_input(
-        "B2B Online Revenues p.a. (in €)",
+        "B2B Online Revenues p.a. (in €):",
         value=12000000,
         step=500000,
         format="%0d",  # "%0.2f"
     )
-    b2b_rev_formatted = "{:,.0f}".format(b2b_rev)
+    b2b_rev_formatted = "€{:,.0f}".format(b2b_rev)
 
     if not high_level:
         gross_profit = st.sidebar.number_input(
@@ -156,19 +156,19 @@ def sidebar_financial(high_level=False):
     # -- Set time by GPS or event
 
     avg_basket = st.sidebar.number_input(
-        "Average Basket Size (in €)", value=500, step=100
+        "Average Basket Size (in €):", value=500, step=100
     )
-    avg_basket_formatted = "{:,.0f}".format(avg_basket)
+    avg_basket_formatted = "€{:,.0f}".format(avg_basket)#
 
     financial_df = pd.DataFrame(
         [
             {
-                "Metric": "B2B revenues p.a. Online:",
+                "Metric": "B2B Revenues p.a. Online:",
                 "Value": b2b_rev_formatted,
                 "is_high_level": False,
             },
             {
-                "Metric": "Gross profit margin:",
+                "Metric": "Gross Profit Margin:",
                 "Value": gross_profit_formatted,
                 "is_high_level": high_level,
             },
@@ -194,7 +194,7 @@ def payment_info(high_level=False):
     c1, c2, c3 = st.sidebar.columns(3)
     c1.write("Payment method:")
     c2.write("Share of checkout (in %):")
-    c3.write("Assumed Cost:")
+    c3.write("Assumed Cost (in %):")
 
     col1, col2, col3 = st.sidebar.columns(3)
 
