@@ -194,8 +194,10 @@ def payment_info(high_level=False):
     c1, c2, c3 = st.sidebar.columns(3)
     c1.write("Payment method:")
     c2.write("Share of checkout (in %):")
-    c3.write("Assumed Cost (in %):")
+    if not high_level:
+        c3.write("Assumed Cost (in %):")
 
+    
     col1, col2, col3 = st.sidebar.columns(3)
 
     percent_inhouse = col2.number_input(

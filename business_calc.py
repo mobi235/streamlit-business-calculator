@@ -45,7 +45,7 @@ def set_style(df, style):
 # color_map = {"col1": "#FFDAB9", "col2": "#FFA07A", "col3": "#FF7F50"}
 
 # -- Set page config
-apptitle = "GW Quickview"  # 6600f5
+apptitle = "Billie ROI"  # 6600f5
 
 # st.set_page_config(page_title=apptitle, page_icon=":eyeglasses:")
 
@@ -53,6 +53,8 @@ apptitle = "GW Quickview"  # 6600f5
 #     st.markdown(f"<style>{css.read()}</style>", unsafe_allow_html=True)
 
 set_image()
+
+st.markdown("<p style='padding-top:50px'></p>", unsafe_allow_html=True)
 
 granularity = st.selectbox(
     "Choose impact granularity:",
@@ -64,6 +66,9 @@ granularity = st.selectbox(
 
 adjust_assumptions = st.checkbox("Adjust Assumptions: ")
 
+high_level_view = True if granularity == "Revenue Mode" else False
+
+financial = sidebar_financial(high_level=high_level_view)
 
 st.sidebar.markdown(
     """
@@ -76,7 +81,7 @@ st.sidebar.markdown(
     unsafe_allow_html=True,
 )
 
-high_level_view = True if granularity == "Revenue Mode" else False
+
 
 
 # Title the app
@@ -96,7 +101,7 @@ st.markdown(css, unsafe_allow_html=True)
 tab1.markdown(css, unsafe_allow_html=True)
 tab2.markdown(css, unsafe_allow_html=True)
 
-financial = sidebar_financial(high_level=high_level_view)
+
 
 payment = payment_info(high_level=high_level_view)
 
@@ -388,30 +393,30 @@ else:
 impact_output_df = pd.DataFrame(
     [
         {
-            "Impact of Billie": "Higher average basket size",
+            "Billie Impact": "Higher average basket size",
             "Without Billie": "€{:,.0f}".format(avg_basket_size),
             "With Billie": "€{:,.0f}".format(avg_basket_size_w_billie),
             "Abs. chg": "€{:,.0f}".format(delta_basket_size),
             "Rel. chg (%)": "{:,.2%}".format(uplift_basket_size),
-            "Change in Revneue": "€{:,.0f}".format(revenue_chg_basket_size),  # todo
+            "Change in Revneues": "€{:,.0f}".format(revenue_chg_basket_size),  # todo
             "viewable": True,
         },
         {
-            "Impact of Billie": "Acceptance rate increase (existing BNPL)",
+            "Billie Impact": "Acceptance rate increase (existing BNPL)",
             "Without Billie": "{:,.2%}".format(acceptance_rate_wo_bilie),
             "With Billie": "{:,.2%}".format(acceptance_rate_w_billie),
             "Abs. chg": "{:,.2%}".format(acceptance_rate_delta),
             "Rel. chg (%)": "{:,.2%}".format(acceptance_rate_rel_chg),
-            "Change in Revneue": "€{:,.0f}".format(revenue_chg_acceptance_rate),
+            "Change in Revneues": "€{:,.0f}".format(revenue_chg_acceptance_rate),
             "viewable": has_bnpl,
         },
         {
-            "Impact of Billie": "CR Increase (No existing BNPL)",
+            "Billie Impact": "Conversion Rate Increase",
             "Without Billie": "{:,.2%}".format(conversion_rate_wo_billie),
             "With Billie": "{:,.2%}".format(conversion_rate_w_billie),
             "Abs. chg": "{:,.2%}".format(conversion_rate_absolute_chg),
             "Rel. chg (%)": "{:,.2%}".format(conversion_rate_relative_chg),
-            "Change in Revneue": "€{:,.0f}".format(revenue_chg_conversion_rate),
+            "Change in Revneues": "€{:,.0f}".format(revenue_chg_conversion_rate),
             "viewable": not has_bnpl,
         },
     ]
@@ -664,11 +669,11 @@ payment_output_df = pd.DataFrame(
             "Cost Share w/o Billie": "{:,.2%}".format(0),
             "Cost Amount w/o Billie": "€{:,.0f}".format(0),
             "Gross Profit w/o Billie": "€{:,.0f}".format(0),  # todo
-            "Vol. Share w Billie": "{:,.0%}".format(billie_share),
-            "Vol. Amount w Billie": "€{:,.0f}".format(billie_amount),
-            "Cost Share w Billie": "{:,.2%}".format(cost_billie),
-            "Cost Amount w Billie": "€{:,.0f}".format(billie_cost_amnt),
-            "Gross Profit w Billie": "€{:,.0f}".format(
+            "Vol. Share w/ Billie": "{:,.0%}".format(billie_share),
+            "Vol. Amount w/ Billie": "€{:,.0f}".format(billie_amount),
+            "Cost Share w/ Billie": "{:,.2%}".format(cost_billie),
+            "Cost Amount w/ Billie": "€{:,.0f}".format(billie_cost_amnt),
+            "Gross Profit w/ Billie": "€{:,.0f}".format(
                 billie_gross_profit_w_billie
             ),  # todo
             # "is_high_level": high_level_view,
@@ -680,11 +685,11 @@ payment_output_df = pd.DataFrame(
             "Cost Share w/o Billie": "{:,.2%}".format(inhouse_cost),
             "Cost Amount w/o Billie": "€{:,.0f}".format(inhouse_cost_amnt_wo_billie),
             "Gross Profit w/o Billie": "€{:,.0f}".format(inhouse_gross_profit_wo_billie),
-            "Vol. Share w Billie": "{:,.0%}".format(inhouse_share_w_billie),
-            "Vol. Amount w Billie": "€{:,.0f}".format(inhouse_amount_w_billie),
-            "Cost Share w Billie": "{:,.2%}".format(inhouse_cost),
-            "Cost Amount w Billie": "€{:,.0f}".format(inhouse_cost_amnt_w_billie),
-            "Gross Profit w Billie": "€{:,.0f}".format(
+            "Vol. Share w/ Billie": "{:,.0%}".format(inhouse_share_w_billie),
+            "Vol. Amount w/ Billie": "€{:,.0f}".format(inhouse_amount_w_billie),
+            "Cost Share w/ Billie": "{:,.2%}".format(inhouse_cost),
+            "Cost Amount w/ Billie": "€{:,.0f}".format(inhouse_cost_amnt_w_billie),
+            "Gross Profit w/ Billie": "€{:,.0f}".format(
                 inhouse_gross_profit_w_billie
             ),  # todo
         },
@@ -697,11 +702,11 @@ payment_output_df = pd.DataFrame(
             "Gross Profit w/o Billie": "€{:,.0f}".format(
                 external_gross_profit_wo_billie
             ),
-            "Vol. Share w Billie": "{:,.0%}".format(external_share_w_billie),
-            "Vol. Amount w Billie": "€{:,.0f}".format(external_amount_w_billie),
-            "Cost Share w Billie": "{:,.2%}".format(external_cost),
-            "Cost Amount w Billie": "€{:,.0f}".format(external_cost_amnt_w_billie),
-            "Gross Profit w Billie": "€{:,.0f}".format(
+            "Vol. Share w/ Billie": "{:,.0%}".format(external_share_w_billie),
+            "Vol. Amount w/ Billie": "€{:,.0f}".format(external_amount_w_billie),
+            "Cost Share w/ Billie": "{:,.2%}".format(external_cost),
+            "Cost Amount w/ Billie": "€{:,.0f}".format(external_cost_amnt_w_billie),
+            "Gross Profit w/ Billie": "€{:,.0f}".format(
                 external_gross_profit_w_billie
             ),  # todo
         },
@@ -712,11 +717,11 @@ payment_output_df = pd.DataFrame(
             "Cost Share w/o Billie": "{:,.2%}".format(credit_cost),
             "Cost Amount w/o Billie": "€{:,.0f}".format(credit_cost_amnt_wo_billie),
             "Gross Profit w/o Billie": "€{:,.0f}".format(credit_gross_profit_wo_billie),
-            "Vol. Share w Billie": "{:,.0%}".format(credit_card_share_w_bilie),
-            "Vol. Amount w Billie": "€{:,.0f}".format(credit_card_amount_w_bilie),
-            "Cost Share w Billie": "{:,.2%}".format(credit_cost),
-            "Cost Amount w Billie": "€{:,.0f}".format(credit_cost_amnt_w_billie),
-            "Gross Profit w Billie": "€{:,.0f}".format(
+            "Vol. Share w/ Billie": "{:,.0%}".format(credit_card_share_w_bilie),
+            "Vol. Amount w/ Billie": "€{:,.0f}".format(credit_card_amount_w_bilie),
+            "Cost Share w/ Billie": "{:,.2%}".format(credit_cost),
+            "Cost Amount w/ Billie": "€{:,.0f}".format(credit_cost_amnt_w_billie),
+            "Gross Profit w/ Billie": "€{:,.0f}".format(
                 credit_gross_profit_w_billie
             ),  # todo # todo
         },
@@ -727,11 +732,11 @@ payment_output_df = pd.DataFrame(
             "Cost Share w/o Billie": "{:,.2%}".format(debit_cost),
             "Cost Amount w/o Billie": "€{:,.0f}".format(debit_cost_amnt_wo_billie),
             "Gross Profit w/o Billie": "€{:,.0f}".format(debit_gross_profit_wo_billie),
-            "Vol. Share w Billie": "{:,.0%}".format(debit_card_share_w_billie),
-            "Vol. Amount w Billie": "€{:,.0f}".format(debit_card_amount_w_billie),
-            "Cost Share w Billie": "{:,.2%}".format(debit_cost),
-            "Cost Amount w Billie": "€{:,.0f}".format(debit_cost_amnt_w_billie),
-            "Gross Profit w Billie": "€{:,.0f}".format(
+            "Vol. Share w/ Billie": "{:,.0%}".format(debit_card_share_w_billie),
+            "Vol. Amount w/ Billie": "€{:,.0f}".format(debit_card_amount_w_billie),
+            "Cost Share w/ Billie": "{:,.2%}".format(debit_cost),
+            "Cost Amount w/ Billie": "€{:,.0f}".format(debit_cost_amnt_w_billie),
+            "Gross Profit w/ Billie": "€{:,.0f}".format(
                 debit_gross_profit_w_billie
             ),  # todo
         },
@@ -742,11 +747,11 @@ payment_output_df = pd.DataFrame(
             "Cost Share w/o Billie": "{:,.2%}".format(paypal_cost),
             "Cost Amount w/o Billie": "€{:,.0f}".format(paypal_cost_amnt_wo_billie),
             "Gross Profit w/o Billie": "€{:,.0f}".format(paypal_gross_profit_wo_billie),
-            "Vol. Share w Billie": "{:,.0%}".format(paypal_share_w_billie),
-            "Vol. Amount w Billie": "€{:,.0f}".format(paypal_amount_w_billie),
-            "Cost Share w Billie": "{:,.2%}".format(paypal_cost),
-            "Cost Amount w Billie": "€{:,.0f}".format(paypal_cost_amnt_w_billie),
-            "Gross Profit w Billie": "€{:,.0f}".format(
+            "Vol. Share w/ Billie": "{:,.0%}".format(paypal_share_w_billie),
+            "Vol. Amount w/ Billie": "€{:,.0f}".format(paypal_amount_w_billie),
+            "Cost Share w/ Billie": "{:,.2%}".format(paypal_cost),
+            "Cost Amount w/ Billie": "€{:,.0f}".format(paypal_cost_amnt_w_billie),
+            "Gross Profit w/ Billie": "€{:,.0f}".format(
                 paypal_gross_profit_w_billie
             ),  # todo
         },
@@ -757,11 +762,11 @@ payment_output_df = pd.DataFrame(
             "Cost Share w/o Billie": "{:,.2%}".format(other_cost),
             "Cost Amount w/o Billie": "€{:,.0f}".format(other_cost_amnt_wo_billie),
             "Gross Profit w/o Billie": "€{:,.0f}".format(other_gross_profit_wo_billie),
-            "Vol. Share w Billie": "{:,.0%}".format(other_share_w_billie),
-            "Vol. Amount w Billie": "€{:,.0f}".format(other_amount_w_billie),
-            "Cost Share w Billie": "{:,.2%}".format(other_cost),
-            "Cost Amount w Billie": "€{:,.0f}".format(other_cost_amnt_w_billie),
-            "Gross Profit w Billie": "€{:,.0f}".format(
+            "Vol. Share w/ Billie": "{:,.0%}".format(other_share_w_billie),
+            "Vol. Amount w/ Billie": "€{:,.0f}".format(other_amount_w_billie),
+            "Cost Share w/ Billie": "{:,.2%}".format(other_cost),
+            "Cost Amount w/ Billie": "€{:,.0f}".format(other_cost_amnt_w_billie),
+            "Gross Profit w/ Billie": "€{:,.0f}".format(
                 other_gross_profit_w_billie
             ),  # todo
         },
@@ -772,11 +777,11 @@ payment_output_df = pd.DataFrame(
             "Cost Share w/o Billie": "{:,.2%}".format(wavg_cost_wo_billie),
             "Cost Amount w/o Billie": "€{:,.0f}".format(total_cost_amt_wo_billie),
             "Gross Profit w/o Billie": "€{:,.0f}".format(gross_profit_amnt_wo_billie),
-            "Vol. Share w Billie": "{:,.0%}".format(total_vol_share_w_billie),
-            "Vol. Amount w Billie": "€{:,.0f}".format(total_vol_amn_w_billie),
-            "Cost Share w Billie": "{:,.2%}".format(wavg_cost_w_billie),
-            "Cost Amount w Billie": "€{:,.0f}".format(total_cost_amt_w_billie),
-            "Gross Profit w Billie": "€{:,.0f}".format(total_gross_profit_w_billie),
+            "Vol. Share w/ Billie": "{:,.0%}".format(total_vol_share_w_billie),
+            "Vol. Amount w/ Billie": "€{:,.0f}".format(total_vol_amn_w_billie),
+            "Cost Share w/ Billie": "{:,.2%}".format(wavg_cost_w_billie),
+            "Cost Amount w/ Billie": "€{:,.0f}".format(total_cost_amt_w_billie),
+            "Gross Profit w/ Billie": "€{:,.0f}".format(total_gross_profit_w_billie),
         },
     ]
 )
@@ -799,7 +804,7 @@ cost_rel_chg = (
 revenue_output_df = pd.DataFrame(
     [
         {
-            "Uplift Potential w. Billie": "Revenues p.a.",
+            "Billie Uplift Potential": "B2B Online Revenues p.a.",
             "Without Billie": "€{:,.0f}".format(revenue),
             "With Billie": "€{:,.0f}".format(revenue_w_billie),
             "Abs. chg": "€{:,.0f}".format(revenue_abs_chg),
@@ -807,7 +812,7 @@ revenue_output_df = pd.DataFrame(
             "is_high_level": False,
         },
         {
-            "Uplift Potential w. Billie": "Gross profits p.a.",
+            "Billie Uplift Potential": "Gross Profits p.a.",
             "Without Billie": "€{:,.0f}".format(gross_profit_amnt_wo_billie),
             "With Billie": "€{:,.0f}".format(total_gross_profit_w_billie),
             "Abs. chg": "€{:,.0f}".format(gross_profit_abs_chg),
@@ -821,14 +826,14 @@ revenue_output_df = pd.DataFrame(
 met1, met2, met3 = tab2.columns(3)
 # vol
 met1.metric(
-    label="Total Vol. w Billie",
+    label="Total Revenue Potential with Billie",
     value="€{:,.0f}".format(round(total_amount_w_billie, 0)),
     delta="{:,.2%}".format(amount_rel_chg),  # f"20%",
     delta_color="normal",
 )
 
 met1.metric(
-    label="Total Vol. w/o Billie",
+    label="Total Revenues without Billie",
     value="€{:,.0f}".format(total_amount_wo_billie),
     delta_color="normal",
 )

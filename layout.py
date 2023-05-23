@@ -58,11 +58,11 @@ def set_image():
 
     image = Image.open("billie_new_logo.png")
     width, height = image.size
-    new_size = (int(width / 5), int(height / 5))  # Resize to half the original size
+    new_size = (int(width / 3), int(height / 3))  # Resize to half the original size
     resized_image = image.resize(new_size)
 
     # Display the image with a custom height using HTML/CSS
-    st.image(resized_image, caption="", use_column_width=False)
+    st.image(resized_image, caption="", use_column_width=False )
 
 
 def get_assumptions(
@@ -141,19 +141,19 @@ def waterfall_fig(
                 name="20",
                 orientation="v",
                 x=[
-                    "Current B2B Online Revenue",
+                    "Current B2B Online Revenues",
                     "Uplift potential - Higher basket size",
                     "Uplift potential - Higher Acceptance rates",
                     # "Uplift potential - Higher conversion rates",
-                    "Subtotal",
+                    "B2B Online Revenues Potential with Billie",
                 ]
                 if has_bnpl
                 else [
-                    "Current B2B Online Revenue",
+                    "Current B2B Online Revenues",
                     "Uplift potential - Higher basket size",
                     # "Uplift potential - Higher Acceptance rates",
                     "Uplift potential - Higher conversion rates",
-                    "Subtotal",
+                    "B2B Online Revenues Potential with Billie",
                 ],
                 textposition="inside",
                 measure=[
@@ -228,9 +228,9 @@ def waterfall_fig(
                 name="20",
                 orientation="v",
                 x=[
-                    "Current B2B Online Revenue",
+                    "Current B2B Online Revenues",
                     "Uplift potential - Higher basket size",
-                    "Subtotal",
+                    "B2B Online Revenues Potential with Billie",
                 ],
                 textposition="outside",
                 measure=[
