@@ -945,3 +945,12 @@ tab3.plotly_chart(
 # tab2.write(debit_card_amount_w_billie)
 # tab2.write(debit_card_share_w_billie)
 # tab2.write()
+
+
+hide_streamlit_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            </style>
+            """
+st.markdown(hide_streamlit_style, unsafe_allow_html=True) 
