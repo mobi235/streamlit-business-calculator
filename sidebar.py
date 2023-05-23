@@ -217,12 +217,12 @@ def payment_info(high_level=False):
         on_change=inhouse_callback,
         key="inhouse_bool",
     )
-    percent_inhouse_formatted = "{:,.1%}".format(percent_inhouse / 100)
+    percent_inhouse_formatted = "{:,.0%}".format(percent_inhouse / 100)
     if not high_level:
         cost_inhouse = col3.number_input("1-Assumed Costs:",label_visibility="collapsed", value=0.0, step=1.0)
     else:
         cost_inhouse = 0.0
-    cost_inhouse_formatted = "{:,.1%}".format(cost_inhouse / 100)
+    cost_inhouse_formatted = "{:,.2%}".format(cost_inhouse / 100)
     # display the inputs
     # st.write("Boolean input:", bool_input)
     # st.write("Percentage input:", percent_input, "%")
@@ -245,13 +245,13 @@ def payment_info(high_level=False):
         on_change=external_callback,
         key="external_bool",
     )
-    percent_ext_formatted = "{:,.1%}".format(percent_ext / 100)
+    percent_ext_formatted = "{:,.0%}".format(percent_ext / 100)
     if not high_level:
         cost_ext = ext_cost.number_input("2-Assumed Costs:", label_visibility="collapsed",value=0.0, step=1.0)
     else:
         cost_ext = 0.0
 
-    cost_ext_formatted = "{:,.1%}".format(cost_ext / 100)
+    cost_ext_formatted = "{:,.2%}".format(cost_ext / 100)
 
     cred, cred_share, cred_cost = st.sidebar.columns(3)
 
@@ -269,13 +269,13 @@ def payment_info(high_level=False):
     bool_credit = cred.checkbox(
         "Credit Card", value=True if percent_credit > 0 else False
     )
-    percent_credit_formatted = "{:,.1%}".format(percent_credit / 100)
+    percent_credit_formatted = "{:,.0%}".format(percent_credit / 100)
     if not high_level:
         cost_credit = cred_cost.number_input("3-Assumed Costs:", label_visibility="collapsed",value=0.0, step=1.0)
     else:
         cost_credit = 0.0
 
-    cost_credit_formatted = "{:,.1%}".format(cost_credit / 100)
+    cost_credit_formatted = "{:,.2%}".format(cost_credit / 100)
 
     deb, deb_share, deb_cost = st.sidebar.columns(3)
 
@@ -293,13 +293,13 @@ def payment_info(high_level=False):
     bool_debit = deb.checkbox(
         "Direct Debit", value=True if percent_debit > 0 else False
     )
-    percent_debit_formatted = "{:,.1%}".format(percent_debit / 100)
+    percent_debit_formatted = "{:,.0%}".format(percent_debit / 100)
     if not high_level:
         cost_debit = deb_cost.number_input("4-Assumed Costs:",label_visibility="collapsed", value=0.2, step=1.0)
     else:
         cost_debit = 0.0
 
-    cost_debit_formatted = "{:,.1%}".format(cost_debit / 100)
+    cost_debit_formatted = "{:,.2%}".format(cost_debit / 100)
 
     pal, pal_share, pal_cost = st.sidebar.columns(3)
 
@@ -315,7 +315,7 @@ def payment_info(high_level=False):
         key="paypal",
     )
     bool_paypal = pal.checkbox("PayPal", value=True if percent_paypal > 0 else False)
-    percent_paypal_formatted = "{:,.1%}".format(percent_paypal / 100)
+    percent_paypal_formatted = "{:,.0%}".format(percent_paypal / 100)
     if not high_level:
         cost_paypal = pal_cost.number_input(
             "5-Assumed Costs:",label_visibility="collapsed", value=1.5, min_value=0.0, max_value=100.0, step=1.0
@@ -323,7 +323,7 @@ def payment_info(high_level=False):
     else:
         cost_paypal = 0.0
 
-    cost_paypal_formatted = "{:,.1%}".format(cost_paypal / 100)
+    cost_paypal_formatted = "{:,.2%}".format(cost_paypal / 100)
 
     oher, other_share, other_cost = st.sidebar.columns(3)
 
@@ -341,13 +341,13 @@ def payment_info(high_level=False):
     bool_other = oher.checkbox(
         "Other", value=True if percent_other > 0 else False
     )
-    percent_other_formatted = "{:,.1%}".format(percent_other / 100)
+    percent_other_formatted = "{:,.0%}".format(percent_other / 100)
     if not high_level:
         cost_other = other_cost.number_input("6-Assumed Costs:",label_visibility="collapsed", value=0.0, step=1.0)
     else:
         cost_other = 0.0
 
-    cost_other_formatted = "{:,.1%}".format(cost_other / 100)
+    cost_other_formatted = "{:,.2%}".format(cost_other / 100)
     # check box to show/hide a dataframe
     payment_df = pd.DataFrame(
         [

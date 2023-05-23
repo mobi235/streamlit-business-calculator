@@ -23,6 +23,8 @@ th_props = [
   ('color', '#FFFFFF'),
   ('background-color', '#6600f5')
   ]
+
+#{'selector': '.l0', 'props': 'color:blue;'
                                
 td_props = [
   ('font-size', '12px'), 
@@ -30,11 +32,28 @@ td_props = [
                                  
 styles = [
   dict(selector="th", props=th_props),
-  dict(selector="td", props=td_props)
+  dict(selector="td", props=td_props),
+  ]
+
+styles_footer = [
+  dict(selector="th", props=th_props),
+  dict(selector="td", props=td_props),
+  dict(selector="tbody tr:last-child", props=[
+                             ('font-size', '14px'),
+                             ('text-align', 'center'),
+                             ('font-weight', 'bold'),
+                             ('color', '#1e1e1e'),
+                             ('background-color', '#fef1cc'), 
+                             ] ), 
+  dict(selector="tfoot tr:last-child", props=[
+                            ('font-size', '14px'),
+                            ('text-align', 'center'),
+                            ('font-weight', 'bold'),
+                             ] ), 
   ]
 
 def set_style(df, style):
-    return df.style.set_properties(**{'text-align': 'left'}).set_table_styles(styles)
+    return df.style.set_properties(**{'text-align': 'left'}).set_table_styles(style, overwrite=True)
     
 
 
@@ -915,13 +934,13 @@ if high_level_view:
                 "Gross Profit w Billie",
             ]
         ),
-        style = styles )
+        style = styles_footer )
     )
 else:
     tab2.table(
         set_style(
         payment_output_df,
-        style = styles)
+        style = styles_footer)
         )
 
 # tab2.write(inhouse)
