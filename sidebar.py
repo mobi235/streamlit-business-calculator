@@ -92,17 +92,17 @@ def external_callback():
 
 def billie_pricing(high_level=False):
     if not high_level:
-        st.sidebar.markdown("### Billie pricing")
+        st.sidebar.markdown("### Billie Pricing")
         # -- Set time by GPS or event
         # avg_basket = st.sidebar.slider("Average Acceptance Rate: (in %)", 0.0, 1.0, 0.05)
         fixed_fee = st.sidebar.number_input(
-            "Variable Fee: (in %)", value=1.69, step=0.01
+            "Variable Fee (in %):", value=1.69, step=0.01
         )
         fixed_fee_formatted = "{:,.2%}".format(fixed_fee / 100)
 
         # display the inputs
         transaction_fee = st.sidebar.number_input(
-            "Fixed Fee: (in €)", value=0.5, step=0.1
+            "Fixed Fee (in €):", value=0.5, step=0.1
         )
         transaction_fee_formatted = "{:,.2f}".format(transaction_fee)
     else:
@@ -138,7 +138,7 @@ def sidebar_financial(high_level=False):
     st.sidebar.markdown("### Key Financials")
 
     b2b_rev = st.sidebar.number_input(
-        "B2B revenues p.a. Online: (in €)",
+        "B2B Online Revenues p.a. (in €)",
         value=12000000,
         step=500000,
         format="%0d",  # "%0.2f"
@@ -147,16 +147,16 @@ def sidebar_financial(high_level=False):
 
     if not high_level:
         gross_profit = st.sidebar.number_input(
-            "Gross profit margin: (in %)", value=20.0, step=5.0
+            "Gross Profit Margin (in %):", value=20.0, step=5.0
         )
     else:
         gross_profit = 20.0
     gross_profit_formatted = "{:,.0%}".format(gross_profit / 100)
-    st.sidebar.markdown("### Order details - B2B Online")
+    #st.sidebar.markdown("### Order details - B2B Online")
     # -- Set time by GPS or event
 
     avg_basket = st.sidebar.number_input(
-        "Average Basket Size: (in €)", value=500, step=100
+        "Average Basket Size (in €)", value=500, step=100
     )
     avg_basket_formatted = "{:,.0f}".format(avg_basket)
 
@@ -188,17 +188,24 @@ def sidebar_financial(high_level=False):
 def payment_info(high_level=False):
 
     ########  Payment detail input ########
-    st.sidebar.markdown("### B2B payment details - Online")
+    st.sidebar.markdown("### B2B Payment Details - Online")
     # -- Set time by GPS or event
     # avg_basket = st.sidebar.slider("Average Acceptance Rate: (in %)", 0.0, 1.0, 0.05)
+    c1, c2, c3 = st.sidebar.columns(3)
+    c1.write("Payment method:")
+    c2.write("Share of checkout (in %):")
+    c3.write("Assumed Cost:")
+
     col1, col2, col3 = st.sidebar.columns(3)
 
     percent_inhouse = col2.number_input(
-        "1-Share of Vol. (%):",
+        label="1-Share of checkout (in %):",
+        label_visibility="collapsed",
         value=0.0,
         min_value=0.0,
         max_value=100.0,
         step=1.0,
+        format="%0d",
         on_change=check_completeness,
         key="inhouse",
     )
@@ -210,7 +217,7 @@ def payment_info(high_level=False):
     )
     percent_inhouse_formatted = "{:,.1%}".format(percent_inhouse / 100)
     if not high_level:
-        cost_inhouse = col3.number_input("1-Assumed Costs:", value=0.0, step=1.0)
+        cost_inhouse = col3.number_input("1-Assumed Costs:",label_visibility="collapsed", value=0.0, step=1.0)
     else:
         cost_inhouse = 0.0
     cost_inhouse_formatted = "{:,.1%}".format(cost_inhouse / 100)
@@ -220,11 +227,13 @@ def payment_info(high_level=False):
     ext, ext_share, ext_cost = st.sidebar.columns(3)
 
     percent_ext = ext_share.number_input(
-        "2-Share of Vol. (%):",
+        "2-Share of checkout (in %):",
+        label_visibility="collapsed",
         value=0.0,
         min_value=0.0,
         max_value=100.0,
         step=1.0,
+        format="%0d",
         on_change=check_completeness,
         key="external",
     )
@@ -236,7 +245,7 @@ def payment_info(high_level=False):
     )
     percent_ext_formatted = "{:,.1%}".format(percent_ext / 100)
     if not high_level:
-        cost_ext = ext_cost.number_input("2-Assumed Costs:", value=0.0, step=1.0)
+        cost_ext = ext_cost.number_input("2-Assumed Costs:", label_visibility="collapsed",value=0.0, step=1.0)
     else:
         cost_ext = 0.0
 
@@ -245,11 +254,13 @@ def payment_info(high_level=False):
     cred, cred_share, cred_cost = st.sidebar.columns(3)
 
     percent_credit = cred_share.number_input(
-        "3-Share of Vol. (%):",
+        "3-Share of checkout (in %):",
+        label_visibility="collapsed",
         value=0.0,
         min_value=0.0,
         max_value=100.0,
         step=1.0,
+        format="%0d",
         on_change=check_completeness,
         key="credit",
     )
@@ -258,7 +269,7 @@ def payment_info(high_level=False):
     )
     percent_credit_formatted = "{:,.1%}".format(percent_credit / 100)
     if not high_level:
-        cost_credit = cred_cost.number_input("3-Assumed Costs:", value=0.0, step=1.0)
+        cost_credit = cred_cost.number_input("3-Assumed Costs:", label_visibility="collapsed",value=0.0, step=1.0)
     else:
         cost_credit = 0.0
 
@@ -267,11 +278,13 @@ def payment_info(high_level=False):
     deb, deb_share, deb_cost = st.sidebar.columns(3)
 
     percent_debit = deb_share.number_input(
-        "4-Share of Vol. (%):",
+        "4-Share of checkout (in %):",
+        label_visibility="collapsed",
         value=50.0,
         min_value=0.0,
         max_value=100.0,
         step=1.0,
+        format="%0d",
         on_change=check_completeness,
         key="debit",
     )
@@ -280,7 +293,7 @@ def payment_info(high_level=False):
     )
     percent_debit_formatted = "{:,.1%}".format(percent_debit / 100)
     if not high_level:
-        cost_debit = deb_cost.number_input("4-Assumed Costs:", value=0.2, step=1.0)
+        cost_debit = deb_cost.number_input("4-Assumed Costs:",label_visibility="collapsed", value=0.2, step=1.0)
     else:
         cost_debit = 0.0
 
@@ -289,11 +302,13 @@ def payment_info(high_level=False):
     pal, pal_share, pal_cost = st.sidebar.columns(3)
 
     percent_paypal = pal_share.number_input(
-        "5-Share of Vol. (%):",
+        "5-Share of checkout (in %):",
+        label_visibility="collapsed",
         value=30.0,
         step=1.0,
         min_value=0.0,
         max_value=100.0,
+        format="%0d",
         on_change=check_completeness,
         key="paypal",
     )
@@ -301,7 +316,7 @@ def payment_info(high_level=False):
     percent_paypal_formatted = "{:,.1%}".format(percent_paypal / 100)
     if not high_level:
         cost_paypal = pal_cost.number_input(
-            "5-Assumed Costs:", value=1.5, min_value=0.0, max_value=100.0, step=1.0
+            "5-Assumed Costs:",label_visibility="collapsed", value=1.5, min_value=0.0, max_value=100.0, step=1.0
         )
     else:
         cost_paypal = 0.0
@@ -311,20 +326,22 @@ def payment_info(high_level=False):
     oher, other_share, other_cost = st.sidebar.columns(3)
 
     percent_other = other_share.number_input(
-        "6-Share of Vol. (%):",
+        "6-Share of checkout (in %):",
+        label_visibility="collapsed",
         value=20.0,
         min_value=0.0,
         max_value=100.0,
         step=1.0,
+        format="%0d",
         on_change=check_other,
         key="other",
     )
     bool_other = oher.checkbox(
-        "Other (please specify)", value=True if percent_other > 0 else False
+        "Other", value=True if percent_other > 0 else False
     )
     percent_other_formatted = "{:,.1%}".format(percent_other / 100)
     if not high_level:
-        cost_other = other_cost.number_input("6-Assumed Costs:", value=0.0, step=1.0)
+        cost_other = other_cost.number_input("6-Assumed Costs:",label_visibility="collapsed", value=0.0, step=1.0)
     else:
         cost_other = 0.0
 

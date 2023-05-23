@@ -188,7 +188,7 @@ pricing = billie_pricing(high_level=high_level_view)
 if adjust_assumptions:
     st.sidebar.markdown("## Adjust Assumptions Variables")
     adoption_rate = st.sidebar.number_input(
-        "Billie share of total B2B online payment solutions",
+        "Billie share of total B2B online payment solutions (%):",
         value=50.0,
         min_value=0.0,
         max_value=100.0,
@@ -196,11 +196,11 @@ if adjust_assumptions:
     )
     adoption_rate = adoption_rate / 100
     billie_acceptance_rate = st.sidebar.number_input(
-        "Billie acceptance rates:", value=90.0, min_value=0.0, max_value=100.0, step=5.0
+        "Billie Acceptance Rates (%):", value=90.0, min_value=0.0, max_value=100.0, step=5.0
     )
     billie_acceptance_rate = billie_acceptance_rate / 100
     buyers_not_accepted_for_bnpl_rate = st.sidebar.number_input(
-        "Share of Buyers not accepted for BNPL:",
+        "Share of Buyers not accepted for BNPL (%):",
         value=50.0,
         min_value=0.0,
         max_value=100.0,
@@ -208,15 +208,15 @@ if adjust_assumptions:
     )  #  # 0.5
     buyers_not_accepted_for_bnpl_rate = buyers_not_accepted_for_bnpl_rate / 100
     cart_abandon_rate = st.sidebar.number_input(
-        "Cart abandonment rate:", value=30.0, min_value=0.0, max_value=100.0, step=5.0
+        "Cart Abandonment Rate (%):", value=30.0, min_value=0.0, max_value=100.0, step=5.0
     )  #  # 0.3
     cart_abandon_rate = cart_abandon_rate / 100
     increase_basket_size = st.sidebar.number_input(
-        "Increase in average basket size:", value=20.0, step=5.0
+        "Increase in Average Basket Size (%):", value=20.0, step=5.0
     )  #  , min_vlaue = 0.0, max_value = 1.0
     increase_basket_size = increase_basket_size / 100
     increased_conversion_rate = st.sidebar.number_input(
-        "Increase in conversion rate:", value=15.0, step=5.0
+        "Increase in Conversion Rate (%):", value=15.0, step=5.0
     )  # 0.15
     increased_conversion_rate = increased_conversion_rate / 100
     assumption = get_assumptions(
@@ -798,7 +798,7 @@ revenue_output_df = pd.DataFrame(
             "Without Billie": "{:,.0f}".format(revenue),
             "With Billie": "{:,.0f}".format(revenue_w_billie),
             "Abs. chg": "{:,.0f}".format(revenue_abs_chg),
-            "Rel. chg (%)": "{:,.1%}".format(revenue_rel_chg),
+            "Rel. chg (%)": "{:,.2%}".format(revenue_rel_chg),
             "is_high_level": False,
         },
         {
@@ -806,7 +806,7 @@ revenue_output_df = pd.DataFrame(
             "Without Billie": "{:,.0f}".format(gross_profit_amnt_wo_billie),
             "With Billie": "{:,.0f}".format(total_gross_profit_w_billie),
             "Abs. chg": "{:,.0f}".format(gross_profit_abs_chg),
-            "Rel. chg (%)": "{:,.1%}".format(gross_profit_rel_chg),
+            "Rel. chg (%)": "{:,.2%}".format(gross_profit_rel_chg),
             "is_high_level": high_level_view,
         },
     ]
@@ -818,7 +818,7 @@ met1, met2, met3 = tab2.columns(3)
 met1.metric(
     label="Total Vol. w Billie",
     value="{:,.0f}".format(round(total_amount_w_billie, 0)),
-    delta="{:,.1%}".format(amount_rel_chg),  # f"20%",
+    delta="{:,.2%}".format(amount_rel_chg),  # f"20%",
     delta_color="normal",
 )
 
@@ -835,21 +835,21 @@ met1.metric(
 met2.metric(
     label="Basket Size Increase",
     value="{:,.0f}".format(round(avg_basket_size_w_billie, 0)),
-    delta="{:,.1%}".format(uplift_basket_size),
+    delta="{:,.2%}".format(uplift_basket_size),
     delta_color="normal",
 )
 if has_bnpl:
     met2.metric(
         label="Rev Chg. Acceptance",
         value="{:,.0f}".format(revenue_chg_acceptance_rate),
-        delta="{:,.1%}".format(acceptance_rate_rel_chg),
+        delta="{:,.2%}".format(acceptance_rate_rel_chg),
         delta_color="normal",
     )
 else:
     met2.metric(
         label="Rev Chg. Conversion",
         value="{:,.0f}".format(revenue_chg_conversion_rate),
-        delta="{:,.1%}".format(conversion_rate_relative_chg),
+        delta="{:,.2%}".format(conversion_rate_relative_chg),
         delta_color="normal",
     )
 # gross profit
@@ -857,7 +857,7 @@ if not high_level_view:
     met3.metric(
         label="Total GP w Billie",
         value="{:,.0f}".format(round(total_gross_profit_w_billie, 0)),  # "2,904,000",
-        delta="{:,.1%}".format(gross_profit_rel_chg),  #
+        delta="{:,.2%}".format(gross_profit_rel_chg),  #
         # delta_color="inverse",
     )
 
