@@ -193,8 +193,8 @@ def payment_info(high_level=False):
     # -- Set time by GPS or event
     # avg_basket = st.sidebar.slider("Average Acceptance Rate: (in %)", 0.0, 1.0, 0.05)
     c1, c2, c3 = st.sidebar.columns(3)
-    c1.write("Payment method:")
-    c2.write("Share of checkout (in %):")
+    c1.write("Payment Method:")
+    c2.write("Share of Checkout (in %):")
     if not high_level:
         c3.write("Assumed Cost (in %):")
 
@@ -353,40 +353,40 @@ def payment_info(high_level=False):
     payment_df = pd.DataFrame(
         [
             {
-                "Current B2B online payment solutions": "Inhouse BNPL",
+                "Current B2B Online Payment Solutions": "Inhouse BNPL",
                 "Yes/ No": bool_inhouse,
-                "Share of total B2B online volume": percent_inhouse_formatted,
-                "Assumed costs": cost_inhouse_formatted,
+                "Share of Total B2B Online Volume": percent_inhouse_formatted,
+                "Assumed Costs": cost_inhouse_formatted,
             },
             {
-                "Current B2B online payment solutions": "External BNPL",
+                "Current B2B Online Payment Solutions": "External BNPL",
                 "Yes/ No": bool_ext,
-                "Share of total B2B online volume": percent_ext_formatted,
-                "Assumed costs": cost_ext_formatted,
+                "Share of Total B2B Online Volume": percent_ext_formatted,
+                "Assumed Costs": cost_ext_formatted,
             },
             {
-                "Current B2B online payment solutions": "Credit Card",
+                "Current B2B Online Payment Solutions": "Credit Card",
                 "Yes/ No": bool_credit,
-                "Share of total B2B online volume": percent_credit_formatted,
-                "Assumed costs": cost_credit_formatted,
+                "Share of Total B2B Online Volume": percent_credit_formatted,
+                "Assumed Costs": cost_credit_formatted,
             },
             {
-                "Current B2B online payment solutions": "Debit Card",
+                "Current B2B Online Payment Solutions": "Debit Card",
                 "Yes/ No": bool_debit,
-                "Share of total B2B online volume": percent_debit_formatted,
-                "Assumed costs": cost_debit_formatted,
+                "Share of Total B2B Online Volume": percent_debit_formatted,
+                "Assumed Costs": cost_debit_formatted,
             },
             {
-                "Current B2B online payment solutions": "Paypal",
+                "Current B2B Online Payment Solutions": "Paypal",
                 "Yes/ No": bool_paypal,
-                "Share of total B2B online volume": percent_paypal_formatted,
-                "Assumed costs": cost_paypal_formatted,
+                "Share of Total B2B Online Volume": percent_paypal_formatted,
+                "Assumed Costs": cost_paypal_formatted,
             },
             {
-                "Current B2B online payment solutions": "Other",
+                "Current B2B Online Payment Solutions": "Other",
                 "Yes/ No": bool_other,
-                "Share of total B2B online volume": percent_other_formatted,
-                "Assumed costs": cost_other_formatted,
+                "Share of Total B2B Online Volume": percent_other_formatted,
+                "Assumed Costs": cost_other_formatted,
             },
         ]
     )

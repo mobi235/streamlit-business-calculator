@@ -132,7 +132,7 @@ st.title("Business Case Calculator")
 st.markdown(
     """
  * Use the menu at left to input Merchant's information
- * Switch to Output Tab to check impact of Billie on Merchant's Revenue/Gross Profit
+ * Switch to 'Billie's Impact' Tab to check impact of Billie on Merchant's Revenue/Gross Profit
  * Switch to Visuals Tab for visualisation
 """
 )
@@ -154,60 +154,60 @@ payment = payment_info(high_level=high_level_view)
 
 
 ## payment details
-inhouse = payment[payment["Current B2B online payment solutions"] == "Inhouse BNPL"][
-    "Share of total B2B online volume"
+inhouse = payment[payment["Current B2B Online Payment Solutions"] == "Inhouse BNPL"][
+    "Share of Total B2B Online Volume"
 ].iloc[0]
 inhouse = float(inhouse.strip("%")) / 100
 inhouse_cost = payment[
-    payment["Current B2B online payment solutions"] == "Inhouse BNPL"
-]["Assumed costs"].iloc[0]
+    payment["Current B2B Online Payment Solutions"] == "Inhouse BNPL"
+]["Assumed Costs"].iloc[0]
 inhouse_cost = float(inhouse_cost.strip("%")) / 100
-external = payment[payment["Current B2B online payment solutions"] == "External BNPL"][
-    "Share of total B2B online volume"
+external = payment[payment["Current B2B Online Payment Solutions"] == "External BNPL"][
+    "Share of Total B2B Online Volume"
 ].iloc[0]
 external = float(external.strip("%")) / 100
 external_cost = payment[
-    payment["Current B2B online payment solutions"] == "External BNPL"
-]["Assumed costs"].iloc[0]
+    payment["Current B2B Online Payment Solutions"] == "External BNPL"
+]["Assumed Costs"].iloc[0]
 external_cost = float(external_cost.strip("%")) / 100
-credit_card = payment[payment["Current B2B online payment solutions"] == "Credit Card"][
-    "Share of total B2B online volume"
+credit_card = payment[payment["Current B2B Online Payment Solutions"] == "Credit Card"][
+    "Share of Total B2B Online Volume"
 ].iloc[0]
 credit_card = float(credit_card.strip("%")) / 100
-credit_cost = payment[payment["Current B2B online payment solutions"] == "Credit Card"][
-    "Assumed costs"
+credit_cost = payment[payment["Current B2B Online Payment Solutions"] == "Credit Card"][
+    "Assumed Costs"
 ].iloc[0]
 credit_cost = float(credit_cost.strip("%")) / 100
-debit_card = payment[payment["Current B2B online payment solutions"] == "Debit Card"][
-    "Share of total B2B online volume"
+debit_card = payment[payment["Current B2B Online Payment Solutions"] == "Debit Card"][
+    "Share of Total B2B Online Volume"
 ].iloc[0]
 debit_card = float(debit_card.strip("%")) / 100
-debit_cost = payment[payment["Current B2B online payment solutions"] == "Debit Card"][
-    "Assumed costs"
+debit_cost = payment[payment["Current B2B Online Payment Solutions"] == "Debit Card"][
+    "Assumed Costs"
 ].iloc[0]
 debit_cost = float(debit_cost.strip("%")) / 100
-paypal = payment[payment["Current B2B online payment solutions"] == "Paypal"][
-    "Share of total B2B online volume"
+paypal = payment[payment["Current B2B Online Payment Solutions"] == "Paypal"][
+    "Share of Total B2B Online Volume"
 ].iloc[0]
 paypal = float(paypal.strip("%")) / 100
-paypal_cost = payment[payment["Current B2B online payment solutions"] == "Paypal"][
-    "Assumed costs"
+paypal_cost = payment[payment["Current B2B Online Payment Solutions"] == "Paypal"][
+    "Assumed Costs"
 ].iloc[0]
 paypal_cost = float(paypal_cost.strip("%")) / 100.0
-other = payment[payment["Current B2B online payment solutions"] == "Other"][
-    "Share of total B2B online volume"
+other = payment[payment["Current B2B Online Payment Solutions"] == "Other"][
+    "Share of Total B2B Online Volume"
 ].iloc[0]
 other = float(other.strip("%")) / 100
-other_cost = payment[payment["Current B2B online payment solutions"] == "Other"][
-    "Assumed costs"
+other_cost = payment[payment["Current B2B Online Payment Solutions"] == "Other"][
+    "Assumed Costs"
 ].iloc[0]
 other_cost = float(other_cost.strip("%")) / 100
 
 inhouse_bnpl_bool = payment[
-    payment["Current B2B online payment solutions"] == "Inhouse BNPL"
+    payment["Current B2B Online Payment Solutions"] == "Inhouse BNPL"
 ]["Yes/ No"].iloc[0]
 external_bnpl_bool = payment[
-    payment["Current B2B online payment solutions"] == "External BNPL"
+    payment["Current B2B Online Payment Solutions"] == "External BNPL"
 ]["Yes/ No"].iloc[0]
 
 has_bnpl = (
@@ -418,7 +418,7 @@ tab1.table(
 )
 
 
-payment = payment[["Current B2B online payment solutions", "Share of total B2B online volume", "Assumed costs"]]
+payment = payment[["Current B2B Online Payment Solutions", "Share of Total B2B Online Volume", "Assumed Costs"]]
 tab1.table(set_style(payment, style=styles))
 
 
