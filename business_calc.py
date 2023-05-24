@@ -33,24 +33,42 @@ td_props = [
 styles = [
   dict(selector="th", props=th_props),
   dict(selector="td", props=td_props),
+  dict(selector="tbody td", props=[
+                            #('font-size', '14px'),
+                            ('text-align', 'center'),
+                            #('font-weight', 'bold'),
+                            ('color', '#1e1e1e'),
+                            ('background-color', '#d8d8d8'), # '#fef1cc' 
+                            ] ), 
   ]
 
 styles_footer = [
   dict(selector="th", props=th_props),
   dict(selector="td", props=td_props),
   dict(selector="tbody tr:last-child", props=[
-                             ('font-size', '14px'),
+                             #('font-size', '14px'),
+                             ('text-align', 'center'),
+                             ('font-weight', 'bold'),
+                             ('color', '#FFFFFF'),
+                             ('background-color', '#7f7f7f'), # '#fef1cc' 
+                             ] ), 
+  dict(selector="tbody td(:last-child)", props=[
+                             #('font-size', '14px'),
+                             ('text-align', 'center'),
+                             ('font-weight', 'bold'),
+                             ('color', '#FFFFFF'),
+                             ('background-color', '#7f7f7f'), # '#fef1cc' 
+                             ] ), 
+  dict(selector="tbody tr:not(:last-child)", props=[
+                             #('font-size', '14px'),
                              ('text-align', 'center'),
                              ('font-weight', 'bold'),
                              ('color', '#1e1e1e'),
-                             ('background-color', '#fef1cc'), 
-                             ] ), 
-  dict(selector="tfoot tr:last-child", props=[
-                            ('font-size', '14px'),
-                            ('text-align', 'center'),
-                            ('font-weight', 'bold'),
+                             ('background-color', '#d8d8d8'), # '#fef1cc' 
+                             ('weight', 'bold'),
                              ] ), 
   ]
+
 
 def set_style(df, style):
     return df.style.set_properties(**{'text-align': 'left'}).set_table_styles(style, overwrite=True)
