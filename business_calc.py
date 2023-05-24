@@ -15,6 +15,51 @@ from sidebar import payment_info, sidebar_financial, billie_pricing  # , set_ima
 
 # subprocess.run([f"{sys.executable}", "streamlit_app.py"])
 
+
+def set_style(df, style):
+    return df.style.set_properties(**{'text-align': 'left'}).set_table_styles(style, overwrite=True)
+    
+
+
+#df2=outputdframe.style.set_properties(**{'text-align': 'left'}).set_table_styles(styles)
+#st.table(df2)
+
+
+# color_map = {"col1": "#FFDAB9", "col2": "#FFA07A", "col3": "#FF7F50"}
+
+# -- Set page config
+apptitle = "Billie ROI"  # 6600f5
+
+st.set_page_config(page_title=apptitle, 
+                   layout="wide",
+                   initial_sidebar_state="expanded", # ["auto", "expanded", "collapsed"]
+                   )
+
+# st.set_page_config(page_title=apptitle, page_icon=":eyeglasses:")
+
+# with open("style.css") as css:
+#     st.markdown(f"<style>{css.read()}</style>", unsafe_allow_html=True)
+
+set_image()
+
+st.markdown("<p style='padding-top:50px'></p>", unsafe_allow_html=True)
+
+granularity = st.selectbox(
+    "Choose impact granularity:",
+    (
+        "Gross Profit Mode",
+        "Revenue Mode",
+    ),
+)
+
+adjust_assumptions = st.checkbox("Adjust Assumptions: ")
+
+high_level_view = True if granularity == "Revenue Mode" else False
+
+financial = sidebar_financial(high_level=high_level_view)
+
+
+
 # style
 th_props = [
   ('font-size', '14px'),
@@ -59,7 +104,16 @@ styles_footer = [
                              ('color', '#1e1e1e'),
                              ('background-color', '#d8d8d8'), # '#fef1cc' 
                              ]  ),
+
   dict(selector= "tbody tr:not(:last-child) td:nth-child(n+8)",props=[
+                             #('font-size', '14px'),
+                             ('text-align', 'center'),
+                             ('font-weight', 'normal'),
+                             ('color', '#1e1e1e'),
+                             ('background-color', '#fef1cc'), # '#fef1cc' 
+                             ]  ) if not high_level_view 
+                             else 
+    dict(selector= "tbody tr:not(:last-child) td:nth-child(n+5)",props=[
                              #('font-size', '14px'),
                              ('text-align', 'center'),
                              ('font-weight', 'normal'),
@@ -77,47 +131,8 @@ styles_footer = [
 
 
 
-def set_style(df, style):
-    return df.style.set_properties(**{'text-align': 'left'}).set_table_styles(style, overwrite=True)
-    
 
 
-#df2=outputdframe.style.set_properties(**{'text-align': 'left'}).set_table_styles(styles)
-#st.table(df2)
-
-
-# color_map = {"col1": "#FFDAB9", "col2": "#FFA07A", "col3": "#FF7F50"}
-
-# -- Set page config
-apptitle = "Billie ROI"  # 6600f5
-
-st.set_page_config(page_title=apptitle, 
-                   layout="wide",
-                   initial_sidebar_state="expanded", # ["auto", "expanded", "collapsed"]
-                   )
-
-# st.set_page_config(page_title=apptitle, page_icon=":eyeglasses:")
-
-# with open("style.css") as css:
-#     st.markdown(f"<style>{css.read()}</style>", unsafe_allow_html=True)
-
-set_image()
-
-st.markdown("<p style='padding-top:50px'></p>", unsafe_allow_html=True)
-
-granularity = st.selectbox(
-    "Choose impact granularity:",
-    (
-        "Gross Profit Mode",
-        "Revenue Mode",
-    ),
-)
-
-adjust_assumptions = st.checkbox("Adjust Assumptions: ")
-
-high_level_view = True if granularity == "Revenue Mode" else False
-
-financial = sidebar_financial(high_level=high_level_view)
 
 st.sidebar.markdown(
     """
