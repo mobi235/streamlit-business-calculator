@@ -58,8 +58,15 @@ styles_footer = [
                              ('font-weight', 'normal'),
                              ('color', '#1e1e1e'),
                              ('background-color', '#d8d8d8'), # '#fef1cc' 
-                             ]  )
-#   dict(selector= "tbody tr:not(:last-child) td:nth-child(2)",props=[
+                             ]  ),
+  dict(selector= "tbody tr:not(:last-child) td:nth-child(n+8)",props=[
+                             #('font-size', '14px'),
+                             ('text-align', 'center'),
+                             ('font-weight', 'normal'),
+                             ('color', '#1e1e1e'),
+                             ('background-color', '#fef1cc'), # '#fef1cc' 
+                             ]  ), # last four columns excluding footer
+#   dict(selector= "tbody tr:not(:last-child) td:nth-child(even)",props=[
 #                              #('font-size', '14px'),
 #                              ('text-align', 'center'),
 #                              ('font-weight', 'normal'),
