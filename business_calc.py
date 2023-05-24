@@ -59,6 +59,13 @@ styles_footer = [
                              ('color', '#1e1e1e'),
                              ('background-color', '#d8d8d8'), # '#fef1cc' 
                              ]  )
+#   dict(selector= "tbody tr:not(:last-child) td:nth-child(2)",props=[
+#                              #('font-size', '14px'),
+#                              ('text-align', 'center'),
+#                              ('font-weight', 'normal'),
+#                              ('color', '#1e1e1e'),
+#                              ('background-color', '#fef1cc'), # '#fef1cc' 
+#                              ]  ), # first column excluding footer
   ]
 
 
