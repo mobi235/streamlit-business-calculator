@@ -1,6 +1,6 @@
 """Main app file"""
 # import plotly.graph_objects as go
-
+# link to app: https://mobi235-streamlit-business-calculator-business-calc-1hpbs1.streamlit.app/ 
 import numpy as np
 import pandas as pd
 import streamlit as st
