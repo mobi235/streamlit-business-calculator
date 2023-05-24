@@ -425,8 +425,27 @@ tab1.table(
 )
 
 
-payment = payment[["Current B2B Online Payment Solutions", "Share of Total B2B Online Volume", "Assumed Costs"]]
-tab1.table(set_style(payment, style=styles))
+payment = payment[["Current B2B Online Payment Solutions", "Share of Total B2B Online Volume" , "Assumed Costs"]] #
+
+if high_level_view:
+    tab1.table(
+        set_style(
+            payment.drop(
+            columns=[
+                "Assumed Costs",
+            ]
+        ),
+        style = styles )
+    )
+else:
+    tab1.table(
+        set_style(
+        payment,
+        style = styles)
+        )
+    
+
+#tab1.table(set_style(payment, style=styles))
 
 
 if len(pricing[pricing["is_high_level"] != True]) > 0:
@@ -997,11 +1016,11 @@ if high_level_view:
             payment_output_df.drop(
             columns=[
                 "Cost Share w/o Billie",
-                "Cost Share w Billie",
+                "Cost Share w/ Billie",
                 "Cost Amount w/o Billie",
-                "Cost Amount w Billie",
+                "Cost Amount w/ Billie",
                 "Gross Profit w/o Billie",
-                "Gross Profit w Billie",
+                "Gross Profit w/ Billie",
             ]
         ),
         style = styles_footer )
