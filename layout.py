@@ -206,8 +206,8 @@ def waterfall_fig(
                 decreasing={
                     "marker": {"color": "Maroon"}
                 },  # , "line":{"color":"red", "width":2}
-                increasing={"marker": {"color": "Teal"}},
-                totals={"marker": {"color": "deep sky blue"}}
+                increasing={"marker": {"color": "#6600f5"}},
+                totals={"marker": {"color":"#7f7f7f"}} #  "deep sky blue"
                 # connector = {"line":{"color":"rgb(63, 63, 63)"}},
                 # connector = {"visible": False,
                 #            "line":{"color":"rgb(63, 63, 63)"}

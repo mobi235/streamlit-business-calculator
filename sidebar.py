@@ -139,9 +139,10 @@ def sidebar_financial(high_level=False):
 
     b2b_rev = st.sidebar.number_input(
         "B2B Online Revenues p.a. (in €):",
-        value=12000000,
-        step=500000,
-        format="%0d",  # "%0.2f"
+        value=12_000_000,
+        #help="Add Info",
+        step=500_000,
+        format="%d",  # "%0.2f"
     )
     b2b_rev_formatted = "€{:,.0f}".format(b2b_rev)
 

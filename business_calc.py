@@ -66,6 +66,11 @@ def set_style(df, style):
 # -- Set page config
 apptitle = "Billie ROI"  # 6600f5
 
+st.set_page_config(page_title=apptitle, 
+                   layout="wide",
+                   initial_sidebar_state="expanded", # ["auto", "expanded", "collapsed"]
+                   )
+
 # st.set_page_config(page_title=apptitle, page_icon=":eyeglasses:")
 
 # with open("style.css") as css:
@@ -862,11 +867,20 @@ met1.metric(
 
 # cost
 met2.metric(
-    label="Basket Size Increase",
+    label="Average Basket Size w/ Billie",
     value="€{:,.0f}".format(round(avg_basket_size_w_billie, 0)),
     delta="{:,.2%}".format(uplift_basket_size),
     delta_color="normal",
+    help = f"Average basket size increases with Billie from {avg_basket_size} to {avg_basket_size_w_billie}, the relative increase is {uplift_basket_size}.",
 )
+met2.metric(
+    label="Average Basket Size w/o Billie",
+    value="€{:,.0f}".format(round(avg_basket_size, 0)),
+    #delta="{:,.2%}".format(uplift_basket_size),
+    #delta_color="normal",
+    #label_visibility="collapsed",
+)
+
 if has_bnpl:
     met2.metric(
         label="Rev Chg. Acceptance",
@@ -874,6 +888,21 @@ if has_bnpl:
         delta="{:,.2%}".format(acceptance_rate_rel_chg),
         delta_color="normal",
     )
+    met1.metric(
+    label="Acceptance Rate w/ Billie",
+    value="{:,.2%}".format(acceptance_rate_w_billie),
+    delta="{:,.2%}".format(acceptance_rate_rel_chg),
+    delta_color="normal",
+    help = f"Acceptance Rate increases with Billie from {acceptance_rate_wo_bilie} to {acceptance_rate_w_billie}, the relative increase is {acceptance_rate_rel_chg}.",
+    )
+    met1.metric(
+        label="Acceptance Rate W/o Billie",
+        value="{:,.2%}".format(acceptance_rate_wo_bilie),
+        #delta="{:,.2%}".format(uplift_basket_size),
+        #delta_color="normal",
+        #label_visibility="collapsed",
+    )
+
 else:
     met2.metric(
         label="Rev Chg. Conversion",
@@ -881,6 +910,22 @@ else:
         delta="{:,.2%}".format(conversion_rate_relative_chg),
         delta_color="normal",
     )
+    met1.metric(
+    label="Average Conversion Rate w/ Billie",
+    value="{:,.2%}".format(conversion_rate_w_billie),
+    delta="{:,.2%}".format(conversion_rate_relative_chg),
+    delta_color="normal",
+    help = f"Average Conversion Rate increases with Billie from {conversion_rate_wo_billie} to {conversion_rate_w_billie}, the relative increase is {conversion_rate_relative_chg}.",
+    )
+    met1.metric(
+        label="Average Conversion Rate W/o Billie",
+        value="{:,.2%}".format(conversion_rate_wo_billie),
+        #delta="{:,.2%}".format(uplift_basket_size),
+        #delta_color="normal",
+        #label_visibility="collapsed",
+    )
+
+
 # gross profit
 if not high_level_view:
     met3.metric(
