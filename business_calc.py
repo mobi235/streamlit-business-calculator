@@ -1,49 +1,34 @@
 """Main app file"""
-# import plotly.graph_objects as go
-# link to app: https://mobi235-streamlit-business-calculator-business-calc-1hpbs1.streamlit.app/ 
+# link to app: https://billie-roi-calculator.streamlit.app/
 import numpy as np
 import pandas as pd
 import streamlit as st
 
 from layout import coalesce, get_assumptions, set_image, waterfall_fig, css
-
-# plotly==5.11.0
-# import matplotlib.pyplot as plt
-from sidebar import payment_info, sidebar_financial, billie_pricing  # , set_image
-
-# import subprocess
-
-# subprocess.run([f"{sys.executable}", "streamlit_app.py"])
+from sidebar import payment_info, sidebar_financial, billie_pricing  
 
 
 def set_style(df, style):
     return df.style.set_properties(**{'text-align': 'left'}).set_table_styles(style, overwrite=True)
     
 
-
-#df2=outputdframe.style.set_properties(**{'text-align': 'left'}).set_table_styles(styles)
-#st.table(df2)
-
-
-# color_map = {"col1": "#FFDAB9", "col2": "#FFA07A", "col3": "#FF7F50"}
-
 # -- Set page config
-apptitle = "Billie ROI"  # 6600f5
+apptitle = "Billie ROI" 
 
 st.set_page_config(page_title=apptitle, 
                    layout="wide",
                    initial_sidebar_state="expanded", # ["auto", "expanded", "collapsed"]
                    )
 
-# st.set_page_config(page_title=apptitle, page_icon=":eyeglasses:")
-
-# with open("style.css") as css:
-#     st.markdown(f"<style>{css.read()}</style>", unsafe_allow_html=True)
-
+# Add Billie Logo
 set_image()
 
+# Padding between Logo and rest of the app
 st.markdown("<p style='padding-top:50px'></p>", unsafe_allow_html=True)
 
+# Choose mode ['Gross Profit Mode', 'Revenue Mode'] 
+# TODO: how to make it dynamic, so that when it is accessed from Billie.io >> Default 'Revenue Mode' 
+# esle >>> 'Gross Profit Mode' 
 granularity = st.selectbox(
     "Choose impact granularity:",
     (
@@ -52,15 +37,17 @@ granularity = st.selectbox(
     ),
 )
 
+# Make assumption tab available for editiing 
 adjust_assumptions = st.checkbox("Adjust Assumptions: ")
 
+# Which mode is active 
 high_level_view = True if granularity == "Revenue Mode" else False
 
+# Plot sidebar items: 
 financial = sidebar_financial(high_level=high_level_view)
 
-
-
-# style
+# DataFrame CSS Styling 
+# TODO Move to layout, and make more dynamic to choose from. i.e, make n styles, and user can choose from in function 
 th_props = [
   ('font-size', '14px'),
   ('text-align', 'center'),
@@ -68,8 +55,6 @@ th_props = [
   ('color', '#FFFFFF'),
   ('background-color', '#6600f5')
   ]
-
-#{'selector': '.l0', 'props': 'color:blue;'
                                
 td_props = [
   ('font-size', '12px'), 
@@ -104,7 +89,6 @@ styles_footer = [
                              ('color', '#1e1e1e'),
                              ('background-color', '#d8d8d8'), # '#fef1cc' 
                              ]  ),
-
   dict(selector= "tbody tr:not(:last-child) td:nth-child(n+8)",props=[
                              #('font-size', '14px'),
                              ('text-align', 'center'),
@@ -120,20 +104,10 @@ styles_footer = [
                              ('color', '#1e1e1e'),
                              ('background-color', '#fef1cc'), # '#fef1cc' 
                              ]  ), # last four columns excluding footer
-#   dict(selector= "tbody tr:not(:last-child) td:nth-child(even)",props=[
-#                              #('font-size', '14px'),
-#                              ('text-align', 'center'),
-#                              ('font-weight', 'normal'),
-#                              ('color', '#1e1e1e'),
-#                              ('background-color', '#fef1cc'), # '#fef1cc' 
-#                              ]  ), # first column excluding footer
+
   ]
 
-
-
-
-
-
+# controls width & size of side bar 
 st.sidebar.markdown(
     """
        <style>
@@ -145,12 +119,10 @@ st.sidebar.markdown(
     unsafe_allow_html=True,
 )
 
-
-
-
 # Title the app
 st.title("Business Case Calculator")
 
+# TODO add more description, or move description to help icon on each component 
 st.markdown(
     """
  * Use the menu at left to input Merchant's information
@@ -159,6 +131,7 @@ st.markdown(
 """
 )
 
+# Three tabular bars for the main app 
 tab1, tab2, tab3 = st.tabs(["Merchant's Input", "Bille's Impact", "Visuals"])
 
 st.markdown(css, unsafe_allow_html=True)
@@ -166,60 +139,64 @@ tab1.markdown(css, unsafe_allow_html=True)
 tab2.markdown(css, unsafe_allow_html=True)
 
 
-
 payment = payment_info(high_level=high_level_view)
 
-# assumption = get_assumptions()
-
-
-##---------------------------
-
-
-## payment details
+## payment details: extracting values 
 inhouse = payment[payment["Current B2B Online Payment Solutions"] == "Inhouse BNPL"][
     "Share of Total B2B Online Volume"
 ].iloc[0]
 inhouse = float(inhouse.strip("%")) / 100
+
 inhouse_cost = payment[
     payment["Current B2B Online Payment Solutions"] == "Inhouse BNPL"
 ]["Assumed Costs"].iloc[0]
 inhouse_cost = float(inhouse_cost.strip("%")) / 100
+
 external = payment[payment["Current B2B Online Payment Solutions"] == "External BNPL"][
     "Share of Total B2B Online Volume"
 ].iloc[0]
 external = float(external.strip("%")) / 100
+
 external_cost = payment[
     payment["Current B2B Online Payment Solutions"] == "External BNPL"
 ]["Assumed Costs"].iloc[0]
 external_cost = float(external_cost.strip("%")) / 100
+
 credit_card = payment[payment["Current B2B Online Payment Solutions"] == "Credit Card"][
     "Share of Total B2B Online Volume"
 ].iloc[0]
 credit_card = float(credit_card.strip("%")) / 100
+
 credit_cost = payment[payment["Current B2B Online Payment Solutions"] == "Credit Card"][
     "Assumed Costs"
 ].iloc[0]
 credit_cost = float(credit_cost.strip("%")) / 100
+
 debit_card = payment[payment["Current B2B Online Payment Solutions"] == "Debit Card"][
     "Share of Total B2B Online Volume"
 ].iloc[0]
 debit_card = float(debit_card.strip("%")) / 100
+
 debit_cost = payment[payment["Current B2B Online Payment Solutions"] == "Debit Card"][
     "Assumed Costs"
 ].iloc[0]
 debit_cost = float(debit_cost.strip("%")) / 100
+
 paypal = payment[payment["Current B2B Online Payment Solutions"] == "Paypal"][
     "Share of Total B2B Online Volume"
 ].iloc[0]
 paypal = float(paypal.strip("%")) / 100
+
 paypal_cost = payment[payment["Current B2B Online Payment Solutions"] == "Paypal"][
     "Assumed Costs"
 ].iloc[0]
 paypal_cost = float(paypal_cost.strip("%")) / 100.0
+
 other = payment[payment["Current B2B Online Payment Solutions"] == "Other"][
     "Share of Total B2B Online Volume"
 ].iloc[0]
 other = float(other.strip("%")) / 100
+
 other_cost = payment[payment["Current B2B Online Payment Solutions"] == "Other"][
     "Assumed Costs"
 ].iloc[0]
@@ -232,6 +209,7 @@ external_bnpl_bool = payment[
     payment["Current B2B Online Payment Solutions"] == "External BNPL"
 ]["Yes/ No"].iloc[0]
 
+# Controls whether a company has a bnpl, which is used to switch modes (acceptance rates vs. conversion rates) 
 has_bnpl = (
     inhouse_bnpl_bool or external_bnpl_bool
 )  # used to show acceptance rate uplift in df only when the merchant has a bnpl solution
@@ -239,7 +217,6 @@ has_bnpl = (
 
 if has_bnpl:
     st.sidebar.markdown("### BNPL Details (if applicable)")
-    # -- Set time by GPS or event
     avg_acceptance = st.sidebar.slider(
         "Average Acceptance Rate: (in %)",
         value=60.0,
@@ -247,6 +224,7 @@ if has_bnpl:
         max_value=100.0,
         step=1.0,
     )
+
     avg_acceptance_formatted = "{:,.1%}".format(avg_acceptance / 100)
     avg_acceptance_rate = float(avg_acceptance_formatted.strip("%")) / 100
 
@@ -263,10 +241,12 @@ if adjust_assumptions:
         max_value=100.0,
         step=5.0,
     )
+
     adoption_rate = adoption_rate / 100
     billie_acceptance_rate = st.sidebar.number_input(
         "Billie Acceptance Rates (%):", value=90.0, min_value=0.0, max_value=100.0, step=5.0
     )
+
     billie_acceptance_rate = billie_acceptance_rate / 100
     buyers_not_accepted_for_bnpl_rate = st.sidebar.number_input(
         "Share of Buyers not accepted for BNPL (%):",
@@ -274,19 +254,23 @@ if adjust_assumptions:
         min_value=0.0,
         max_value=100.0,
         step=5.0,
-    )  #  # 0.5
+    ) 
+    
     buyers_not_accepted_for_bnpl_rate = buyers_not_accepted_for_bnpl_rate / 100
     cart_abandon_rate = st.sidebar.number_input(
         "Cart Abandonment Rate (%):", value=30.0, min_value=0.0, max_value=100.0, step=5.0
-    )  #  # 0.3
+    )  
+
     cart_abandon_rate = cart_abandon_rate / 100
     increase_basket_size = st.sidebar.number_input(
         "Increase in Average Basket Size (%):", value=20.0, step=5.0
-    )  #  , min_vlaue = 0.0, max_value = 1.0
+    ) 
+
     increase_basket_size = increase_basket_size / 100
     increased_conversion_rate = st.sidebar.number_input(
         "Increase in Conversion Rate (%):", value=15.0, step=5.0
-    )  # 0.15
+    ) 
+
     increased_conversion_rate = increased_conversion_rate / 100
     assumption = get_assumptions(
         adoption_rate=adoption_rate,
@@ -296,6 +280,7 @@ if adjust_assumptions:
         increase_basket_size=increase_basket_size,
         increased_conversion_rate=increased_conversion_rate,
     )
+
 else:
     assumption = get_assumptions()
 
@@ -309,24 +294,13 @@ avg_basket_size = financial[financial["Metric"] == "Average Basket Size:"][
     "Value"
 ].iloc[0].replace("€", "")
 avg_basket_size = float(str(avg_basket_size).replace(",", ""))
-# avg_acceptance_rate = financial[financial["Metric"] == "Average Acceptance Rate:"][
-#     "value"
-# ].iloc[0]
-# avg_acceptance_rate = float(avg_acceptance_rate.strip("%")) / 100 # TODO revert to old logic here
-
 
 ## pricing details & Conversion
 fixed_fee = pricing[pricing["Metric"] == "Variable Fee:"]["Value"].iloc[0]
 fixed_fee = float(fixed_fee.strip("%")) / 100
 transaction_fee = pricing[pricing["Metric"] == "Fixed Fee:"]["Value"].iloc[0].replace("€","")
 transaction_fee = float(transaction_fee)
-
-
 blended_fee = (transaction_fee / avg_basket_size) + fixed_fee
-# blended_fee_formatted = "{:,.3%}".format(blended_fee_calc / 100)
-
-# blended_fee = pricing[pricing["Metric"] == "Blended Fee"]["value"].iloc[0]
-# blended_fee = float(blended_fee_formatted.strip("%")) * 100
 
 ## assumption details
 adoption_rate = assumption[
@@ -353,6 +327,7 @@ uplift_conversion_rate = assumption[
     assumption["Assumptions"] == "Increase in conversion rate:"
 ]["Value"].iloc[0]
 uplift_conversion_rate = float(uplift_conversion_rate.strip("%")) / 100
+
 
 ### impoact of Billie on KPIs
 
@@ -391,7 +366,7 @@ revenue_chg_basket_size = (
     * uplift_basket_size
     * revenue
     # if total_bnpl > 0
-    # else revenue * uplift_basket_size * max_share
+    # else revenue * uplift_basket_size * max_share # TODO is needed? 
 )
 
 
@@ -407,7 +382,7 @@ revenue_chg_acceptance_rate = (
 
 revenue_chg_conversion_rate = (
     0 if total_bnpl > 0 else revenue * uplift_conversion_rate
-)  # revenue * (1 + uplift_conversion_rate) - revenue
+) 
 
 revenue_abs_chg = (
     coalesce(revenue_chg_conversion_rate, 0)
@@ -417,10 +392,9 @@ revenue_abs_chg = (
 
 revenue_w_billie = revenue + revenue_abs_chg
 gross_profit_amnt_wo_billie = revenue * gross_profit
-## gross_profit_amnt_w_billie ## TODO
+
 
 ### PRINT OUT INPUT:
-
 new_raw = {
     "Metric": "Transaction Fee",
     "Value": "{:,.2%}".format(blended_fee),
@@ -431,14 +405,12 @@ pricing = pricing.append(new_raw, ignore_index=True)
 
 financial_df = financial[financial["is_high_level"] != True].drop(columns=["is_high_level"])
 
-
 tab1.table(
     set_style(
         financial_df, 
         style =styles,
         )
 )
-
 
 payment = payment[["Current B2B Online Payment Solutions", "Share of Total B2B Online Volume" , "Assumed Costs"]] #
 
@@ -458,20 +430,15 @@ else:
         payment,
         style = styles)
         )
-    
-
-#tab1.table(set_style(payment, style=styles))
 
 
 if len(pricing[pricing["is_high_level"] != True]) > 0:
     tab1.table(set_style(pricing.drop(columns=["is_high_level"]), style=styles))
 
-
 if adjust_assumptions:
     tab1.table(set_style(assumption, style = styles))
 else:
     pass
-
 
 impact_output_df = pd.DataFrame(
     [
@@ -481,7 +448,7 @@ impact_output_df = pd.DataFrame(
             "With Billie": "€{:,.0f}".format(avg_basket_size_w_billie),
             "Abs. chg": "€{:,.0f}".format(delta_basket_size),
             "Rel. chg (%)": "{:,.2%}".format(uplift_basket_size),
-            "Change in Revenues": "€{:,.0f}".format(revenue_chg_basket_size),  # todo
+            "Change in Revenues": "€{:,.0f}".format(revenue_chg_basket_size), 
             "viewable": True,
         },
         {
@@ -505,7 +472,6 @@ impact_output_df = pd.DataFrame(
     ]
 )
 
-
 inhouse_amount_wo_billie = inhouse * revenue
 external_amount_wo_billie = external * revenue
 credit_card_amount_wo_bilie = credit_card * revenue
@@ -527,12 +493,15 @@ external_share_w_billie = 0  # billie to take all the share
 credit_card_share_w_bilie = (
     (1 - billie_share) * credit_card / total_non_bnpl if total_non_bnpl != 0 else 0
 )
+
 debit_card_share_w_billie = (
     (1 - billie_share) * debit_card / total_non_bnpl if total_non_bnpl != 0 else 0
 )
+
 paypal_share_w_billie = (
     (1 - billie_share) * paypal / total_non_bnpl if total_non_bnpl != 0 else 0
 )
+
 other_share_w_billie = (
     (1 - billie_share) * other / total_non_bnpl if total_non_bnpl != 0 else 0
 )
@@ -554,7 +523,6 @@ credit_card_amount_w_bilie = credit_card_share_w_bilie * revenue_w_billie
 debit_card_amount_w_billie = debit_card_share_w_billie * revenue_w_billie
 paypal_amount_w_billie = paypal_share_w_billie * revenue_w_billie
 other_amount_w_billie = other_share_w_billie * revenue_w_billie
-
 total_amount_w_billie = (
     billie_amount
     + inhouse_amount_w_billie
@@ -566,7 +534,6 @@ total_amount_w_billie = (
 )
 
 cost_billie = blended_fee
-
 inhouse_cost_amnt_wo_billie = inhouse_amount_wo_billie * inhouse_cost
 external_cost_amnt_wo_billie = external_amount_wo_billie * external_cost
 credit_cost_amnt_wo_billie = credit_card_amount_wo_bilie * credit_cost
@@ -627,28 +594,31 @@ wavg_cost_w_billie = (
     if total_amount_w_billie != 0
     else 0
 )
-# total_cost_w_billie = cost_billie +
-
-# delta_revenue = (max_share - total_bnpl) * uplift_basket_size * revenue
 
 inhouse_gross_profit_wo_billie = inhouse_amount_wo_billie * (
     gross_profit - (inhouse_cost - wavg_cost_wo_billie)
 )
+
 external_gross_profit_wo_billie = external_amount_wo_billie * (
     gross_profit - (external_cost - wavg_cost_wo_billie)
 )
+
 credit_gross_profit_wo_billie = credit_card_amount_wo_bilie * (
     gross_profit - (credit_cost - wavg_cost_wo_billie)
 )
+
 debit_gross_profit_wo_billie = debit_card_amount_wo_billie * (
     gross_profit - (debit_cost - wavg_cost_wo_billie)
 )
+
 paypal_gross_profit_wo_billie = paypal_amount_wo_billie * (
     gross_profit - (paypal_cost - wavg_cost_wo_billie)
 )
+
 other_gross_profit_wo_billie = other_amount_wo_billie * (
     gross_profit - (other_cost - wavg_cost_wo_billie)
 )
+
 total_gross_profit_wo_billie = (
     inhouse_gross_profit_wo_billie
     + external_gross_profit_wo_billie
@@ -661,24 +631,31 @@ total_gross_profit_wo_billie = (
 billie_gross_profit_w_billie = billie_amount * (
     gross_profit - (cost_billie - wavg_cost_wo_billie)
 )
+
 inhouse_gross_profit_w_billie = inhouse_amount_w_billie * (
     gross_profit - (inhouse_cost - wavg_cost_wo_billie)
 )
+
 external_gross_profit_w_billie = external_amount_w_billie * (
     gross_profit - (external_cost - wavg_cost_wo_billie)
 )
+
 credit_gross_profit_w_billie = credit_card_amount_w_bilie * (
     gross_profit - (credit_cost - wavg_cost_wo_billie)
 )
+
 debit_gross_profit_w_billie = debit_card_amount_w_billie * (
     gross_profit - (debit_cost - wavg_cost_wo_billie)
 )
+
 paypal_gross_profit_w_billie = paypal_amount_w_billie * (
     gross_profit - (paypal_cost - wavg_cost_wo_billie)
 )
+
 other_gross_profit_w_billie = other_amount_w_billie * (
     gross_profit - (other_cost - wavg_cost_wo_billie)
 )
+
 total_gross_profit_w_billie = (
     billie_gross_profit_w_billie
     + inhouse_gross_profit_w_billie
@@ -692,6 +669,7 @@ total_gross_profit_w_billie = (
 total_vol_share_wo_billie = (
     inhouse + external + debit_card + credit_card + paypal + other
 )
+
 total_vol_amt_wo_billie = (
     inhouse_amount_wo_billie
     + external_amount_wo_billie
@@ -700,9 +678,11 @@ total_vol_amt_wo_billie = (
     + paypal_amount_wo_billie
     + other_amount_wo_billie
 )
+
 total_cost_share_wo_billie = (
     inhouse_cost + external_cost + debit_cost + credit_cost + paypal_cost + other_cost
 )
+
 total_cost_amt_wo_billie = (
     inhouse_cost_amnt_wo_billie
     + external_cost_amnt_wo_billie
@@ -711,7 +691,6 @@ total_cost_amt_wo_billie = (
     + paypal_cost_amnt_wo_billie
     + other_cost_amnt_wo_billie
 )
-
 
 total_vol_amn_w_billie = (
     billie_amount
@@ -722,6 +701,7 @@ total_vol_amn_w_billie = (
     + paypal_amount_w_billie
     + other_amount_w_billie
 )
+
 total_cost_share_w_billie = (
     cost_billie
     + inhouse_cost
@@ -731,6 +711,7 @@ total_cost_share_w_billie = (
     + paypal_cost
     + other_cost
 )
+
 total_cost_amt_w_billie = (
     billie_cost_amnt
     + inhouse_cost_amnt_w_billie
@@ -741,8 +722,6 @@ total_cost_amt_w_billie = (
     + other_cost_amnt_w_billie
 )
 
-# "{:,.2%}".format(
-# "{:,.0f}".format(
 payment_output_df = pd.DataFrame(
     [
         {
@@ -758,8 +737,7 @@ payment_output_df = pd.DataFrame(
             "Cost Amount w/ Billie": "€{:,.0f}".format(billie_cost_amnt),
             "Gross Profit w/ Billie": "€{:,.0f}".format(
                 billie_gross_profit_w_billie
-            ),  # todo
-            # "is_high_level": high_level_view,
+            ),  
         },
         {
             "Payment solution": "Inhouse BNPL",
@@ -774,7 +752,7 @@ payment_output_df = pd.DataFrame(
             "Cost Amount w/ Billie": "€{:,.0f}".format(inhouse_cost_amnt_w_billie),
             "Gross Profit w/ Billie": "€{:,.0f}".format(
                 inhouse_gross_profit_w_billie
-            ),  # todo
+            ),  
         },
         {
             "Payment solution": "External BNPL",
@@ -791,7 +769,7 @@ payment_output_df = pd.DataFrame(
             "Cost Amount w/ Billie": "€{:,.0f}".format(external_cost_amnt_w_billie),
             "Gross Profit w/ Billie": "€{:,.0f}".format(
                 external_gross_profit_w_billie
-            ),  # todo
+            ),  
         },
         {
             "Payment solution": "Credit Card",
@@ -806,7 +784,7 @@ payment_output_df = pd.DataFrame(
             "Cost Amount w/ Billie": "€{:,.0f}".format(credit_cost_amnt_w_billie),
             "Gross Profit w/ Billie": "€{:,.0f}".format(
                 credit_gross_profit_w_billie
-            ),  # todo # todo
+            ),   
         },
         {
             "Payment solution": "Debit Card",
@@ -821,7 +799,7 @@ payment_output_df = pd.DataFrame(
             "Cost Amount w/ Billie": "€{:,.0f}".format(debit_cost_amnt_w_billie),
             "Gross Profit w/ Billie": "€{:,.0f}".format(
                 debit_gross_profit_w_billie
-            ),  # todo
+            ),  
         },
         {
             "Payment solution": "Paypal",
@@ -836,7 +814,7 @@ payment_output_df = pd.DataFrame(
             "Cost Amount w/ Billie": "€{:,.0f}".format(paypal_cost_amnt_w_billie),
             "Gross Profit w/ Billie": "€{:,.0f}".format(
                 paypal_gross_profit_w_billie
-            ),  # todo
+            ),  
         },
         {
             "Payment solution": "Other",
@@ -851,7 +829,7 @@ payment_output_df = pd.DataFrame(
             "Cost Amount w/ Billie": "€{:,.0f}".format(other_cost_amnt_w_billie),
             "Gross Profit w/ Billie": "€{:,.0f}".format(
                 other_gross_profit_w_billie
-            ),  # todo
+            ),  
         },
         {
             "Payment solution": "Total",
@@ -882,8 +860,6 @@ cost_rel_chg = (
     total_cost_amnt_w_billie - total_cost_amnt_wo_billie
 ) / total_cost_amnt_w_billie
 
-# "{:,.2%}".format(
-# "{:,.0f}".format(
 revenue_output_df = pd.DataFrame(
     [
         {
@@ -905,7 +881,6 @@ revenue_output_df = pd.DataFrame(
     ]
 )
 
-
 if not high_level_view:
     met1, met2, met3, met4 = tab2.columns(4) 
     met1.metric(
@@ -920,10 +895,11 @@ if not high_level_view:
         value="€{:,.0f}".format(total_amount_wo_billie),
         delta_color="normal",
     )
+
     met2.metric(
         label="Total GP w Billie",
-        value="€{:,.0f}".format(round(total_gross_profit_w_billie, 0)),  # "2,904,000",
-        delta="{:,.2%}".format(gross_profit_rel_chg),  #
+        value="€{:,.0f}".format(round(total_gross_profit_w_billie, 0)),  
+        delta="{:,.2%}".format(gross_profit_rel_chg),  
     )
 
     met2.metric(
@@ -931,6 +907,7 @@ if not high_level_view:
         value="€{:,.0f}".format(total_gross_profit_wo_billie),
         delta_color="normal",
     )
+
     met3.metric(
         label="Average Basket Size w/ Billie",
         value="€{:,.0f}".format(round(avg_basket_size_w_billie, 0)),
@@ -938,10 +915,12 @@ if not high_level_view:
         delta_color="normal",
         help = f"Average basket size increases with Billie from {avg_basket_size} to {avg_basket_size_w_billie}, the relative increase is {uplift_basket_size}.",
     )
+
     met3.metric(
         label="Average Basket Size w/o Billie",
         value="€{:,.0f}".format(round(avg_basket_size, 0)),
     )
+
     if has_bnpl:
         met4.metric(
             label="Acceptance Rate w/ Billie",
@@ -950,6 +929,7 @@ if not high_level_view:
             delta_color="normal",
             help = f"Acceptance Rate increases with Billie from {acceptance_rate_wo_bilie} to {acceptance_rate_w_billie}, the relative increase is {acceptance_rate_rel_chg}.",
             )
+        
         met4.metric(
             label="Acceptance Rate W/o Billie",
             value="{:,.2%}".format(acceptance_rate_wo_bilie),
@@ -963,18 +943,18 @@ if not high_level_view:
             delta_color="normal",
             help = f"Average Conversion Rate increases with Billie from {conversion_rate_wo_billie} to {conversion_rate_w_billie}, the relative increase is {conversion_rate_relative_chg}.",
         )
+
         met4.metric(
             label="Average Conversion Rate W/o Billie",
             value="{:,.2%}".format(conversion_rate_wo_billie),
         )
-
 
 else: 
     met1, met2, met3 = tab2.columns(3)
     met1.metric(
         label="Total Revenue Potential with Billie",
         value="€{:,.0f}".format(round(total_amount_w_billie, 0)),
-        delta="{:,.2%}".format(amount_rel_chg),  # f"20%",
+        delta="{:,.2%}".format(amount_rel_chg), 
         delta_color="normal",
     )
 
@@ -983,6 +963,7 @@ else:
         value="€{:,.0f}".format(total_amount_wo_billie),
         delta_color="normal",
     )
+
     met2.metric(
         label="Average Basket Size w/ Billie",
         value="€{:,.0f}".format(round(avg_basket_size_w_billie, 0)),
@@ -990,10 +971,12 @@ else:
         delta_color="normal",
         help = f"Average basket size increases with Billie from {avg_basket_size} to {avg_basket_size_w_billie}, the relative increase is {uplift_basket_size}.",
     )
+
     met2.metric(
         label="Average Basket Size w/o Billie",
         value="€{:,.0f}".format(round(avg_basket_size, 0)),
     )
+
     if has_bnpl:
         met3.metric(
             label="Acceptance Rate w/ Billie",
@@ -1002,6 +985,7 @@ else:
             delta_color="normal",
             help = f"Acceptance Rate increases with Billie from {acceptance_rate_wo_bilie} to {acceptance_rate_w_billie}, the relative increase is {acceptance_rate_rel_chg}.",
             )
+        
         met3.metric(
             label="Acceptance Rate W/o Billie",
             value="{:,.2%}".format(acceptance_rate_wo_bilie),
@@ -1015,19 +999,15 @@ else:
             delta_color="normal",
             help = f"Average Conversion Rate increases with Billie from {conversion_rate_wo_billie} to {conversion_rate_w_billie}, the relative increase is {conversion_rate_relative_chg}.",
         )
+
         met3.metric(
             label="Average Conversion Rate W/o Billie",
             value="{:,.2%}".format(conversion_rate_wo_billie),
         )
 
-
-# Set the default page config with the CSS style
-
-
 impact_filtered_df = impact_output_df[impact_output_df["viewable"] == True].drop(
     columns=["viewable"]
 )
-
 
 ####PAYMENT OUTPUT
 tab2.table(
@@ -1036,14 +1016,11 @@ tab2.table(
     ), style=styles)
 )
 
-# tab2.markdown('<div class="custom-table">', unsafe_allow_html=True)
 tab2.table(
     set_style(
         impact_filtered_df,
         style = styles)
         )  #
-# tab2.markdown("</div>", unsafe_allow_html=True)
-
 
 if high_level_view:
     tab2.table(
@@ -1067,9 +1044,6 @@ else:
         style = styles_footer)
         )
 
-# tab2.write(inhouse)
-# tab2.write(credit_card)
-
 tab3.plotly_chart(
     waterfall_fig(
         revenue=revenue,
@@ -1082,13 +1056,6 @@ tab3.plotly_chart(
     theme="streamlit",
     use_container_width=True,
 )
-
-
-# tab2.write(revenue_w_billie)
-# tab2.write(debit_card_amount_w_billie)
-# tab2.write(debit_card_share_w_billie)
-# tab2.write()
-
 
 hide_streamlit_style = """
             <style>
