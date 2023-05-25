@@ -481,7 +481,7 @@ impact_output_df = pd.DataFrame(
             "With Billie": "€{:,.0f}".format(avg_basket_size_w_billie),
             "Abs. chg": "€{:,.0f}".format(delta_basket_size),
             "Rel. chg (%)": "{:,.2%}".format(uplift_basket_size),
-            "Change in Revneues": "€{:,.0f}".format(revenue_chg_basket_size),  # todo
+            "Change in Revenues": "€{:,.0f}".format(revenue_chg_basket_size),  # todo
             "viewable": True,
         },
         {
@@ -490,7 +490,7 @@ impact_output_df = pd.DataFrame(
             "With Billie": "{:,.2%}".format(acceptance_rate_w_billie),
             "Abs. chg": "{:,.2%}".format(acceptance_rate_delta),
             "Rel. chg (%)": "{:,.2%}".format(acceptance_rate_rel_chg),
-            "Change in Revneues": "€{:,.0f}".format(revenue_chg_acceptance_rate),
+            "Change in Revenues": "€{:,.0f}".format(revenue_chg_acceptance_rate),
             "viewable": has_bnpl,
         },
         {
@@ -499,7 +499,7 @@ impact_output_df = pd.DataFrame(
             "With Billie": "{:,.2%}".format(conversion_rate_w_billie),
             "Abs. chg": "{:,.2%}".format(conversion_rate_absolute_chg),
             "Rel. chg (%)": "{:,.2%}".format(conversion_rate_relative_chg),
-            "Change in Revneues": "€{:,.0f}".format(revenue_chg_conversion_rate),
+            "Change in Revenues": "€{:,.0f}".format(revenue_chg_conversion_rate),
             "viewable": not has_bnpl,
         },
     ]
