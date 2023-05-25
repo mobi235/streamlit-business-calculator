@@ -941,12 +941,6 @@ met2.metric(
 )
 
 if has_bnpl:
-    met2.metric(
-        label="Rev Chg. Acceptance",
-        value="€{:,.0f}".format(revenue_chg_acceptance_rate),
-        delta="{:,.2%}".format(acceptance_rate_rel_chg),
-        delta_color="normal",
-    )
     met1.metric(
     label="Acceptance Rate w/ Billie",
     value="{:,.2%}".format(acceptance_rate_w_billie),
@@ -963,12 +957,6 @@ if has_bnpl:
     )
 
 else:
-    met2.metric(
-        label="Rev Chg. Conversion",
-        value="€{:,.0f}".format(revenue_chg_conversion_rate),
-        delta="{:,.2%}".format(conversion_rate_relative_chg),
-        delta_color="normal",
-    )
     met1.metric(
     label="Average Conversion Rate w/ Billie",
     value="{:,.2%}".format(conversion_rate_w_billie),
