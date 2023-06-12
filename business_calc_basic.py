@@ -234,7 +234,10 @@ pricing = billie_pricing(high_level=high_level_view)
 
 
 if adjust_assumptions:
+    pricing = billie_pricing(high_level=False)
+
     st.sidebar.markdown("## Adjust Assumptions Variables")
+
     adoption_rate = st.sidebar.number_input(
         "Billie share of total B2B online payment solutions (%):",
         value=50.0,
